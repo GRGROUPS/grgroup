@@ -289,6 +289,39 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
 .sim b { display: block; margin: 8px 0 2px; font-size: 16px; line-height: 1.25; }
 .sim span { color: var(--mut); font-size: 14px; }
 
+/* ---- movimiento (suave, estilo Apple) ---- */
+@-webkit-keyframes rvIn { from { opacity: 0; -webkit-transform: translateY(30px); } to { opacity: 1; -webkit-transform: none; } }
+@keyframes rvIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+@keyframes rvInOff { from { opacity: 0; transform: translateY(30px); } to { opacity: .62; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes viewIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes shIn { from { opacity: 0; transform: translateY(34px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes glIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+@keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.32); } 100% { transform: scale(1); } }
+.js-rv .rv:not(.in) { opacity: 0; }
+.rv.in { animation: rvIn .85s cubic-bezier(.2,.7,.2,1) backwards; }
+.pcard.off.rv.in { animation-name: rvInOff; }
+[id^="v-"] { animation: viewIn .4s ease-out; }
+.ov { animation: fadeIn .28s ease-out; }
+.sheet { animation: shIn .45s cubic-bezier(.2,.8,.2,1); }
+.hero .tx > * { animation: rvIn 1s cubic-bezier(.2,.7,.2,1) backwards; }
+.hero .tx > *:nth-child(1) { animation-delay: .1s; } .hero .tx > *:nth-child(2) { animation-delay: .2s; } .hero .tx > *:nth-child(3) { animation-delay: .3s; }
+.hero .tx > *:nth-child(4) { animation-delay: .4s; } .hero .tx > *:nth-child(5) { animation-delay: .5s; } .hero .tx > *:nth-child(6) { animation-delay: .6s; }
+.pill, .lnk, .gl button, .gwa, .ztabs button, .heart, .bbar a, .bbar button { transition: transform .22s ease, opacity .22s ease, background-color .25s ease, color .25s ease; }
+.pill:active, .bbar a:active, .bbar button:active, .gwa:active { transform: scale(.95); }
+.lnk:active, .gl button:active { opacity: .5; }
+.heart.on { animation: pop .38s ease-out; }
+.pcard { transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease; }
+.gl button { position: relative; }
+@media (hover: hover) {
+  .pcard:hover { transform: translateY(-5px); box-shadow: 0 16px 34px rgba(0,0,0,.13); }
+  .pill:hover { opacity: .88; }
+  .gl button:hover { color: #000; }
+  .lnk:hover { opacity: .75; }
+}
+@media (max-width: 999px) { .gnav.open .gl { animation: glIn .3s ease-out; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } .js-rv .rv:not(.in) { opacity: 1; } }
+
 .ftog { display: none; width: 100%; background: #e8e8ed; border: 0; border-radius: 14px; font-size: 16px; font-weight: 600; padding: 14px; margin: 0 0 12px; color: var(--ink); }
 @media (max-width: 599px) { .ftog { display: block; } #fbody { display: none; } #fbody.open { display: block; } }
 .heart { position: absolute; right: 10px; top: 10px; width: 42px; height: 42px; border-radius: 21px; border: 0; background: rgba(255,255,255,.92); font-size: 22px; line-height: 42px; padding: 0; color: #6e6e73; z-index: 2; cursor: pointer; }
@@ -632,11 +665,33 @@ function esRemate(h) { return /remate/i.test(h.name + " " + h.destacados.join(" 
 function etiqueta(h) { return esRemate(h) ? "REMATE" : (esNueva(h) ? "NUEVO" : (h.op === "Renta" ? "EN RENTA" : (h.tipo === "Departamento" ? "DEPARTAMENTO" : ""))); }
 
 /* ---------- navegación ---------- */
+
+/* ---------- movimiento: aparecer al hacer scroll ---------- */
+var RVSEL = ".tile, .pcard, .ccard, #stats", rvBusy = false;
+function rvTag() {
+  var els = document.querySelectorAll(RVSEL), i, el;
+  for (i = 0; i < els.length; i++) { el = els[i]; if (!el.rvT) { el.rvT = 1; el.className += " rv"; } }
+}
+function rvCheck() {
+  var els = document.querySelectorAll(".rv:not(.in)"), i, r, n = 0, vh = window.innerHeight || 700;
+  for (i = 0; i < els.length; i++) {
+    r = els[i].getBoundingClientRect();
+    if (r.height > 0 && r.top < vh * 0.92) { els[i].style.animationDelay = ((n++ % 4) * 70) + "ms"; els[i].className += " in"; }
+  }
+}
+function rvKick() { if (rvBusy) { return; } rvBusy = true; setTimeout(function () { rvBusy = false; try { rvTag(); rvCheck(); } catch (e) {} }, 40); }
+function rvStart() {
+  document.documentElement.className += " js-rv";
+  window.addEventListener("scroll", rvKick); window.addEventListener("resize", rvKick);
+  try { new MutationObserver(rvKick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+  rvKick();
+  setTimeout(function () { var o = document.querySelectorAll(".rv:not(.in)"), i; for (i = 0; i < o.length; i++) { if (o[i].getBoundingClientRect().height > 0 && o[i].getBoundingClientRect().top < (window.innerHeight || 700)) { o[i].className += " in"; } } }, 2500);
+}
 function closeMenu() { var g = document.getElementById("gnav"); if (g) { g.className = "gnav"; } }
 var VIEWS = ["home", "casas", "calc", "comparar", "registro", "regs"];
 function show(v, noHash) {
   var i;
-  closeMenu();
+  closeMenu(); rvKick();
   if (v === "regs" && !ASESOR) { v = "home"; }
   for (i = 0; i < VIEWS.length; i++) { $("v-" + VIEWS[i]).style.display = VIEWS[i] === v ? "block" : "none"; }
   $("n-casas").className = v === "casas" ? "on" : "";
@@ -1333,6 +1388,7 @@ function init() {
   var i, rs, rc;
   if (ASESOR) { $("aviso").style.display = "block"; $("verTodasW").style.display = ""; $("n-regs").style.display = ""; document.title = "GR GROUP (asesor)"; }
   $("waTop").href = waUrl("Hola, quiero información sobre las casas de GR GROUP."); $("waFoot").href = waUrl("Hola, quiero información sobre las casas de GR GROUP.");
+  rvStart();
   $("mbtn").onclick = function () { var g = $("gnav"); g.className = g.className === "gnav open" ? "gnav" : "gnav open"; };
   $("logoTop").onclick = function () { show("home"); };
   $("n-casas").onclick = function () { goCasas(); };
