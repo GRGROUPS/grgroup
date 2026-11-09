@@ -413,6 +413,7 @@ var DATA = [{"code": "GR-001", "name": "Casa en Rancho San Pedro", "zona": "Frac
 var MODE = "cliente";
 var ASESOR = (MODE === "asesor");
 var WA = "524921121116";
+var SHEET = "https://script.google.com/macros/s/AKfycbyMJIuUldn4agHljPw0JVq6VxqVz1pdHhGhA33uXhaQQJyAr_lD4Z9z6uURAj1JAMJjMg/exec";
 var BUILD = "8 de noviembre de 2026";
 var NUEVA_DIAS = 21;
 var KEY = "grg_registros";
@@ -609,6 +610,7 @@ function openPriv() {
     "<p><b>Datos que pedimos.</b> Nombre, teléfono, correo (opcional) y la información de la casa que buscas y tu forma de pago (por ejemplo, si usarás Infonavit y un monto aproximado de crédito).</p>" +
     "<p><b>Para qué los usamos.</b> Para contactarte, agendar visitas a las casas, mostrarte las opciones que se ajustan a tu presupuesto y a tu forma de pago, y darte seguimiento.</p>" +
     "<p><b>Tus derechos.</b> Puedes solicitar el acceso, la corrección o la eliminación de tus datos, u oponerte a su uso, escribiéndonos por WhatsApp.</p>" +
+    "<p><b>Dónde se guardan.</b> Tus datos se guardan en los registros de GR GROUP (en una hoja de cálculo de Google) y solo los usa el equipo de GR GROUP.</p>" +
     '<p style="margin-top:16px"><button class="pill" type="button" style="margin:0" onclick="closeDetail()">Entendido</button></p></div>';
   $("ov").style.display = "block";
   document.body.style.overflow = "hidden";
@@ -728,6 +730,17 @@ function regText(r) {
   if (r.coment) { t += "\nComentarios: " + r.coment; }
   return t;
 }
+function enviarSheet(r) {
+  if (!SHEET || SHEET.indexOf("http") !== 0) { return; }
+  try {
+    var nm = "grgf" + r.id, fr = document.createElement("iframe"), f = document.createElement("form"), k, inp;
+    fr.name = nm; fr.style.display = "none"; f.style.display = "none";
+    f.method = "POST"; f.action = SHEET; f.target = nm; f.acceptCharset = "UTF-8";
+    for (k in r) { if (r.hasOwnProperty(k) && k !== "id") { inp = document.createElement("input"); inp.type = "hidden"; inp.name = k; inp.value = r[k]; f.appendChild(inp); } }
+    document.body.appendChild(fr); document.body.appendChild(f); f.submit();
+    setTimeout(function () { try { document.body.removeChild(f); document.body.removeChild(fr); } catch (e) {} }, 15000);
+  } catch (e2) {}
+}
 function sendReg() {
   var nombre = $("r_nombre").value.replace(/^\s+|\s+$/g, ""), tel = digits($("r_tel").value), busco = getRadio("busco"), err = "", h, r, arr, cred = getRadio("credito"), code, saved;
   if (nombre.length < 3) { err = "Escribe tu nombre completo."; }
@@ -742,7 +755,7 @@ function sendReg() {
     r.pres = $("r_pres").value.replace(/^\s+|\s+$/g, ""); r.rec = $("r_rec").value; r.cuando = $("r_cuando").value;
     if (busco === "Comprar") { r.credito = cred; if (cred === "Infonavit") { r.precal = getRadio("precal"); r.monto = $("r_monto").value.replace(/^\s+|\s+$/g, ""); } }
   }
-  arr = loadRegs(); arr.push(r); saved = saveRegs(arr);
+  arr = loadRegs(); arr.push(r); saved = saveRegs(arr); enviarSheet(r);
   $("rokT").innerHTML = "¡Gracias, " + esc(nombre.split(" ")[0]) + "!";
   $("rokP").innerHTML = "Recibimos tu registro" + (saved ? "" : " (no pudimos guardarlo en este equipo)") + ". Para que te contactemos más rápido, mándanos tus datos también por WhatsApp.";
   $("rwa").href = waUrl("Hola, me registré en GR GROUP:\n\n" + regText(r));
