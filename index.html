@@ -205,6 +205,9 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
 .cta2 .pill { margin: 0 8px 8px 0; }
 .cta2 small { display: block; color: var(--mut); margin-top: 4px; }
 .gal { margin: 12px 0 14px; }
+.gst { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; border-radius: 20px; overflow: hidden; background: #111; -webkit-perspective: 1400px; perspective: 1400px; pointer-events: none; }
+.gcube { position: absolute; left: 0; top: 0; width: 100%; height: 100%; -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
+.gf { position: absolute; left: 0; top: 0; background: #111 center no-repeat; background-size: contain; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
 .gmain { position: relative; height: 360px; background-color: #111; background-repeat: no-repeat; background-position: center; background-size: contain; border-radius: 20px; }
 .gn { position: absolute; top: 50%; margin-top: -26px; width: 52px; height: 52px; border-radius: 26px; border: 0; background: rgba(0,0,0,.5); color: #fff; font-size: 34px; line-height: 48px; padding: 0 0 4px; }
 .gp { left: 10px; } .gx { right: 10px; }
@@ -797,17 +800,36 @@ function galleryHtml(h) {
   var k, th = "";
   if (!h.fotos || !h.fotos.length) { return ""; }
   for (k = 0; k < h.fotos.length; k++) { th += '<img src="' + h.fotos[k] + '" alt="" onclick="gShow(' + k + ')">'; }
-  return '<div class="gal"><div id="gmain" class="gmain">' +
+  return '<div class="gal"><div id="gmain" class="gmain"><div class="gst" id="gst"><div class="gcube" id="gcube"><div class="gf" id="gfa"></div><div class="gf" id="gfb"></div></div></div>' +
     (h.fotos.length > 1 ? '<button class="gn gp" type="button" onclick="gShow(gi-1)">‹</button><button class="gn gx" type="button" onclick="gShow(gi+1)">›</button>' : "") +
     '<div id="gcount" class="gcount"></div></div>' + (h.fotos.length > 1 ? '<div class="thumbs" id="thumbs">' + th + "</div>" : "") + "</div>";
 }
-function gShow(i) {
-  var k, ths;
-  if (!gl.length) { return; }
-  gi = (i + gl.length) % gl.length;
-  $("gmain").style.backgroundImage = "url('" + gl[gi] + "')";
-  $("gcount").innerHTML = (gi + 1) + " / " + gl.length;
+var gTimer = null, gPend = "";
+function gBg(u) { return "url('" + u + "')"; }
+function gFinish() {
+  if (gTimer) { clearTimeout(gTimer); gTimer = null; }
+  if (gPend) { $("gmain").style.backgroundImage = gBg(gPend); gPend = ""; }
+  if ($("gst")) { $("gst").style.display = "none"; }
+}
+function gShow(i, noAnim) {
+  var k, ths, prev = gi, n = gl.length, m = $("gmain"), w, h, dir, cube, fa, fb, reduce = false;
+  if (!n) { return; }
+  gFinish();
+  gi = (i + n) % n;
+  $("gcount").innerHTML = (gi + 1) + " / " + n;
   if ($("thumbs")) { ths = $("thumbs").getElementsByTagName("img"); for (k = 0; k < ths.length; k++) { ths[k].className = k === gi ? "on" : ""; } }
+  try { reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  if (noAnim || reduce || prev === gi || prev === undefined || prev === null || !$("gst")) { m.style.backgroundImage = gBg(gl[gi]); return; }
+  dir = ((gi > prev && !(prev === 0 && gi === n - 1)) || (prev === n - 1 && gi === 0)) ? 1 : -1;
+  w = m.offsetWidth; h = m.offsetHeight; cube = $("gcube"); fa = $("gfa"); fb = $("gfb");
+  fa.style.cssText = "width:" + w + "px;height:" + h + "px;background-image:" + gBg(gl[prev]) + ";-webkit-transform:translateZ(" + (w / 2) + "px);transform:translateZ(" + (w / 2) + "px)";
+  fb.style.cssText = "width:" + w + "px;height:" + h + "px;background-image:" + gBg(gl[gi]) + ";-webkit-transform:rotateY(" + (dir * 90) + "deg) translateZ(" + (w / 2) + "px);transform:rotateY(" + (dir * 90) + "deg) translateZ(" + (w / 2) + "px)";
+  cube.style.cssText = "-webkit-transition:none;transition:none;-webkit-transform:translateZ(" + (-w / 2) + "px) rotateY(0deg);transform:translateZ(" + (-w / 2) + "px) rotateY(0deg)";
+  $("gst").style.display = "block";
+  gPend = gl[gi];
+  void cube.offsetWidth;
+  cube.style.cssText = "-webkit-transition:-webkit-transform .7s cubic-bezier(.65,0,.35,1);transition:transform .7s cubic-bezier(.65,0,.35,1);-webkit-transform:translateZ(" + (-w / 2) + "px) rotateY(" + (-dir * 90) + "deg);transform:translateZ(" + (-w / 2) + "px) rotateY(" + (-dir * 90) + "deg)";
+  gTimer = setTimeout(gFinish, 740);
 }
 function initGallery(h) {
   gl = h.fotos || []; gi = 0;
@@ -815,7 +837,7 @@ function initGallery(h) {
   var m = $("gmain");
   m.ontouchstart = function (e) { tx = e.touches[0].clientX; };
   m.ontouchend = function (e) { var dx = e.changedTouches[0].clientX - tx; if (dx > 45) { gShow(gi - 1); } else if (dx < -45) { gShow(gi + 1); } };
-  gShow(0);
+  gShow(0, true);
 }
 function cell(label, val) { return '<div class="cell"><b>' + label + "</b><span>" + val + "</span></div>"; }
 
