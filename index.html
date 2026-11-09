@@ -34,7 +34,7 @@ a { color: inherit; }
 .aviso { background: #b3261e; color: #fff; padding: 9px 16px; font-size: 15px; font-weight: 600; text-align: center; display: none; }
 
 /* ---------- barra superior ---------- */
-.gnav { position: -webkit-sticky; position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.86); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(0,0,0,.08); }
+.gnav { position: -webkit-sticky; position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.97); border-bottom: 1px solid rgba(0,0,0,.08); }
 .gin { max-width: 1100px; margin: 0 auto; padding: 0 12px; height: 62px; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; }
 .gin .logo { height: 46px; cursor: pointer; display: block; margin-right: 10px; }
 .gl { -webkit-flex: 1; flex: 1; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
@@ -191,7 +191,7 @@ a { color: inherit; }
 textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c7c7cc; border-radius: 12px; padding: 10px; margin-top: 10px; display: none; font-family: Menlo, monospace; }
 
 /* ---------- ficha de casa ---------- */
-.ov { display: none; position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,.55); -webkit-backdrop-filter: blur(6px); z-index: 60; }
+.ov { display: none; position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,.6); z-index: 60; }
 .sheet { position: absolute; left: 50%; top: 18px; bottom: 18px; width: 94%; max-width: 780px; margin-left: -47%; background: #fff; border-radius: 28px; overflow: hidden; display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; }
 @media (min-width: 830px) { .sheet { margin-left: -390px; } }
 .sheet .x { position: absolute; right: 14px; top: 14px; width: 40px; height: 40px; border-radius: 20px; border: 0; background: rgba(60,60,67,.18); color: #1d1d1f; font-size: 22px; line-height: 38px; padding: 0; z-index: 3; }
@@ -243,7 +243,7 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
 /* ---- barra inferior, filtros plegables, favoritas ---- */
 .bbar { display: none; }
 @media (max-width: 899px) {
-  .bbar { display: -webkit-flex; display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 10px 12px 12px; background: rgba(255,255,255,.92); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: 1px solid rgba(0,0,0,.1); }
+  .bbar { display: -webkit-flex; display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 10px 12px 12px; background: rgba(255,255,255,.98); border-top: 1px solid rgba(0,0,0,.1); }
   .bbar a, .bbar button { -webkit-flex: 1; flex: 1; text-align: center; margin: 0 5px; padding: 13px 10px; font-size: 16px; line-height: 20px; border-radius: 980px; font-weight: 700; border: 0; text-decoration: none; }
   .bbar a { background: #1fa855; color: #fff; }
   .bbar button { background: var(--or); color: #fff; }
@@ -303,17 +303,17 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
 
 /* ---- movimiento (suave, estilo Apple) ---- */
 @-webkit-keyframes rvIn { from { opacity: 0; -webkit-transform: translateY(18px); } to { opacity: 1; -webkit-transform: none; } }
-@keyframes rvIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-@keyframes rvInOff { from { opacity: 0; transform: translateY(18px); } to { opacity: .62; transform: none; } }
+@keyframes rvIn { from { opacity: 0; -webkit-transform: translate3d(0,14px,0); transform: translate3d(0,14px,0); } to { opacity: 1; -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0); } }
+@keyframes rvInOff { from { opacity: 0; -webkit-transform: translate3d(0,14px,0); transform: translate3d(0,14px,0); } to { opacity: .62; -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes viewIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes viewIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes shIn { from { opacity: 0; transform: translateY(34px) scale(.985); } to { opacity: 1; transform: none; } }
 @keyframes glIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
 @keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.32); } 100% { transform: scale(1); } }
 .js-rv .rv:not(.in) { opacity: 0; }
-.rv.in { animation: rvIn 1.3s cubic-bezier(.22,.61,.36,1) backwards; }
+.rv.in { animation: rvIn .9s cubic-bezier(.22,.61,.36,1) backwards; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
 .pcard.off.rv.in { animation-name: rvInOff; }
-[id^="v-"] { animation: viewIn .75s ease-out; }
+[id^="v-"] { animation: viewIn .45s ease-out; }
 .ov { animation: fadeIn .5s ease-out; }
 .sheet { animation: shIn .8s cubic-bezier(.22,.61,.36,1); }
 .hero .tx > * { animation: rvIn 1.6s cubic-bezier(.22,.61,.36,1) backwards; }
@@ -323,7 +323,7 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
 .pill:active, .bbar a:active, .bbar button:active, .gwa:active { transform: scale(.95); }
 .lnk:active, .gl button:active { opacity: .5; }
 .heart.on { animation: pop .38s ease-out; }
-.pcard { transition: transform .7s cubic-bezier(.22,.61,.36,1), box-shadow .7s ease; }
+.pcard { transition: -webkit-transform .5s cubic-bezier(.22,.61,.36,1); transition: transform .5s cubic-bezier(.22,.61,.36,1); }
 .gl button { position: relative; }
 @media (hover: hover) {
   .pcard:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,0,0,.1); }
@@ -809,20 +809,27 @@ function rvCheck() {
   var els = document.querySelectorAll(".rv:not(.in)"), i, r, n = 0, vh = window.innerHeight || 700;
   for (i = 0; i < els.length; i++) {
     r = els[i].getBoundingClientRect();
-    if (r.height > 0 && r.top < vh * 0.92) { els[i].style.animationDelay = ((n++ % 4) * 130) + "ms"; els[i].className += " in"; }
+    if (r.height > 0 && r.top < vh * 0.92) { els[i].style.animationDelay = ((n++ % 3) * 90) + "ms"; els[i].className += " in"; }
   }
 }
 function rvKick() { if (rvBusy) { return; } rvBusy = true; setTimeout(function () { rvBusy = false; try { rvTag(); rvCheck(); } catch (e) {} }, 40); }
 function rvStart() {
   document.documentElement.className += " js-rv";
-  window.addEventListener("scroll", rvKick); window.addEventListener("resize", rvKick);
+  window.addEventListener("scroll", rvKick, { passive: true }); window.addEventListener("resize", rvKick);
   try { new MutationObserver(rvKick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
   rvKick();
   setTimeout(function () { var o = document.querySelectorAll(".rv:not(.in)"), i; for (i = 0; i < o.length; i++) { if (o[i].getBoundingClientRect().height > 0 && o[i].getBoundingClientRect().top < (window.innerHeight || 700)) { o[i].className += " in"; } } }, 2500);
 }
 function navSolid() {
   var g = document.getElementById("gnav"), y = window.pageYOffset || document.documentElement.scrollTop || 0, home = /(^| )home( |$)/.test(document.body.className), open = g.className.indexOf("open") !== -1;
-  g.className = "gnav" + (open ? " open" : "") + ((!home || y > 40 || open) ? " solid" : "");
+  var nc = "gnav" + (open ? " open" : "") + ((!home || y > 40 || open) ? " solid" : "");
+  if (g.className !== nc) { g.className = nc; }
+}
+var navTick = false;
+function navSolidRaf() {
+  if (navTick) { return; }
+  navTick = true;
+  (window.requestAnimationFrame || function (f) { return setTimeout(f, 16); })(function () { navTick = false; navSolid(); });
 }
 function closeMenu() { var g = document.getElementById("gnav"); if (g) { g.className = "gnav"; navSolid(); } }
 var VIEWS = ["home", "casas", "calc", "comparar", "registro", "regs"];
@@ -1033,6 +1040,7 @@ function gShow(i, noAnim) {
   if (!n) { return; }
   gFinish();
   gi = (i + n) % n;
+  try { (new Image()).src = gl[(gi + 1) % n]; (new Image()).src = gl[(gi + n - 1) % n]; } catch (e) {}
   $("gcount").innerHTML = (gi + 1) + " / " + n;
   if ($("thumbs")) { ths = $("thumbs").getElementsByTagName("img"); for (k = 0; k < ths.length; k++) { ths[k].className = k === gi ? "on" : ""; } }
   try { reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
@@ -1670,7 +1678,7 @@ function init() {
   })();
   $("r_casa").onchange = updateReg;
   $("mbtn").onclick = function () { var g = $("gnav"); g.className = g.className.indexOf("open") !== -1 ? "gnav" : "gnav open"; navSolid(); };
-  window.addEventListener("scroll", navSolid); navSolid();
+  window.addEventListener("scroll", navSolidRaf, { passive: true }); navSolid();
   $("logoTop").onclick = function () { show("home"); };
   $("logoTopW").onclick = function () { show("home"); };
   $("n-casas").onclick = function () { goCasas(); };
@@ -1691,6 +1699,15 @@ function init() {
   $("f-vender").onclick = function () { resetForm(); setRadio("busco", "Vender o rentar mi casa"); updateReg(); show("registro"); };
   /* inicio */
   renderHome();
+  setTimeout(function () {
+    var k = 0;
+    (function nxt() {
+      var d = DATA[k++];
+      if (!d) { return; }
+      try { if (d.foto) { (new Image()).src = d.foto; } } catch (e) {}
+      setTimeout(nxt, 120);
+    })();
+  }, 1800);
   $("hV").onclick = function () { hs.op = "Venta"; $("hV").className = "on"; $("hR").className = ""; renderHome(); };
   $("hR").onclick = function () { hs.op = "Renta"; $("hR").className = "on"; $("hV").className = ""; renderHome(); };
   $("hgo").onclick = function () { goCasas({ op: hs.op, q: $("hq").value, max: parseInt($("hmax").value, 10) || 0, rec: parseInt($("hrec").value, 10) || 0, cred: hs.op === "Renta" ? "" : $("hcred").value }); };
