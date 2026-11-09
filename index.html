@@ -329,7 +329,6 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
 .req { font-size: 13px; color: var(--or); font-weight: 700; margin-left: 4px; }
 .field input[type=date] { width: 100%; font-size: 17px; border: 1px solid #c7c7cc; border-radius: 14px; padding: 0 14px; background: #fff; box-sizing: border-box; -webkit-appearance: none; appearance: none; color: var(--ink); font-family: inherit; }
 .pills.pl2 span { padding: 9px 15px; font-size: 15px; }
-.pills.otras { max-height: 190px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 #visBlock i { font-weight: 500; font-style: normal; }
 .ftog { display: none; width: 100%; background: #e8e8ed; border: 0; border-radius: 14px; font-size: 16px; font-weight: 600; padding: 14px; margin: 0 0 12px; color: var(--ink); }
 @media (max-width: 599px) { .ftog { display: block; } #fbody { display: none; } #fbody.open { display: block; } }
@@ -557,12 +556,8 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
       <div id="visBlock">
         <hr>
         <h3>¿Cuándo podrías visitar? <span id="visReq" class="req"></span></h3>
-        <p class="vhint">Dinos el rango de días y los horarios en que podrías ver la casa (o las casas) y te confirmamos la cita.</p>
-        <div class="row">
-          <div class="field"><label for="v_ini">Del día</label><input id="v_ini" type="date"></div>
-          <div class="field"><label for="v_fin">Al día</label><input id="v_fin" type="date"></div>
-        </div>
-        <span class="sub2">Días de la semana que te acomodan <i>(si no marcas ninguno, cualquiera del rango)</i></span>
+        <p class="vhint">Dinos qué días y en qué horarios podrías ver la casa y te confirmamos la cita.</p>
+        <span class="sub2">Días que te acomodan <i>(elige uno o varios)</i></span>
         <div class="pills pl2" id="v_dias">
           <label><input type="checkbox" name="vdia" value="Lun"><span>Lun</span></label><label><input type="checkbox" name="vdia" value="Mar"><span>Mar</span></label><label><input type="checkbox" name="vdia" value="Mié"><span>Mié</span></label><label><input type="checkbox" name="vdia" value="Jue"><span>Jue</span></label><label><input type="checkbox" name="vdia" value="Vie"><span>Vie</span></label><label><input type="checkbox" name="vdia" value="Sáb"><span>Sáb</span></label><label><input type="checkbox" name="vdia" value="Dom"><span>Dom</span></label>
         </div>
@@ -570,8 +565,6 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
         <div class="pills" id="v_hor">
           <label><input type="checkbox" name="vhor" value="Mañana (9 a 13 h)"><span>Mañana · 9 a 13 h</span></label><label><input type="checkbox" name="vhor" value="Tarde (13 a 18 h)"><span>Tarde · 13 a 18 h</span></label><label><input type="checkbox" name="vhor" value="Noche (18 a 20 h)"><span>Noche · 18 a 20 h</span></label>
         </div>
-        <span class="sub2">¿Quieres ver más casas en el mismo recorrido? <i>(opcional)</i></span>
-        <div class="pills pl2 otras" id="v_otras"></div>
       </div>
 
       <div id="credBlock">
@@ -1153,18 +1146,9 @@ var VISITA = false, DSEM = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
 function getChecked(name) { var r = document.getElementsByName(name), i, o = []; for (i = 0; i < r.length; i++) { if (r[i].checked) { o.push(r[i].value); } } return o; }
 function todayISO() { var d = new Date(); return d.getFullYear() + "-" + two(d.getMonth() + 1) + "-" + two(d.getDate()); }
 function fmtD(iso) { var a = String(iso).split("-"), d = new Date(parseInt(a[0], 10), parseInt(a[1], 10) - 1, parseInt(a[2], 10)); return DSEM[d.getDay()] + " " + two(d.getDate()) + "/" + two(d.getMonth() + 1); }
-function buildOtras() {
-  var html = "", i, h;
-  for (i = 0; i < DATA.length; i++) {
-    h = DATA[i];
-    if (h.status === "Disponible") { html += '<label><input type="checkbox" name="votra" value="' + h.code + '"' + (isFav(h.code) ? " checked" : "") + "><span>" + esc(h.corto || h.name) + "</span></label>"; }
-  }
-  $("v_otras").innerHTML = html;
-}
 function visitaTxt() {
-  var ini = $("v_ini").value, fin = $("v_fin").value, dias = getChecked("vdia"), hor = getChecked("vhor"), t = "";
-  if (ini || fin) { t = ini && fin && ini !== fin ? "del " + fmtD(ini) + " al " + fmtD(fin) : "el " + fmtD(ini || fin); }
-  if (dias.length) { t += (t ? " · " : "") + "solo " + dias.join(", "); }
+  var dias = getChecked("vdia"), hor = getChecked("vhor"), t = "";
+  if (dias.length) { t = dias.join(", "); }
   if (hor.length) { t += (t ? " · " : "") + hor.join(", "); }
   return t;
 }
@@ -1175,11 +1159,9 @@ function fillCasaSelect() {
     if (h.status === "Disponible") { html += '<option value="' + h.code + '">' + esc((h.corto || h.name) + " · " + money(h.precio) + (h.op === "Renta" ? " /mes" : "")) + "</option>"; }
   }
   $("r_casa").innerHTML = html;
-  buildOtras();
 }
 function updateReg() {
   var busco = getRadio("busco"), cred = getRadio("credito");
-  $("v_ini").min = todayISO(); $("v_fin").min = todayISO();
   $("visReq").innerHTML = (VISITA || $("r_casa").value) ? "(obligatorio para agendar)" : "(opcional)";
   $("buyer").style.display = busco === "Vender o rentar mi casa" ? "none" : "block";
   $("r_presL").innerHTML = busco === "Rentar" ? "Renta mensual aproximada" : "Presupuesto aproximado";
@@ -1191,7 +1173,7 @@ function resetForm() {
   var ids = ["r_nombre", "r_tel", "r_mail", "r_pres", "r_rec", "r_cuando", "r_casa", "r_monto", "r_zona", "r_com"], i;
   VISITA = false;
   for (i = 0; i < ids.length; i++) { $(ids[i]).value = ""; }
-  $("v_ini").value = ""; $("v_fin").value = ""; setChecks("vdia", false); setChecks("vhor", false); buildOtras();
+  setChecks("vdia", false); setChecks("vhor", false);
   setRadio("busco", "Comprar"); setRadio("credito", "Aún no lo sé"); setRadio("precal", "No sé");
   $("r_ok").checked = false; $("rerr").style.display = "none"; $("rok").style.display = "none"; $("rform").style.display = "block";
   updateReg();
@@ -1226,21 +1208,15 @@ function enviarSheet(r) {
   } catch (e2) {}
 }
 function sendReg() {
-  var nombre = $("r_nombre").value.replace(/^\s+|\s+$/g, ""), tel = digits($("r_tel").value), busco = getRadio("busco"), err = "", h, r, arr, cred = getRadio("credito"), code, saved, otras, ini, fin, k, ex = [], vt = "";
+  var nombre = $("r_nombre").value.replace(/^\s+|\s+$/g, ""), tel = digits($("r_tel").value), busco = getRadio("busco"), err = "", h, r, arr, cred = getRadio("credito"), code, saved, vt = "";
   if (nombre.length < 3) { err = "Escribe tu nombre completo."; }
   if (tel.length === 12 && tel.indexOf("52") === 0) { tel = tel.substring(2); }
   if (!err && tel.length !== 10) { err = "Escribe tu teléfono a 10 dígitos."; }
   if (!err && !$("r_ok").checked) { err = "Para continuar, acepta el aviso de privacidad."; }
   code = $("r_casa").value; h = code ? byCode(code) : null;
-  otras = getChecked("votra");
-  if (!err && busco !== "Vender o rentar mi casa") {
-    ini = $("v_ini").value; fin = $("v_fin").value;
-    if (VISITA || code || otras.length || ini || fin || getChecked("vhor").length) {
-      if (!ini || !fin) { err = "Indica desde qué día y hasta qué día podrías visitar."; }
-      else if (ini < todayISO()) { err = "El primer día de visita no puede ser anterior a hoy."; }
-      else if (fin < ini) { err = "El último día debe ser igual o posterior al primero."; }
-      else if (!getChecked("vhor").length) { err = "Elige al menos un horario en el que podrías visitar."; }
-    }
+  if (!err && busco !== "Vender o rentar mi casa" && (VISITA || code || getChecked("vdia").length || getChecked("vhor").length)) {
+    if (!getChecked("vdia").length) { err = "Elige al menos un día en el que podrías visitar."; }
+    else if (!getChecked("vhor").length) { err = "Elige al menos un horario en el que podrías visitar."; }
   }
   if (err) { $("rerr").innerHTML = err; $("rerr").style.display = "block"; window.scrollTo(0, 0); return; }
   $("rerr").style.display = "none";
@@ -1250,8 +1226,6 @@ function sendReg() {
     if (busco === "Comprar") { r.credito = cred; if (cred === "Infonavit") { r.precal = getRadio("precal"); r.monto = $("r_monto").value.replace(/^\s+|\s+$/g, ""); } }
   }
   if (busco !== "Vender o rentar mi casa") {
-    for (k = 0; k < otras.length; k++) { if (otras[k] !== code) { ex.push(otras[k]); } }
-    if (ex.length) { r.casa = (r.casa ? r.casa + " | Más casas en el recorrido: " : "Casas en el recorrido: ") + ex.join(", "); }
     vt = visitaTxt(); r.visita = vt;
     if (vt) { r.coment = "📅 Visita: " + vt + (r.coment ? " | " + r.coment : ""); }
   }
