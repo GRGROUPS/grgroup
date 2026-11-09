@@ -466,6 +466,12 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
   .gmain { height: 340px; } .prem h2 { font-size: 40px; } .pm { width: 280px; } .pmi { height: 360px; } .hero .tx { padding-top: 110px; }
   body.home .gnav { margin-bottom: -63px; }
 }
+.field { position: relative; }
+.sug { position: absolute; left: 0; right: 0; top: 100%; margin: -8px 0 0; padding: 4px 0; list-style: none; background: #fff; border: 1px solid var(--gold); border-radius: 2px; box-shadow: 0 14px 30px rgba(20,16,8,.14); z-index: 80; text-align: left; max-height: 300px; overflow: auto; }
+.sug li { display: -webkit-flex; display: flex; -webkit-justify-content: space-between; justify-content: space-between; -webkit-align-items: center; align-items: center; padding: 13px 16px; font-size: 16px; color: var(--ink); cursor: pointer; border-bottom: 1px solid #efe9dc; }
+.sug li:last-child { border-bottom: 0; }
+.sug li.on, .sug li:active { background: #f6f2ea; }
+.sug li small { color: var(--mut); font-size: 12px; letter-spacing: .6px; margin-left: 12px; white-space: nowrap; }
 </style>
 </head>
 <body class="home">
@@ -854,10 +860,93 @@ function fillMax(selId, labId, op) {
   $(selId).innerHTML = html;
   $(labId).innerHTML = op === "Renta" ? "Renta máxima al mes" : "Precio máximo";
 }
-function haystack(h) { return (h.name + " " + h.zona + " " + h.destacados.join(" ") + " " + h.credito + " " + h.code).toLowerCase(); }
+function norm(s) {
+  return String(s).toLowerCase().replace(/[áàä]/g, "a").replace(/[éèë]/g, "e").replace(/[íìï]/g, "i").replace(/[óòö]/g, "o").replace(/[úùü]/g, "u").replace(/ñ/g, "n");
+}
+function haystack(h) { return norm(h.name + " " + h.zona + " " + h.destacados.join(" ") + " " + h.credito + " " + h.code); }
+
+/* ---------- sugerencias de zona al escribir ---------- */
+var ZEXTRA = ["Juriquilla", "Antea", "La Piedad", "El Marqués", "Corregidora", "Centro", "Libramiento"];
+function zonaLabels() {
+  var map = {}, i, j, parts, p, k, out = [];
+  for (i = 0; i < DATA.length; i++) {
+    parts = String(DATA[i].zona).replace(/\([^)]*\)/g, "").split(",");
+    for (j = 0; j < parts.length; j++) {
+      p = parts[j].replace(/^\s+|\s+$/g, "").replace(/^(Fracc\.|Col\.)\s+/i, "");
+      if (!p || norm(p) === "queretaro" || /^a \d+ min/i.test(p) || p.length > 34) { continue; }
+      map[norm(p)] = p;
+    }
+  }
+  for (i = 0; i < ZEXTRA.length; i++) { if (!map[norm(ZEXTRA[i])]) { map[norm(ZEXTRA[i])] = ZEXTRA[i]; } }
+  for (k in map) { if (map.hasOwnProperty(k)) { out.push({ label: map[k], key: k }); } }
+  return out;
+}
+var ZLAB = null;
+function zonaSug(q, op) {
+  var qn = norm(q.replace(/^\s+|\s+$/g, "")), res = [], i, j, z, n, h, pos;
+  if (!ZLAB) { ZLAB = zonaLabels(); }
+  for (i = 0; i < ZLAB.length; i++) {
+    z = ZLAB[i]; pos = qn ? z.key.indexOf(qn) : 0;
+    if (pos === -1) { continue; }
+    n = 0;
+    for (j = 0; j < DATA.length; j++) {
+      h = DATA[j];
+      if (h.op !== op || h.status !== "Disponible") { continue; }
+      if (norm(h.zona + " " + h.name).indexOf(z.key) !== -1) { n++; }
+    }
+    if (n > 0) { res.push({ label: z.label, n: n, w: (pos === 0 || z.key.charAt(pos - 1) === " ") ? 0 : 1 }); }
+  }
+  res.sort(function (a, b) { return a.w - b.w || b.n - a.n || (a.label < b.label ? -1 : 1); });
+  return res.slice(0, 6);
+}
+function attachSug(inputId, getOp, onPick) {
+  var inp = $(inputId), box = document.createElement("ul"), items = [], cur = -1, hideT = 0;
+  box.className = "sug"; box.setAttribute("role", "listbox"); box.style.display = "none";
+  inp.parentNode.appendChild(box);
+  inp.setAttribute("autocomplete", "off");
+  function close() { box.style.display = "none"; cur = -1; }
+  function mark() {
+    var k, lis = box.getElementsByTagName("li");
+    for (k = 0; k < lis.length; k++) { lis[k].className = k === cur ? "on" : ""; }
+  }
+  function pick(k) {
+    if (!items[k]) { return; }
+    inp.value = items[k].label; close();
+    onPick(items[k].label);
+  }
+  function open() {
+    var k, li, s, c;
+    items = zonaSug(inp.value, getOp());
+    box.innerHTML = ""; cur = -1;
+    if (!items.length) { close(); return; }
+    for (k = 0; k < items.length; k++) {
+      li = document.createElement("li"); li.setAttribute("role", "option");
+      s = document.createElement("span"); s.className = "sl"; s.appendChild(document.createTextNode(items[k].label));
+      c = document.createElement("small"); c.appendChild(document.createTextNode(items[k].n + (items[k].n === 1 ? " casa" : " casas")));
+      li.appendChild(s); li.appendChild(c);
+      (function (kk) {
+        li.onmousedown = function (e) { if (e && e.preventDefault) { e.preventDefault(); } pick(kk); };
+      })(k);
+      box.appendChild(li);
+    }
+    box.style.display = "block";
+  }
+  inp.addEventListener("input", open, false);
+  inp.addEventListener("focus", open, false);
+  inp.addEventListener("blur", function () { hideT = setTimeout(close, 150); }, false);
+  inp.addEventListener("keydown", function (e) {
+    var kc = e.keyCode;
+    if (box.style.display === "none") { return; }
+    if (kc === 40) { cur = (cur + 1) % items.length; mark(); e.preventDefault(); }
+    else if (kc === 38) { cur = cur <= 0 ? items.length - 1 : cur - 1; mark(); e.preventDefault(); }
+    else if (kc === 13 && cur >= 0) { e.preventDefault(); e.stopPropagation(); pick(cur); }
+    else if (kc === 27) { close(); }
+  }, true);
+  return { close: close };
+}
 
 function filtered() {
-  var out = [], i, h, q = st.q.replace(/^\s+|\s+$/g, "").toLowerCase();
+  var out = [], i, h, q = norm(st.q.replace(/^\s+|\s+$/g, ""));
   for (i = 0; i < DATA.length; i++) {
     h = DATA[i];
     if (st.favs) { if (!isFav(h.code)) { continue; } } else if (h.op !== st.op) { continue; }
@@ -1606,6 +1695,8 @@ function init() {
   $("hR").onclick = function () { hs.op = "Renta"; $("hR").className = "on"; $("hV").className = ""; renderHome(); };
   $("hgo").onclick = function () { goCasas({ op: hs.op, q: $("hq").value, max: parseInt($("hmax").value, 10) || 0, rec: parseInt($("hrec").value, 10) || 0, cred: hs.op === "Renta" ? "" : $("hcred").value }); };
   $("hq").onkeydown = function (e) { if (e.keyCode === 13) { $("hgo").onclick(); } };
+  attachSug("hq", function () { return hs.op; }, function () { $("hgo").onclick(); });
+  attachSug("q", function () { return st.op; }, function (lab) { st.q = lab; render(); });
   $("goCmp").onclick = function () { show("comparar"); };
   $("cerReg").onclick = function () { resetForm(); show("registro"); };
   $("payInf").onclick = function () { goCasas({ cred: "infonavit" }); };
