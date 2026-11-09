@@ -256,6 +256,39 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
 }
 @media (max-width: 599px) { .gin .gwa { display: none; } .mbtn { margin-left: auto; } }
 
+/* ---- ficha: amenidades, zona, asesor, similares ---- */
+.chips { margin: 0 -4px; }
+.chips span { display: inline-block; background: var(--bg); border-radius: 980px; padding: 8px 14px; margin: 0 4px 8px; font-size: 15px; font-weight: 500; }
+.zsec { margin-top: 24px; }
+.zsec .zs { text-align: left; color: var(--mut); font-size: 14px; margin: -4px 0 10px; }
+.ztabs { margin: 0 -3px 10px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ztabs button { border: 0; background: var(--bg); color: var(--ink); font-size: 15px; font-weight: 600; padding: 10px 16px; border-radius: 980px; margin: 0 3px; cursor: pointer; }
+.ztabs button.on { background: #1d1d1f; color: #fff; }
+.zmap { width: 100%; height: 280px; border: 0; border-radius: 18px; background: var(--bg); display: block; }
+.zbtn { display: block; width: 100%; height: 200px; border: 0; border-radius: 18px; background: var(--bg); color: var(--lk); font-size: 18px; font-weight: 700; cursor: pointer; }
+.zlist { margin: 12px 0 0; }
+.zrow { display: block; text-decoration: none; color: var(--ink); padding: 11px 2px; border-bottom: 1px solid rgba(0,0,0,.08); }
+.zrow b { display: block; font-size: 16px; font-weight: 600; }
+.zrow span { color: var(--mut); font-size: 14px; }
+.zrow em { float: right; font-style: normal; color: var(--lk); font-size: 14px; margin-left: 10px; }
+.zmsg { color: var(--mut); font-size: 14px; padding: 10px 0; }
+.zsvc { background: #eaf7ef; border-radius: 14px; padding: 10px 14px; margin: 12px 0 0; font-size: 15px; }
+.zsvc b { color: #17803d; }
+.asb { margin-top: 24px; background: var(--bg); border-radius: 22px; padding: 18px; }
+.asb h4 { margin: 0 0 2px; }
+.asb .who { color: var(--mut); margin: 0 0 12px; }
+.asb .pill { margin: 0 8px 8px 0; }
+.asb input, .asb textarea { display: block; width: 100%; box-sizing: border-box; border: 1px solid #d2d2d7; border-radius: 12px; padding: 12px; font-size: 16px; margin: 0 0 8px; background: #fff; font-family: inherit; }
+.asb textarea { height: 70px; }
+.asb label { display: block; font-size: 13px; color: var(--mut); margin: 0 0 10px; }
+.asb .ok { color: #17803d; font-weight: 600; display: none; margin: 6px 0 0; }
+.asb .er { color: #c00; display: none; margin: 0 0 8px; font-size: 14px; }
+.simw { margin: 0 -24px; padding: 0 24px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.sim { display: inline-block; vertical-align: top; width: 200px; margin-right: 12px; white-space: normal; cursor: pointer; }
+.sim .si { height: 130px; border-radius: 16px; background: #e8e8ed center/cover no-repeat; }
+.sim b { display: block; margin: 8px 0 2px; font-size: 16px; line-height: 1.25; }
+.sim span { color: var(--mut); font-size: 14px; }
+
 .ftog { display: none; width: 100%; background: #e8e8ed; border: 0; border-radius: 14px; font-size: 16px; font-weight: 600; padding: 14px; margin: 0 0 12px; color: var(--ink); }
 @media (max-width: 599px) { .ftog { display: block; } #fbody { display: none; } #fbody.open { display: block; } }
 .heart { position: absolute; right: 10px; top: 10px; width: 42px; height: 42px; border-radius: 21px; border: 0; background: rgba(255,255,255,.92); font-size: 22px; line-height: 42px; padding: 0; color: #6e6e73; z-index: 2; cursor: pointer; }
@@ -739,25 +772,173 @@ function openDetail(code) {
   if (h.constr) { g += cell("Construcción", num(h.constr) + " m²"); }
   if (h.terr) { g += cell("Terreno", num(h.terr) + " m²"); }
   if (h.op === "Venta") { g += cell("Forma de pago", esc(pagoTxt(h))); }
-  for (j = 0; j < h.destacados.length; j++) { li += "<li>" + esc(h.destacados[j]) + "</li>"; }
+  g = cell("Tipo", esc(h.tipo || "Casa")) + cell("Operación", h.op === "Renta" ? "Renta" : "Venta") + g;
+  for (j = 0; j < h.destacados.length; j++) { li += "<span>" + esc(h.destacados[j]) + "</span>"; }
   eb = h.status !== "Disponible" ? esc(h.estatus).toUpperCase() : etiqueta(h);
   html = '<button class="x" type="button" onclick="closeDetail()">×</button><div class="bd">' +
     '<div class="eb">' + (eb ? eb + " · " : "") + esc(h.code) + "</div><h2>" + esc(h.name) + "</h2>" +
     '<div class="big">' + priceLine(h) + (notaP(h) ? "<small>" + esc(notaP(h)) + "</small>" : "") + "</div>" +
     '<p class="zonaL">📍 ' + esc(h.zona) + "</p>" + galleryHtml(h) + '<div class="grid">' + g + "</div>" +
-    (li ? "<h4>Lo más destacado</h4><ul>" + li + "</ul>" : "");
+    (li ? '<h4>Lo más destacado</h4><div class="chips">' + li + "</div>" : "");
   /*A2*/
   html += '<div class="cta2"><button class="pill" type="button" onclick="pedirVisita(\'' + h.code + '\')">Agendar visita</button>' +
     '<a class="pill ol" target="_blank" href="' + waUrl("Hola, me interesa la casa " + h.code + " – " + h.name + ". ¿Me pueden dar más información?") + '">Preguntar por WhatsApp</a>' +
     (h.op === "Venta" ? '<button class="pill ol" type="button" onclick="openCalc(\'' + h.code + '\')">Calcular mensualidad</button>' : "") +
     '<button class="pill ol favbtn" type="button" data-c="' + h.code + '" onclick="toggleFav(\'' + h.code + '\')">' + (isFav(h.code) ? "♥ Guardada" : "♡ Guardar") + "</button>" +
     '<a class="pill ol" target="_blank" href="' + shareUrl(h) + '">Compartir</a>' +
-    '<a class="pill ol" target="_blank" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(h.zona) + '">Ver la zona en el mapa</a>' +
-    "<small>La ubicación exacta se da al agendar tu visita.</small></div></div>";
+    '<button class="pill ol" type="button" id="cpBtn" onclick="copiarEnlace(\'' + h.code + '\')">Copiar enlace</button>' +
+    '<a class="pill ol" href="tel:+' + WA + '">Llamar</a>' +
+    "<small>La ubicación exacta se da al agendar tu visita.</small></div>" +
+    zonaHtml(h) + asesorHtml(h) + similaresHtml(h) + "</div>";
   $("sheet").innerHTML = html;
   initGallery(h);
+  ZONA.h = h; ZONA.cat = "escuelas"; ZONA.on = false;
   $("ov").style.display = "block";
   document.body.style.overflow = "hidden";
+}
+
+/* ---------- ficha: explora la zona (Google Maps + OpenStreetMap), asesor, similares ---------- */
+var ZONA = { h: null, cat: "escuelas", on: false, cache: {} };
+var ZCATS = [
+  { k: "escuelas", t: "Escuelas", q: "escuelas", ov: '["amenity"~"^(school|kindergarten|college|university)$"]' },
+  { k: "parques", t: "Parques", q: "parques", ov: '["leisure"~"^(park|playground)$"]' },
+  { k: "salud", t: "Salud", q: "hospitales y clínicas", ov: '["amenity"~"^(hospital|clinic|doctors|pharmacy)$"]' },
+  { k: "comercio", t: "Comercio", q: "supermercados y tiendas", ov: '["shop"~"^(supermarket|mall|convenience|department_store)$"]' }
+];
+function zonaQ(h) { return h.zona; }
+function zonaHtml(h) {
+  var i, t = "";
+  for (i = 0; i < ZCATS.length; i++) { t += '<button type="button" data-k="' + ZCATS[i].k + '" class="' + (i === 0 ? "on" : "") + '" onclick="zonaCat(\'' + ZCATS[i].k + '\')">' + ZCATS[i].t + "</button>"; }
+  return '<div class="zsec"><h4 style="margin-top:0">Explora la zona</h4><p class="zs">📍 ' + esc(h.zona) + ' · Mapa de la zona, no de la casa; la ubicación exacta se da al agendar.</p>' +
+    '<div class="ztabs" id="ztabs">' + t + '</div><div id="zmapw"><button class="zbtn" type="button" onclick="zonaStart()">🗺 Ver el mapa y lo que hay cerca</button></div>' +
+    '<div id="zsvc"></div><div class="zlist" id="zlist"></div></div>';
+}
+function zonaMapSrc(h, cat) {
+  var i, q = "";
+  for (i = 0; i < ZCATS.length; i++) { if (ZCATS[i].k === cat) { q = ZCATS[i].q; } }
+  return "https://www.google.com/maps?output=embed&hl=es&z=15&q=" + encodeURIComponent(q + " cerca de " + zonaQ(h));
+}
+function zonaStart() {
+  ZONA.on = true;
+  $("zmapw").innerHTML = '<iframe class="zmap" id="zmap" title="Mapa de la zona" loading="lazy" src="' + zonaMapSrc(ZONA.h, ZONA.cat) + '"></iframe>';
+  zonaLista();
+}
+function zonaCat(k) {
+  var b = $("ztabs").getElementsByTagName("button"), i;
+  ZONA.cat = k;
+  for (i = 0; i < b.length; i++) { b[i].className = b[i].getAttribute("data-k") === k ? "on" : ""; }
+  if (!ZONA.on) { zonaStart(); return; }
+  $("zmap").src = zonaMapSrc(ZONA.h, k);
+  zonaLista();
+}
+function xhrJson(url, ok, fail) {
+  var x = new XMLHttpRequest();
+  x.open("GET", url, true); x.timeout = 20000;
+  x.onload = function () { if (x.status >= 200 && x.status < 300) { try { ok(JSON.parse(x.responseText)); return; } catch (e) {} } fail(); };
+  x.onerror = fail; x.ontimeout = fail;
+  x.send();
+}
+function zonaGeo(h, cb) {
+  var c = ZONA.cache, parts = h.zona.split(","), tries = [h.zona], i = 0;
+  if (c[h.zona] && c[h.zona].geo) { cb(c[h.zona].geo); return; }
+  if (parts.length > 2) { tries.push(parts.slice(parts.length - 2).join(",")); }
+  (function next() {
+    if (i >= tries.length) { cb(null); return; }
+    var q = tries[i++];
+    xhrJson("https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=mx&q=" + encodeURIComponent(q.replace(/^\s*Fracc\.\s*/i, "")),
+      function (r) { if (r && r.length) { c[h.zona] = c[h.zona] || {}; c[h.zona].geo = { lat: parseFloat(r[0].lat), lon: parseFloat(r[0].lon) }; cb(c[h.zona].geo); } else { next(); } }, next);
+  })();
+}
+function dist(a, b, c, d) {
+  var R = 6371000, r = Math.PI / 180, dl = (c - a) * r, dn = (d - b) * r, x = Math.sin(dl / 2) * Math.sin(dl / 2) + Math.cos(a * r) * Math.cos(c * r) * Math.sin(dn / 2) * Math.sin(dn / 2);
+  return 2 * R * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+}
+function zonaPois(h, g, cb) {
+  var c = ZONA.cache[h.zona], i, q = "[out:json][timeout:20];(";
+  if (c.pois) { cb(c.pois); return; }
+  for (i = 0; i < ZCATS.length; i++) { q += "nwr" + ZCATS[i].ov + "(around:1500," + g.lat + "," + g.lon + ");"; }
+  q += ");out center 120;";
+  xhrJson("https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(q), function (r) {
+    var out = [], e, k, la, lo, t, name, j;
+    for (k = 0; k < (r.elements || []).length; k++) {
+      e = r.elements[k]; t = e.tags || {}; la = e.lat || (e.center && e.center.lat); lo = e.lon || (e.center && e.center.lon);
+      if (!la || !lo || !t.name) { continue; }
+      for (j = 0; j < ZCATS.length; j++) {
+        if ((ZCATS[j].k === "escuelas" && /^(school|kindergarten|college|university)$/.test(t.amenity || "")) || (ZCATS[j].k === "parques" && /^(park|playground)$/.test(t.leisure || "")) ||
+            (ZCATS[j].k === "salud" && /^(hospital|clinic|doctors|pharmacy)$/.test(t.amenity || "")) || (ZCATS[j].k === "comercio" && /^(supermarket|mall|convenience|department_store)$/.test(t.shop || ""))) {
+          out.push({ cat: ZCATS[j].k, name: t.name, lat: la, lon: lo, d: dist(g.lat, g.lon, la, lo) }); break;
+        }
+      }
+    }
+    out.sort(function (a, b) { return a.d - b.d; });
+    c.pois = out; cb(out);
+  }, function () { cb(null); });
+}
+function zonaLista() {
+  var h = ZONA.h, cat = ZONA.cat, el = $("zlist"), sv = $("zsvc");
+  ZONA.cache[h.zona] = ZONA.cache[h.zona] || {};
+  el.innerHTML = '<div class="zmsg">Buscando lugares cercanos…</div>';
+  zonaGeo(h, function (g) {
+    if (ZONA.h !== h) { return; }
+    if (!g) { el.innerHTML = '<div class="zmsg">No pudimos cargar la lista; usa el mapa de arriba, que sí muestra los lugares cercanos.</div>'; return; }
+    zonaPois(h, g, function (pois) {
+      var html = "", n = 0, i, p, m, cats = {}, tot = 0, k;
+      if (ZONA.h !== h) { return; }
+      if (!pois) { el.innerHTML = '<div class="zmsg">No pudimos cargar la lista; usa el mapa de arriba, que sí muestra los lugares cercanos.</div>'; return; }
+      for (i = 0; i < pois.length; i++) { p = pois[i]; if (p.d <= 1000) { cats[p.cat] = 1; } if (p.cat === cat && n < 6) {
+        n++; m = Math.max(1, Math.round(p.d / 80));
+        html += '<a class="zrow" target="_blank" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.name + " " + h.zona) + '"><em>' + (p.d < 1000 ? Math.round(p.d / 10) * 10 + " m" : (Math.round(p.d / 100) / 10) + " km") + " · " + m + ' min a pie</em><b>' + esc(p.name) + "</b></a>"; } }
+      for (k in cats) { if (cats.hasOwnProperty(k)) { tot++; } }
+      el.innerHTML = (html || '<div class="zmsg">No encontramos lugares de esta categoría a 1.5 km. Prueba otra o revisa el mapa.</div>') +
+        '<div class="zmsg">Distancias desde el centro de la zona, no desde la casa. Fuente: OpenStreetMap.</div>';
+      sv.innerHTML = '<div class="zsvc"><b>' + (tot >= 4 ? "Zona con todos los servicios cerca" : tot >= 2 ? "Zona con varios servicios cerca" : "Zona con pocos servicios a pie") + "</b> · " + tot + " de 4 tipos de servicios a menos de 1 km.</div>";
+    });
+  });
+}
+function asesorHtml(h) {
+  return '<div class="asb"><h4>Tu asesor</h4><p class="who">Iñaki Guerra · GR GROUP · Querétaro</p>' +
+    '<a class="pill wa2 sm" target="_blank" href="' + waUrl("Hola, me interesa la casa " + h.code + " – " + h.name + ". ¿Me pueden dar más información?") + '">WhatsApp</a>' +
+    '<a class="pill nv sm" href="tel:+' + WA + '">Llamar</a>' +
+    '<p style="margin:10px 0 8px;font-weight:600">O déjanos tus datos y te contactamos:</p>' +
+    '<div class="er" id="ac_er"></div><input id="ac_n" placeholder="Nombre completo" autocomplete="name"><input id="ac_t" type="tel" placeholder="Teléfono a 10 dígitos" autocomplete="tel">' +
+    '<textarea id="ac_m" placeholder="Mensaje (opcional)">Hola, me interesa ' + esc(h.code) + ' – ' + esc(h.name) + '.</textarea>' +
+    '<label><input type="checkbox" id="ac_ok" style="display:inline;width:auto;margin:0 6px 0 0">Acepto el aviso de privacidad (<a href="#" onclick="openPriv();return false">leer</a>).</label>' +
+    '<button class="pill sm" type="button" onclick="enviarContacto(\'' + h.code + '\')">Enviar mensaje</button><div class="ok" id="ac_okm">¡Listo! Recibimos tus datos y te contactamos pronto.</div></div>';
+}
+function enviarContacto(code) {
+  var h = byCode(code), n = $("ac_n").value.replace(/^\s+|\s+$/g, ""), t = digits($("ac_t").value), err = "", r, arr;
+  if (t.length === 12 && t.indexOf("52") === 0) { t = t.substring(2); }
+  if (n.length < 3) { err = "Escribe tu nombre."; } else if (t.length !== 10) { err = "Escribe tu teléfono a 10 dígitos."; } else if (!$("ac_ok").checked) { err = "Acepta el aviso de privacidad para continuar."; }
+  if (err) { $("ac_er").innerHTML = err; $("ac_er").style.display = "block"; return; }
+  $("ac_er").style.display = "none";
+  r = { id: new Date().getTime(), fecha: stamp(new Date()), nombre: n, tel: t, mail: "", busco: "Contacto desde la ficha", casa: h.code + " – " + h.name, pres: "", rec: "", cuando: "", credito: "", precal: "", monto: "", zona: "", coment: $("ac_m").value };
+  if (favsTxt()) { r.coment += " | Casas guardadas: " + favsTxt(); }
+  arr = loadRegs(); arr.push(r); saveRegs(arr); enviarSheet(r);
+  $("ac_okm").style.display = "block";
+}
+function copiarEnlace(code) {
+  var url = baseUrl() + "#casa-" + code, ta = document.createElement("textarea"), b = $("cpBtn"), ok = false;
+  ta.value = url; ta.style.position = "fixed"; ta.style.top = "0"; ta.style.opacity = "0"; ta.setAttribute("readonly", "");
+  document.body.appendChild(ta);
+  try { ta.contentEditable = true; var rg = document.createRange(); rg.selectNodeContents(ta); var sl = window.getSelection(); sl.removeAllRanges(); sl.addRange(rg); ta.setSelectionRange(0, 999); ok = document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(ta);
+  if (ok) { b.innerHTML = "✓ Enlace copiado"; setTimeout(function () { b.innerHTML = "Copiar enlace"; }, 2200); }
+  else { try { window.prompt("Copia este enlace:", url); } catch (e2) {} }
+}
+function similaresHtml(h) {
+  var list = [], i, o, sc, html = "";
+  for (i = 0; i < DATA.length; i++) {
+    o = DATA[i];
+    if (o.code === h.code || o.op !== h.op || o.status !== "Disponible") { continue; }
+    sc = Math.abs(o.precio - h.precio) / h.precio + (o.zona === h.zona ? -0.3 : 0) + (o.recN === h.recN ? -0.1 : 0);
+    list.push({ h: o, s: sc });
+  }
+  list.sort(function (a, b) { return a.s - b.s; });
+  for (i = 0; i < list.length && i < 5; i++) {
+    o = list[i].h;
+    html += '<div class="sim" onclick="openDetail(\'' + o.code + '\')"><div class="si" style="' + bg(cover(o)) + '"></div><b>' + esc(o.corto || o.name) + "</b><span>" + priceLine(o) + " · " + esc(String(o.rec)) + " rec.</span></div>";
+  }
+  return html ? '<div class="zsec"><h4 style="margin-top:0">Casas similares</h4><div class="simw">' + html + "</div></div>" : "";
 }
 function closeDetail() {
   $("ov").style.display = "none"; document.body.style.overflow = "";
