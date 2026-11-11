@@ -469,6 +469,16 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
   body.home .gnav { margin-bottom: -63px; }
 }
 .field { position: relative; }
+.field .rng b { -webkit-order: -1; order: -1; -webkit-flex: 0 0 100%; flex: 0 0 100%; margin-bottom: 2px; color: var(--ink); font-weight: 700; font-size: 14px; }
+.field input[type=range] { -webkit-appearance: none; appearance: none; display: block; width: 100%; box-sizing: border-box; height: 50px; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; cursor: pointer; touch-action: pan-y; }
+.field input[type=range]:focus { outline: none; }
+.field input[type=range]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(to right, var(--gold) 0, var(--gold) var(--p, 100%), #d9d3c6 var(--p, 100%), #d9d3c6 100%); }
+.field input[type=range]::-moz-range-track { height: 4px; border-radius: 2px; background: #d9d3c6; }
+.field input[type=range]::-moz-range-progress { height: 4px; border-radius: 2px; background: var(--gold); }
+.field input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; margin-top: -12px; border-radius: 50%; background: #fff; border: 2px solid var(--gold); box-shadow: 0 1px 4px rgba(20,16,8,.28); }
+.field input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 2px solid var(--gold); box-shadow: 0 1px 4px rgba(20,16,8,.28); }
+.field input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(184,150,90,.35); }
+.field .rng { display: -webkit-flex; display: flex; -webkit-justify-content: space-between; justify-content: space-between; -webkit-flex-wrap: wrap; flex-wrap: wrap; -webkit-align-items: baseline; align-items: baseline; font-size: 12px; color: var(--mut); margin-top: -2px; }
 .sug { position: absolute; left: 0; right: 0; top: 100%; margin: -8px 0 0; padding: 4px 0; list-style: none; background: #fff; border: 1px solid var(--gold); border-radius: 2px; box-shadow: 0 14px 30px rgba(20,16,8,.14); z-index: 80; text-align: left; max-height: 300px; overflow: auto; }
 .sug li { display: -webkit-flex; display: flex; -webkit-justify-content: space-between; justify-content: space-between; -webkit-align-items: center; align-items: center; padding: 13px 16px; font-size: 16px; color: var(--ink); cursor: pointer; border-bottom: 1px solid #efe9dc; }
 .sug li:last-child { border-bottom: 0; }
@@ -542,7 +552,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
     <div class="tabs" id="hTabs"><button id="hV" class="on" type="button">Comprar</button><button id="hR" type="button">Rentar</button></div>
     <div class="row">
       <div class="field w2"><label for="hq">¿Dónde la buscas?</label><input id="hq" type="search" placeholder="Zona (Juriquilla, Corregidora…)" autocomplete="off" autocorrect="off" autocapitalize="off"></div>
-      <div class="field"><label for="hmax" id="hmaxL">Precio máximo</label><select id="hmax"></select></div>
+      <div class="field"><label for="hmax" id="hmaxL">Precio máximo</label><input id="hmax" type="range" min="1000000" max="7500000" step="100000" value="7500000"><div class="rng" id="hmaxR"></div></div>
       <div class="field"><label for="hrec">Recámaras</label><select id="hrec"><option value="0">Cualquiera</option><option value="2">2 o más</option><option value="3">3 o más</option><option value="4">4 o más</option></select></div>
       <div class="field" id="hcredF"><label for="hcred">Crédito</label><select id="hcred"><option value="">Cualquiera</option><option value="infonavit">Infonavit</option><option value="fovissste">Fovissste</option><option value="banco">Crédito bancario</option></select></div>
       <div class="go"><button id="hgo" class="pill" type="button">Buscar</button></div>
@@ -605,7 +615,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
     <div class="row">
       <div class="field" id="opRF"><label>Operación</label><div class="seg"><button id="opV" class="on" type="button">Venta</button><button id="opR" type="button">Renta</button></div></div>
       <div class="field"><label for="rec">Recámaras</label><select id="rec"><option value="0">Cualquiera</option><option value="2">2 o más</option><option value="3">3 o más</option><option value="4">4 o más</option></select></div>
-      <div class="field"><label for="max" id="maxL">Precio máximo</label><select id="max"></select></div>
+      <div class="field"><label for="max" id="maxL">Precio máximo</label><input id="max" type="range" min="1000000" max="7500000" step="100000" value="7500000"><div class="rng" id="maxR"></div></div>
       <div class="field" id="credF"><label for="cred">Crédito aceptado</label><select id="cred"><option value="">Cualquiera</option><option value="infonavit">Infonavit</option><option value="fovissste">Fovissste</option><option value="banco">Crédito bancario</option></select></div>
       <div class="field"><label for="sort">Ordenar por</label><select id="sort"><option value="asc">Precio: menor a mayor</option><option value="desc">Precio: mayor a menor</option><option value="nuevas">Más recientes</option></select></div>
     </div>
@@ -810,8 +820,21 @@ var STORY = [
   { code: "GR-024", title: "Sendas", eyebrow: "Nuevo en el catálogo", tag: "Con $230,000 de descuento.", line: "Casa en Sendas, El Marqués, cerca de La Piedad. Acepta cualquier crédito.", foto: 1, kind: "half", theme: "dark" }
 ];
 
-var SALE_MAX = [[0, "Sin límite"], [1200000, "Hasta $1,200,000"], [1500000, "Hasta $1,500,000"], [2000000, "Hasta $2,000,000"], [3000000, "Hasta $3,000,000"], [5000000, "Hasta $5,000,000"]];
-var RENT_MAX = [[0, "Sin límite"], [20000, "Hasta $20,000"], [25000, "Hasta $25,000"], [30000, "Hasta $30,000"]];
+var SLIDER = {
+  Venta: { min: 1000000, max: 7500000, step: 100000, lo: "$1 M", hi: "$7.5 M", lab: "Precio máximo" },
+  Renta: { min: 10000, max: 30000, step: 1000, lo: "$10,000", hi: "$30,000", lab: "Renta máxima al mes" }
+};
+function sliderCfg(op) { return op === "Renta" ? SLIDER.Renta : SLIDER.Venta; }
+/* la barra va de mínimo a máximo; el tope de la barra equivale a "sin límite" (valor 0 en el filtro) */
+function sliderPaint(id, op) {
+  var c = sliderCfg(op), el = $(id), v = parseInt(el.value, 10), p = (v - c.min) * 100 / (c.max - c.min);
+  el.style.setProperty("--p", p + "%");
+  $(id + "L").innerHTML = c.lab;
+  $(id + "R").innerHTML = "<span>" + c.lo + "</span><b>Hasta " + money(v) + (v >= c.max ? " o más" : "") + "</b><span>" + c.hi + "</span>";
+  el.setAttribute("aria-valuetext", "Hasta " + money(v) + (v >= c.max ? " o más" : ""));
+}
+function sliderGet(id, op) { var v = parseInt($(id).value, 10); return v >= sliderCfg(op).max ? 0 : v; }
+function sliderSet(id, op, v) { $(id).value = v ? v : sliderCfg(op).max; sliderPaint(id, op); }
 var st = { op: "Venta", rec: 0, max: 0, cred: "", sort: "asc", q: "", soloNuevas: false, verTodas: false, favs: false };
 
 function $(id) { return document.getElementById(id); }
@@ -914,10 +937,9 @@ function fromHash() {
 
 /* ---------- filtros ---------- */
 function fillMax(selId, labId, op) {
-  var opts = op === "Renta" ? RENT_MAX : SALE_MAX, html = "", i;
-  for (i = 0; i < opts.length; i++) { html += '<option value="' + opts[i][0] + '">' + opts[i][1] + "</option>"; }
-  $(selId).innerHTML = html;
-  $(labId).innerHTML = op === "Renta" ? "Renta máxima al mes" : "Precio máximo";
+  var c = sliderCfg(op), el = $(selId);
+  el.min = c.min; el.max = c.max; el.step = c.step; el.value = c.max;
+  sliderPaint(selId, op);
 }
 function norm(s) {
   return String(s).toLowerCase().replace(/[áàä]/g, "a").replace(/[éèë]/g, "e").replace(/[íìï]/g, "i").replace(/[óòö]/g, "o").replace(/[úùü]/g, "u").replace(/ñ/g, "n");
@@ -1028,7 +1050,7 @@ function syncUI() {
   $("opV").className = st.op === "Venta" ? "on" : "";
   $("opR").className = st.op === "Renta" ? "on" : "";
   fillMax("max", "maxL", st.op);
-  $("max").value = String(st.max); $("rec").value = String(st.rec); $("cred").value = st.cred; $("sort").value = st.sort; $("q").value = st.q;
+  sliderSet("max", st.op, st.max); $("rec").value = String(st.rec); $("cred").value = st.cred; $("sort").value = st.sort; $("q").value = st.q;
   $("soloNuevas").checked = st.soloNuevas; $("verTodasC").checked = st.verTodas;
   $("credF").style.display = st.op === "Renta" ? "none" : "";
 }
@@ -1916,7 +1938,7 @@ function init() {
   }, 1800);
   $("hV").onclick = function () { hs.op = "Venta"; $("hV").className = "on"; $("hR").className = ""; renderHome(); };
   $("hR").onclick = function () { hs.op = "Renta"; $("hR").className = "on"; $("hV").className = ""; renderHome(); };
-  $("hgo").onclick = function () { goCasas({ op: hs.op, q: $("hq").value, max: parseInt($("hmax").value, 10) || 0, rec: parseInt($("hrec").value, 10) || 0, cred: hs.op === "Renta" ? "" : $("hcred").value }); };
+  $("hgo").onclick = function () { goCasas({ op: hs.op, q: $("hq").value, max: sliderGet("hmax", hs.op), rec: parseInt($("hrec").value, 10) || 0, cred: hs.op === "Renta" ? "" : $("hcred").value }); };
   $("hq").onkeydown = function (e) { if (e.keyCode === 13) { $("hgo").onclick(); } };
   attachSug("hq", function () { return hs.op; }, function () { $("hgo").onclick(); });
   attachSug("q", function () { return st.op; }, function (lab) { st.q = lab; render(); });
@@ -1930,7 +1952,8 @@ function init() {
   $("opV").onclick = function () { st.op = "Venta"; st.max = 0; st.cred = ""; syncUI(); render(); };
   $("opR").onclick = function () { st.op = "Renta"; st.max = 0; st.cred = ""; syncUI(); render(); };
   $("rec").onchange = function () { st.rec = parseInt(this.value, 10); render(); };
-  $("max").onchange = function () { st.max = parseInt(this.value, 10); render(); };
+  $("max").oninput = function () { st.max = sliderGet("max", st.op); sliderPaint("max", st.op); render(); };
+  $("hmax").oninput = function () { sliderPaint("hmax", hs.op); };
   $("cred").onchange = function () { st.cred = this.value; render(); };
   $("sort").onchange = function () { st.sort = this.value; render(); };
   $("q").oninput = function () { st.q = this.value; render(); };
