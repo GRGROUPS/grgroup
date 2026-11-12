@@ -4,93 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Recorrido 3D: Casa en Viñedos (una planta) | GR GROUP</title>
-<meta name="description" content="Recorre en 3D la casa en Viñedos, Querétaro: sala-comedor, cocina, 2 recámaras y baño. Representación ilustrativa.">
+<meta name="description" content="Recorre en 3D desde tu celular: Casa en Viñedos (una planta), Viñedos, Querétaro. 2 recámaras, 1 baños. Representación ilustrativa.">
 <link rel="canonical" href="https://grgroups.github.io/grgroup/recorrido/GR-019/">
-<meta property="og:title" content="Recorrido 3D: Casa en Viñedos (una planta) · $1,250,000 | GR GROUP">
-<meta property="og:description" content="Recorre la casa en 3D desde tu celular: sala-comedor, cocina, 2 recámaras y baño.">
+<meta property="og:title" content="Recorrido 3D: Viñedos (una planta) · $1,250,000 | GR GROUP">
+<meta property="og:description" content="Recorre en 3D desde tu celular: Casa en Viñedos (una planta), Viñedos, Querétaro. 2 recámaras, 1 baños. Representación ilustrativa.">
 <meta property="og:image" content="https://grgroups.github.io/grgroup/casa/GR-019/og.jpg">
 <link rel="icon" type="image/png" href="../../icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:400,500,600%7CCormorant+Garamond:500,600,700&amp;display=swap">
-<style>
-:root{--ink:#17140f;--mut:#6f6a62;--paper:#fffdf9;--line:#ddd5c6;--or:#ff6b14;--or2:#d95506;--navy:#14213d}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{font-family:Jost,Arial,sans-serif;color:var(--ink);background:#e9eef1;overflow:hidden;font-size:16px;line-height:1.4;-webkit-tap-highlight-color:transparent}
-canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
-canvas:active{cursor:grabbing}
-button{font:inherit;color:inherit;cursor:pointer}
-:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
-
-.top{position:fixed;left:0;right:0;top:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 0;pointer-events:none}
-.id{pointer-events:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px 14px 9px;display:flex;align-items:center;gap:14px;max-width:min(560px,100%)}
-.id img{height:34px;width:auto;display:block;flex:none}
-.id h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:22px;line-height:1.05;margin:0}
-.id p{margin:2px 0 0;font-size:14px;color:var(--mut)}
-.ficha{pointer-events:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px 14px;text-decoration:none;color:var(--ink);font-weight:500;font-size:15px;white-space:nowrap}
-.ficha:hover{border-color:var(--ink)}
-
-.lab{position:fixed;left:0;top:0;transform:translate(-50%,-50%);font-size:13px;font-weight:600;color:#fff;background:rgba(20,33,61,.86);padding:3px 9px 4px;border-radius:3px;pointer-events:none;white-space:nowrap;transition:opacity .25s}
-
-.side{position:fixed;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px}
-.side button{width:44px;height:44px;border:1px solid var(--line);background:var(--paper);border-radius:6px;font-size:22px;line-height:1;display:grid;place-items:center}
-.side button:hover{border-color:var(--ink)}
-.side button[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
-.side svg{width:22px;height:22px}
-
-.bottom{position:fixed;left:0;right:0;bottom:0;padding:0 14px calc(10px + env(safe-area-inset-bottom));pointer-events:none}
-.row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px}
-.foto{pointer-events:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px;width:min(250px,56vw)}
-.foto[hidden]{display:none}
-.foto b{display:block;font-size:13px;font-weight:600;margin:0 2px 6px}
-.foto .th{display:flex;gap:6px}
-.foto .th button{border:0;padding:0;background:#eee;border-radius:3px;overflow:hidden;flex:1;aspect-ratio:4/3;min-width:0}
-.foto .th img{width:100%;height:100%;object-fit:cover;display:block}
-.wa{pointer-events:auto;background:#128c4b;color:#fff;text-decoration:none;font-weight:600;padding:12px 18px;border-radius:6px;white-space:nowrap}
-.wa:hover{background:#0d7a40}
-
-.dock{pointer-events:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px 10px 8px}
-.cap{display:flex;align-items:center;gap:10px;margin:0 4px 8px;min-height:22px}
-.cap div{display:flex;align-items:baseline;gap:10px;flex:1;min-width:0}
-.auto{flex:none;border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:6px;padding:8px 14px;font-size:15px;font-weight:600;white-space:nowrap}
-.auto[aria-pressed=true]{background:#fff;color:var(--navy)}
-.toast{position:fixed;left:50%;bottom:calc(210px + env(safe-area-inset-bottom));transform:translateX(-50%);background:rgba(23,20,15,.9);color:#fff;padding:9px 16px;border-radius:999px;font-size:15px;pointer-events:none;opacity:0;transition:opacity .3s}
-.toast.on{opacity:1}
-.cap strong{font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;font-weight:600;line-height:1}
-.cap span{font-size:14.5px;color:var(--mut)}
-.stops{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px}
-.stops::-webkit-scrollbar{display:none}
-.stops button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 15px;font-size:15px;font-weight:500}
-.stops button:hover{border-color:var(--ink)}
-.stops button[aria-current=true]{background:var(--or);border-color:var(--or);color:#1a0d02;font-weight:600}
-.nota{font-size:12.5px;color:var(--mut);margin:8px 4px 0}
-
-.hint{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);background:rgba(23,20,15,.82);color:#fff;padding:10px 16px;border-radius:999px;font-size:15px;pointer-events:none;transition:opacity .5s;white-space:nowrap}
-.hint.off{opacity:0}
-
-dialog{border:0;padding:0;background:transparent;max-width:min(94vw,900px);max-height:92vh}
-dialog::backdrop{background:rgba(14,13,11,.86)}
-dialog img{display:block;max-width:100%;max-height:82vh;border-radius:4px;margin:0 auto}
-dialog form{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#fff;margin-top:10px;font-size:15px}
-dialog button{background:#fff;border:0;border-radius:6px;padding:9px 16px;font-weight:600}
-
-.fail{position:fixed;inset:0;display:grid;place-items:center;padding:24px;text-align:center;background:#f6f2ea}
-.fail[hidden]{display:none}
-.fail a{color:var(--or2);font-weight:600}
-
-@media (max-width:640px){
-  .id{padding:6px 10px;gap:9px}.id img{height:22px}.id h1{font-size:16px}.id p{font-size:12.5px;margin:0}.id p i{display:none}
-  .ficha{padding:8px 10px;font-size:14px}
-  .side{top:auto;bottom:calc(250px + env(safe-area-inset-bottom));transform:none;right:10px}
-  .side .zm{display:none}
-  .bottom{padding-left:10px;padding-right:10px}
-  .foto{width:150px}.foto b{font-size:12px}
-  .wa{padding:11px 14px;font-size:15px}
-  .cap div{flex-direction:column;gap:2px;align-items:flex-start}.cap span{font-size:14px}
-  .auto{padding:8px 11px;font-size:14px}
-}
-@media (prefers-reduced-motion:reduce){.lab,.hint,.toast{transition:none}}
-</style>
+<link rel="stylesheet" href="../tour.css?v=1794494242">
 </head>
 <body>
 <canvas id="c" aria-label="Maqueta 3D de la casa. Arrastra para girar."></canvas>
@@ -98,7 +20,7 @@ dialog button{background:#fff;border:0;border-radius:6px;padding:9px 16px;font-w
 <div class="top">
   <div class="id">
     <a href="../../"><img src="../../logo.png" width="528" height="189" alt="GR GROUP, Tu hogar ahora"></a>
-    <div><h1>Casa en Viñedos, una planta</h1><p><i>Recorrido 3D · </i>$1,250,000</p></div>
+    <div><h1>Viñedos (una planta)</h1><p><i>Recorrido 3D · </i>$1,250,000</p></div>
   </div>
   <a class="ficha" href="../../casa/GR-019/">Ver ficha y fotos</a>
 </div>
@@ -127,7 +49,7 @@ dialog button{background:#fff;border:0;border-radius:6px;padding:9px 16px;font-w
   <div class="dock">
     <div class="cap"><div aria-live="polite"><strong id="capT"></strong><span id="capD"></span></div><button class="auto" id="auto" type="button" aria-pressed="false">Ver casa completa</button></div>
     <div class="stops" id="stops" role="group" aria-label="Espacios de la casa"></div>
-    <p class="nota">Representación ilustrativa hecha a partir de las fotos. La distribución, las medidas y los muebles son aproximados.</p>
+    <p class="nota">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</p>
   </div>
 </div>
 
@@ -137,153 +59,9 @@ dialog button{background:#fff;border:0;border-radius:6px;padding:9px 16px;font-w
 
 <div class="fail" id="fail" hidden><p>Tu navegador no pudo mostrar el recorrido 3D.<br><a href="../../casa/GR-019/">Ver las fotos de la casa</a></p></div>
 
-<script src="../visor.js"></script>
-<script>
-(function(){
-var W='#f3f1ec', T='#d8cfc0', WOOD='#b08a62', SOFT='#8d99a6', LIN='#ece7dd', WHT='#f4f4f1';
-
-/* Plano deducido de las fotos. Metros. x = ancho (0 = muro del vecino), z = fondo (0 = frente a la calle). */
-var plan={
-  sky:'#e9eef1',
-  ground:[ // [x0, yTop, z0, x1, z1, color, material]  2 pasto, 3 concreto
-    [-10,-0.09,-10,17,18,'#8fae6b',2],
-    [-10,-0.06,-10,17,-2.7,'#7b7d80',0],
-    [-10,-0.045,-6,1.4,-2.7,'#8fae6b',2],
-    [-10,-0.03,-2.7,17,0.0,'#cfccc5',3],
-    [2.4,-0.015,0,6.48,1.6,'#c6c3bc',3],
-    [0,-0.015,8.6,6.4,10.4,'#c6c3bc',3]
-  ],
-  floors:[
-    [0,0,2.4,3.4,T],[2.4,1.6,6.4,5.4,T],[0,3.4,2.4,5.4,'#e4e2dc'],
-    [0,5.4,2.9,8.6,T],[2.9,5.4,3.75,8.6,T],[3.75,5.4,6.4,8.6,T]
-  ],
-  ceilings:[[0,0,2.4,3.4],[2.4,1.6,6.4,5.4],[0,3.4,2.4,5.4],[0,5.4,2.9,8.6],[2.9,5.4,3.75,8.6],[3.75,5.4,6.4,8.6]],
-  walls:[
-    // exteriores
-    {ax:'x',c:0,from:0,to:2.4,t:.15,h:2.7,out:-1,open:[{from:.55,to:1.9,sill:.95,head:2.1,kind:'window',grille:true}]},
-    {ax:'z',c:2.4,from:0,to:1.6,t:.15,h:2.7},
-    {ax:'x',c:1.6,from:2.4,to:6.4,t:.15,h:2.7,out:-1,open:[
-      {from:2.62,to:3.5,head:2.1,kind:'door',hinge:'from',ang:-1.35},
-      {from:4.3,to:5.5,sill:.08,head:2.25,kind:'window',grille:true}]},
-    {ax:'z',c:6.4,from:1.6,to:8.6,t:.15,h:2.7},
-    {ax:'x',c:8.6,from:0,to:6.4,t:.15,h:2.7,out:1,open:[
-      {from:.85,to:2.05,sill:.95,head:2.1,kind:'window'},
-      {from:2.98,to:3.67,head:2.1,kind:'glassdoor',mid:false},
-      {from:4.6,to:5.8,sill:.95,head:2.1,kind:'window'}]},
-    {ax:'z',c:0,from:0,to:8.6,t:.15,h:2.7},
-    // interiores
-    {ax:'z',c:2.4,from:1.6,to:3.4,open:[{from:2.48,to:3.3,head:2.1,kind:'gap'}]},
-    {ax:'x',c:3.4,from:0,to:2.4},
-    {ax:'z',c:2.4,from:3.4,to:5.4,open:[{from:4.3,to:5.05,head:2.1,kind:'door',hinge:'from',ang:1.3}]},
-    {ax:'x',c:5.4,from:0,to:6.4,open:[
-      {from:2.98,to:3.67,head:2.5,kind:'gap'},
-      {from:4.0,to:4.8,head:2.1,kind:'door',hinge:'from',ang:-1.35}]},
-    {ax:'z',c:2.9,from:5.4,to:8.6,open:[{from:5.7,to:6.5,head:2.1,kind:'door',hinge:'from',ang:-1.35}]},
-    {ax:'z',c:3.75,from:5.4,to:8.6},
-    // bardas del patio
-    {ax:'x',c:10.4,from:0,to:6.4,h:2.2,color:'#d9d6cf'},
-    {ax:'z',c:0,from:8.6,to:10.4,h:2.2,color:'#d9d6cf'},
-    {ax:'z',c:6.4,from:8.6,to:10.4,h:2.2,color:'#d9d6cf'}
-  ],
-  boxes:[
-    // contexto: casa vecina y pilastra verde de medidores
-    [-3.2,0,0,-.09,2.7,8.6,'#e6e8e7',{top:'#c9ccca'}],
-    [-.5,0,-.08,-.08,3.05,.12,'#a9c9a0']
-  ],
-  // [mueble, x, z, ángulo, opciones]. Ángulo 0 = frente hacia el fondo de la casa; s:1 = mueble sugerido (se puede ocultar)
-  items:[
-    // fijos, como en las fotos
-    ['barra',.08,1.85,90,{len:2.7,estufa:.05,tarja:-.92,altos:[[.38,1.35],[-1.3,-.28]]}],
-    ['regadera',.08,3.47,0,{w:.9,d:1.85}],['wc',1.5,3.47,0],['lavabo',2.05,3.47,0],
-    ['closet',5.62,5.47,0,{w:1.4}],['closet',.95,5.47,0,{w:1.6}],
-    ['lavadero',.75,10.33,180],['boiler',5.9,8.68,0],
-    ['plafon',4.4,3.5,0],['plafon',1.2,1.7,0],['plafon',1.3,4.5,0],['plafon',5.05,7.0,0],['plafon',1.45,7.0,0],['plafon',3.32,7.0,0],
-    // sugeridos
-    ['refri',2.32,.55,-90,{s:1}],
-    ['tapete',4.72,3.3,-90,{s:1,w:2.3,d:1.5}],['sofa',5.86,3.3,-90,{s:1,w:2.0}],['mesaCentro',4.75,3.3,-90,{s:1}],['planta',6.02,1.98,0,{s:1}],
-    ['mesa',2.86,3.88,0,{s:1,w:.75,d:.75}],['silla',3.48,3.88,-90,{s:1}],['silla',2.86,3.28,0,{s:1}],
-    ['cama',5.28,7.2,-90,{s:1,w:1.4,manta:'#b9703f'}],['buro',6.1,6.22,-90,{s:1}],['buro',6.1,8.18,-90,{s:1,lampara:false}],
-    ['cama',1.12,7.25,90,{s:1,w:1.4,color:'#cfd8dc',manta:'#5f7f8f'}],['buro',.3,6.26,90,{s:1}]
-  ]
-};
-
-var F='../../fotos/GR-019/';
-var stops=[
-  {n:'Vista general',d:'Casa de una planta con 2 recámaras, 1 baño y cocina equipada.',t:[3.2,.2,5.0],yaw:-.6,pitch:.9,dist:18.5,fov:.62,f:[],v:{dist:25}},
-  {n:'Fachada',d:'Fachada blanca con herrería en puerta y ventanas.',t:[3.3,1.25,1.2],yaw:-.6,pitch:.1,dist:9.5,fov:.72,f:[1,2]},
-  {n:'Sala-comedor',d:'Ventanal de piso a techo hacia el frente.',t:[3.3,1.5,5.25],yaw:2.5,pitch:.24,dist:.01,fov:1.08,f:[6,5]},
-  {n:'Cocina',d:'Cocina equipada con parrilla y gabinetes blancos.',t:[2.28,1.55,3.22],yaw:-2.5,pitch:.3,dist:.01,fov:1.15,f:[3]},
-  {n:'Baño',d:'Baño completo con cancel en la regadera.',t:[2.27,1.6,5.27],yaw:-2.3,pitch:.5,dist:.01,fov:1.35,f:[4],v:{yaw:-2.6}},
-  {n:'Recámara 1',d:'Recámara con clóset y ventana.',t:[4.3,1.5,5.7],yaw:.66,pitch:.26,dist:.01,fov:1.15,f:[7]},
-  {n:'Recámara 2',d:'Recámara con clóset.',t:[2.62,1.55,8.25],yaw:-2.5,pitch:.24,dist:.01,fov:1.15,f:[8]},
-  {n:'Patio',d:'Patio de servicio al fondo.',t:[5.9,1.5,10.1],yaw:-1.95,pitch:.2,dist:.01,fov:1.08,f:[]}
-];
-var rooms=[['Cocina',1.2,1.7],['Sala-comedor',4.5,3.5],['Baño',1.2,4.4],['Recámara 1',5.1,7.1],['Recámara 2',1.45,7.1],['Patio',3.2,9.5]];
-
-var $=function(i){return document.getElementById(i)}, cur=0, labs=[], auto=false, timer=0;
-function stopAuto(){if(!auto) return; auto=false; clearTimeout(timer); $('auto').setAttribute('aria-pressed','false'); $('auto').textContent='Ver casa completa'}
-function queue(){clearTimeout(timer); timer=setTimeout(function(){if(!auto) return; if(cur===stops.length-1){stopAuto(); show(0)} else show(cur+1)},3600)}
-rooms.forEach(function(r){var e=document.createElement('div');e.className='lab';e.textContent=r[0];$('labels').appendChild(e);labs.push(e)});
-
-var v=GRVisor($('c'),plan,{
-  onFail:function(){$('fail').hidden=false},
-  onTouch:function(){$('hint').classList.add('off');stopAuto()},
-  onArrive:function(){if(auto) queue()},
-  onFrame:function(api){
-    var high=api.eye()[1]>4;
-    rooms.forEach(function(r,i){
-      var p=high?api.project([r[1],2.6,r[2]]):null;
-      labs[i].style.opacity=p?1:0;
-      if(p) labs[i].style.transform='translate(-50%,-50%) translate('+p[0].toFixed(1)+'px,'+p[1].toFixed(1)+'px)';
-    });
-  }
-});
-if(!v) return;
-
-function show(i,instant){
-  cur=(i+stops.length)%stops.length; var s=stops[cur], g=s, k;
-  if(s.v&&innerHeight>innerWidth){g={}; for(k in s) g[k]=s[k]; for(k in s.v) g[k]=s.v[k];} // ajustes para pantalla vertical
-  v.goTo(g,instant);
-  $('capT').textContent=s.n; $('capD').textContent=s.d;
-  Array.prototype.forEach.call($('stops').children,function(b,j){
-    if(j===cur){b.setAttribute('aria-current','true'); if(b.scrollIntoView&&!instant) b.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});}
-    else b.removeAttribute('aria-current');
-  });
-  var th=$('th'); th.textContent='';
-  s.f.forEach(function(n){
-    var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Ampliar foto real de '+s.n);
-    var im=new Image(); im.src=F+n+'.jpg'; im.alt='Foto real: '+s.n; im.loading='lazy'; b.appendChild(im);
-    b.onclick=function(){$('dimg').src=F+n+'.jpg';$('dimg').alt='Foto real: '+s.n;$('dcap').textContent='Foto real: '+s.n;$('dlg').showModal()};
-    th.appendChild(b);
-  });
-  $('foto').hidden=!s.f.length;
-  if(cur>0) $('hint').classList.add('off');
-}
-stops.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.textContent=s.n;b.onclick=function(){stopAuto();show(i)};$('stops').appendChild(b)});
-$('furn').onclick=function(){var on=this.getAttribute('aria-pressed')!=='true';this.setAttribute('aria-pressed',on);v.setFurniture(on)};
-$('auto').onclick=function(){
-  if(auto){stopAuto();return}
-  auto=true; this.setAttribute('aria-pressed','true'); this.textContent='Detener'; $('hint').classList.add('off');
-  show(cur===stops.length-1?0:cur+1);
-};
-function toast(t){var e=$('toast'); e.textContent=t; e.classList.add('on'); setTimeout(function(){e.classList.remove('on')},2200)}
-$('share').onclick=function(){
-  var url='https://grgroups.github.io/grgroup/recorrido/GR-019/', txt='Mira el recorrido 3D de esta casa en Viñedos ($1,250,000)';
-  if(navigator.share){navigator.share({title:document.title,text:txt,url:url}).catch(function(){});return}
-  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function(){toast('Enlace copiado')},function(){toast(url)});
-  else toast(url);
-};
-$('zin').onclick=function(){v.zoom(.85)}; $('zout').onclick=function(){v.zoom(1.18)};
-$('dlg').addEventListener('click',function(e){if(e.target===this)this.close()});
-document.addEventListener('keydown',function(e){
-  if($('dlg').open) return;
-  if(e.key==='ArrowRight'){stopAuto();show(cur+1)} else if(e.key==='ArrowLeft'){stopAuto();show(cur-1)}
-});
-setTimeout(function(){$('hint').classList.add('off')},6000);
-show(0,true);
-window.__visor={show:show,v:v};
-if(/[?&]auto\b/.test(location.search)) setTimeout(function(){$('auto').click()},1200);
-})();
-</script>
+<script>window.TOUR_META={"code": "GR-019", "name": "Casa en Viñedos (una planta)", "precio": "$1,250,000", "url": "https://grgroups.github.io/grgroup/recorrido/GR-019/", "fotos": "../../fotos/GR-019/"};</script>
+<script src="../visor.js?v=1794494242"></script>
+<script src="plan.js?v=1794494242"></script>
+<script src="../tour.js?v=1794494242"></script>
 </body>
 </html>

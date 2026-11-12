@@ -1,0 +1,81 @@
+/* GR GROUP · interfaz común de los recorridos 3D */
+:root{--ink:#17140f;--mut:#6f6a62;--paper:#fffdf9;--line:#ddd5c6;--or:#ff6b14;--or2:#d95506;--navy:#14213d}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Jost,Arial,sans-serif;color:var(--ink);background:#e9eef1;overflow:hidden;font-size:16px;line-height:1.4;-webkit-tap-highlight-color:transparent}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas:active{cursor:grabbing}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+
+.top{position:fixed;left:0;right:0;top:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 0;pointer-events:none}
+.id{pointer-events:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px 14px 9px;display:flex;align-items:center;gap:14px;max-width:min(560px,100%)}
+.id img{height:34px;width:auto;display:block;flex:none}
+.id h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:22px;line-height:1.05;margin:0}
+.id p{margin:2px 0 0;font-size:14px;color:var(--mut)}
+.ficha{pointer-events:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px 14px;text-decoration:none;color:var(--ink);font-weight:500;font-size:15px;white-space:nowrap}
+.ficha:hover{border-color:var(--ink)}
+
+.lab{position:fixed;left:0;top:0;transform:translate(-50%,-50%);font-size:13px;font-weight:600;color:#fff;background:rgba(20,33,61,.86);padding:3px 9px 4px;border-radius:3px;pointer-events:none;white-space:nowrap;transition:opacity .25s}
+
+.side{position:fixed;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px}
+.side button{width:44px;height:44px;border:1px solid var(--line);background:var(--paper);border-radius:6px;font-size:22px;line-height:1;display:grid;place-items:center}
+.side button:hover{border-color:var(--ink)}
+.side button[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.side svg{width:22px;height:22px}
+
+.bottom{position:fixed;left:0;right:0;bottom:0;padding:0 14px calc(10px + env(safe-area-inset-bottom));pointer-events:none}
+.row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px}
+.foto{pointer-events:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px;width:min(250px,56vw)}
+.foto[hidden]{display:none}
+.foto b{display:block;font-size:13px;font-weight:600;margin:0 2px 6px}
+.foto .th{display:flex;gap:6px}
+.foto .th button{border:0;padding:0;background:#eee;border-radius:3px;overflow:hidden;flex:1;aspect-ratio:4/3;min-width:0}
+.foto .th img{width:100%;height:100%;object-fit:cover;display:block}
+.wa{pointer-events:auto;background:#128c4b;color:#fff;text-decoration:none;font-weight:600;padding:12px 18px;border-radius:6px;white-space:nowrap}
+.wa:hover{background:#0d7a40}
+
+.dock{pointer-events:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px 10px 8px}
+.cap{display:flex;align-items:center;gap:10px;margin:0 4px 8px;min-height:22px}
+.cap div{display:flex;align-items:baseline;gap:10px;flex:1;min-width:0}
+.auto{flex:none;border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:6px;padding:8px 14px;font-size:15px;font-weight:600;white-space:nowrap}
+.auto[aria-pressed=true]{background:#fff;color:var(--navy)}
+.toast{position:fixed;left:50%;bottom:calc(210px + env(safe-area-inset-bottom));transform:translateX(-50%);background:rgba(23,20,15,.9);color:#fff;padding:9px 16px;border-radius:999px;font-size:15px;pointer-events:none;opacity:0;transition:opacity .3s}
+.toast.on{opacity:1}
+.cap strong{font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;font-weight:600;line-height:1}
+.cap span{font-size:14.5px;color:var(--mut)}
+.stops{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.stops::-webkit-scrollbar{display:none}
+.stops button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 15px;font-size:15px;font-weight:500}
+.stops button:hover{border-color:var(--ink)}
+.stops button[aria-current=true]{background:var(--or);border-color:var(--or);color:#1a0d02;font-weight:600}
+.nota{font-size:12.5px;color:var(--mut);margin:8px 4px 0}
+
+.hint{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);background:rgba(23,20,15,.82);color:#fff;padding:10px 16px;border-radius:999px;font-size:15px;pointer-events:none;transition:opacity .5s;white-space:nowrap}
+.hint.off{opacity:0}
+
+dialog{border:0;padding:0;background:transparent;max-width:min(94vw,900px);max-height:92vh}
+dialog::backdrop{background:rgba(14,13,11,.86)}
+dialog img{display:block;max-width:100%;max-height:82vh;border-radius:4px;margin:0 auto}
+dialog form{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#fff;margin-top:10px;font-size:15px}
+dialog button{background:#fff;border:0;border-radius:6px;padding:9px 16px;font-weight:600}
+
+.fail{position:fixed;inset:0;display:grid;place-items:center;padding:24px;text-align:center;background:#f6f2ea}
+.fail[hidden]{display:none}
+.fail a{color:var(--or2);font-weight:600}
+
+@media (max-width:640px){
+  .id{padding:6px 10px;gap:9px}.id img{height:22px}.id h1{font-size:16px}.id p{font-size:12.5px;margin:0}.id p i{display:none}
+  .ficha{padding:8px 10px;font-size:14px}
+  .side{top:calc(78px + env(safe-area-inset-top));bottom:auto;transform:none;right:10px}
+  .side .zm{display:none}
+  .bottom{padding-left:10px;padding-right:10px}
+  .foto{width:150px}.foto b{font-size:12px}
+  .wa{padding:11px 14px;font-size:15px}
+  .cap div{flex-direction:column;gap:2px;align-items:flex-start}.cap span{font-size:14px}
+  .auto{padding:8px 11px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){.lab,.hint,.toast{transition:none}}
+canvas.sw{animation:sw .45s ease-out}
+@keyframes sw{from{opacity:.15}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){canvas.sw{animation:none}}

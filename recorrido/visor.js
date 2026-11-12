@@ -43,7 +43,8 @@
 
   /* ---------- geometría ----------
      vértice: pos(3) normal(3) color(4) material(1)
-     materiales: 0 liso, 1 loseta, 2 pasto, 3 concreto, 4 muro, 5 techo, 6 madera, 7 tela, 9 luminoso */
+     materiales: 0 liso, 1 loseta, 2 pasto, 3 concreto, 4 muro, 5 techo, 6 madera, 7 tela, 8 granito, 9 luminoso,
+     10 luminoso que se oculta al quitar el techo, 11 volumen superior (planta alta vista desde la calle; se oculta igual) */
   function Geo() { this.v = []; this.xf = null; this.occW = []; this.occF = []; }
   Geo.prototype.push = function (x, z, deg) { var a = (deg || 0) * Math.PI / 180; this.xf = { x: x, z: z, c: Math.cos(a), s: Math.sin(a) }; };
   Geo.prototype.pop = function () { this.xf = null; };
@@ -211,9 +212,9 @@
       var len = o.len || 2.4, hl = len / 2, d = 0.58, i, n = Math.round(len / 0.45);
       g.foot(-hl, 0, hl, d);
       g.box(-hl, 0, 0.04, hl, 0.1, d - 0.06, '#8d8a84');                                       // zoclo del mueble
-      g.box(-hl, 0.1, 0, hl, 0.86, d, COL.white);
+      g.box(-hl, 0.1, 0, hl, 0.86, d, o.color || COL.white);
       g.box(-hl - 0.01, 0.86, -0.0, hl + 0.01, 0.9, d + 0.02, o.cubierta || '#c9c7c2', { mat: 8 });         // cubierta
-      g.box(-hl, 0.9, 0, hl, 1.0, 0.02, o.cubierta || '#c9c7c2', { mat: 8 });                               // copete
+      if (o.copete !== false) g.box(-hl, 0.9, 0, hl, 1.0, 0.02, o.cubierta || '#c9c7c2', { mat: 8 });                               // copete
       for (i = 0; i <= n; i++) { var x = -hl + len * i / n; g.box(x - 0.003, 0.12, d, x + 0.003, 0.84, d + 0.004, '#c4c4bf'); }
       for (i = 0; i < n; i++) { var xc = -hl + len * (i + 0.5) / n; g.box(xc - 0.05, 0.74, d + 0.004, xc + 0.05, 0.755, d + 0.03, COL.steel); }
       if (o.estufa != null) {
@@ -230,7 +231,7 @@
         g.cyl(tx, 0.07, 0.9, 1.16, 0.014, 0.014, COL.steel, { seg: 8 }); g.box(tx - 0.012, 1.14, 0.07, tx + 0.012, 1.164, 0.24, COL.steel);
       }
       (o.altos || []).forEach(function (a) {                                                   // gabinetes altos [desde, hasta]
-        g.box(a[0], 1.5, 0, a[1], 2.1, 0.33, COL.white);
+        g.box(a[0], 1.5, 0, a[1], 2.1, 0.33, o.color || COL.white);
         var m = Math.max(1, Math.round((a[1] - a[0]) / 0.45)), k;
         for (k = 0; k <= m; k++) { var xx = a[0] + (a[1] - a[0]) * k / m; g.box(xx - 0.003, 1.52, 0.33, xx + 0.003, 2.08, 0.334, '#c4c4bf'); }
         for (k = 0; k < m; k++) { var xm = a[0] + (a[1] - a[0]) * (k + 0.5) / m; g.box(xm - 0.04, 1.56, 0.334, xm + 0.04, 1.575, 0.355, COL.steel); }
@@ -292,12 +293,47 @@
       g.box(-0.4, 0, 0.04, -0.3, 0.6, 0.56, '#bdb8ad'); g.box(0.3, 0, 0.04, 0.4, 0.6, 0.56, '#bdb8ad');
       g.box(-0.42, 0.6, 0, 0.42, 0.86, 0.6, '#cfcac0', { mat: 3 }); g.box(-0.36, 0.84, 0.06, 0.0, 0.865, 0.54, '#8f8c85');
     },
+    // escalera recta: arranca en z=0 y sube hacia +z. o = {w, n, alto, huella}
+    escalera: function (g, gt, o) {
+      var w = o.w || 0.9, n = o.n || 14, H = o.alto || 2.7, run = o.huella || 0.26, r = H / n, i, c = o.color || '#d9c8ae';
+      g.foot(-w / 2, 0, w / 2, n * run);
+      for (i = 0; i < n; i++) {
+        g.box(-w / 2, 0, i * run, w / 2, (i + 1) * r - 0.03, (i + 1) * run, '#ecebe6', { mat: 4 });
+        g.box(-w / 2, (i + 1) * r - 0.03, i * run - 0.015, w / 2, (i + 1) * r, (i + 1) * run, c, { mat: o.mat == null ? 6 : o.mat });
+      }
+      if (o.barandal) { var bx = o.barandal > 0 ? w / 2 - 0.03 : -w / 2; for (i = 0; i < n; i += 2) g.box(bx, (i + 1) * r, (i + 0.5) * run - 0.012, bx + 0.03, (i + 1) * r + 0.9, (i + 0.5) * run + 0.012, COL.dark); }
+    },
+    // hueco de escalera visto en la planta alta: peldaños que bajan y barandal. o = {w, l}
+    hueco: function (g, gt, o) {
+      var w = o.w || 0.9, l = o.l || 2.6, n = 9, i;
+      g.box(-w / 2, 0.002, 0, w / 2, 0.006, l, '#4b4741');
+      for (i = 0; i < n; i++) { var k = 1 - i / n; g.box(-w / 2 + 0.02, 0.006, l * i / n + 0.02, w / 2 - 0.02, 0.01, l * (i + 1) / n - 0.02, o.color || '#d9c8ae', { mat: 6 }); g.box(-w / 2 + 0.02, 0.01, l * i / n + 0.02, w / 2 - 0.02, 0.012, l * (i + 1) / n - 0.02 - 0.2 * k, '#3b3833', { a: 1 }); }
+      (o.lados || [1]).forEach(function (sd) { var x = sd * (w / 2 + 0.02); g.box(x - 0.02, 0.9, 0, x + 0.02, 0.94, l, COL.dark); for (i = 0; i <= 8; i++) g.box(x - 0.012, 0, l * i / 8 - 0.012, x + 0.012, 0.9, l * i / 8 + 0.012, COL.dark); });
+    },
+    // pantalla en el muro con mueble bajo. Espalda en z=0.
+    tv: function (g, gt, o) {
+      var w = o.w || 1.6;
+      g.foot(-w / 2, 0, w / 2, 0.4);
+      g.box(-w / 2, 0.12, 0, w / 2, 0.5, 0.38, o.color || COL.white); g.box(-w / 2 + 0.04, 0, 0.04, w / 2 - 0.04, 0.12, 0.34, '#8d8a84');
+      g.box(-0.55, 1.05, 0.02, 0.55, 1.68, 0.05, '#17181a'); g.box(-0.52, 1.08, 0.05, 0.52, 1.65, 0.052, '#2b3138');
+    },
+    lavadora: function (g, gt, o) {
+      g.foot(-0.3, 0, 0.3, 0.6);
+      g.rbox(-0.3, 0, 0, 0.3, 0.86, 0.58, '#f1f1ee', { e: 0.1 });
+      g.box(-0.2, 0.25, 0.58, 0.2, 0.65, 0.59, '#4a5056'); g.box(-0.28, 0.74, 0.58, 0.28, 0.82, 0.585, '#cfd3d6');
+    },
+    // cochera o terraza techada: postes y cubierta. o = {w, d, alto, color}; se oculta junto con el techo
+    pergola: function (g, gt, o) {
+      var w = o.w || 3, d = o.d || 3.5, h = o.alto || 2.4;
+      [[-w / 2 + 0.06, 0.06], [w / 2 - 0.06, 0.06]].forEach(function (p) { g.box(p[0] - 0.05, 0, p[1] - 0.05, p[0] + 0.05, h, p[1] + 0.05, o.poste || '#5a4636'); });
+      g.box(-w / 2, h, 0, w / 2, h + 0.12, d, o.color || '#b5563c', { mat: 11 });
+    },
     boiler: function (g, gt, o) { g.cyl(0, 0.2, 0.9, 1.75, 0.19, 0.19, '#f1f1ee', { seg: 16 }); g.cyl(0, 0.2, 1.75, 1.8, 0.19, 0.05, '#dddcd6', { seg: 16 }); }
   };
 
   // Muro con vanos. w = {ax:'x'|'z', c, from, to, t, h, out, open:[...]}
   function buildWall(g, gt, w, plan) {
-    var t = w.t || 0.12, h = w.h || 2.5, ax = w.ax, c = w.c, out = w.out || 1;
+    var FR = w.frame || plan.frame || COL.frame, t = w.t || 0.12, h = w.h || 2.5, ax = w.ax, c = w.c, out = w.out || 1;
     function inside(u, a) {
       var x = ax === 'x' ? u : c + a, z = ax === 'x' ? c + a : u;
       return (plan.floors || []).some(function (f) { return x > f[0] && x < f[2] && z > f[1] && z < f[3]; });
@@ -325,12 +361,12 @@
       var k = op.kind;
       if (k === 'window' || k === 'glassdoor') {
         var f = 0.045;
-        bx(g, op.from, sill, -0.03, op.from + f, head, 0.03, COL.frame);
-        bx(g, op.to - f, sill, -0.03, op.to, head, 0.03, COL.frame);
-        bx(g, op.from, head - f, -0.03, op.to, head, 0.03, COL.frame);
-        bx(g, op.from, sill, -0.03, op.to, sill + f, 0.03, COL.frame);
-        if (op.mid !== false) bx(g, (op.from + op.to) / 2 - 0.02, sill, -0.03, (op.from + op.to) / 2 + 0.02, head, 0.03, COL.frame);
-        if (k === 'glassdoor') bx(g, op.from, sill + 0.95, -0.03, op.to, sill + 1.0, 0.03, COL.frame);
+        bx(g, op.from, sill, -0.03, op.from + f, head, 0.03, FR);
+        bx(g, op.to - f, sill, -0.03, op.to, head, 0.03, FR);
+        bx(g, op.from, head - f, -0.03, op.to, head, 0.03, FR);
+        bx(g, op.from, sill, -0.03, op.to, sill + f, 0.03, FR);
+        if (op.mid !== false) bx(g, (op.from + op.to) / 2 - 0.02, sill, -0.03, (op.from + op.to) / 2 + 0.02, head, 0.03, FR);
+        if (k === 'glassdoor') bx(g, op.from, sill + 0.95, -0.03, op.to, sill + 1.0, 0.03, FR);
         bx(gt, op.from + f, sill + f, -0.008, op.to - f, head - f, 0.008, COL.glass, { a: 0.22 });
         if (op.grille) { // herrería blanca por fuera
           var a0 = out * (t / 2 + 0.02), a1 = out * (t / 2 + 0.04), n, i, s;
@@ -436,7 +472,7 @@
     ' for(int i=0;i<4;i++){for(int j=0;j<4;j++){vec2 o=(vec2(float(i),float(j))-1.5)*uTx*1.35;',
     '  s+=step(p.z-0.0010,unpack(texture2D(uSh,p.xy+o)));}}return s/16.0;}',
     'void main(){vec3 n=normalize(vN);vec3 c=vC.rgb;float m=vM;float dist=distance(uE,vP);',
-    ' if(m>9.5&&uRoof<0.5)discard;',
+    ' if(m>9.5&&uRoof<0.5)discard;float up=step(10.5,m);if(m>10.5)m=4.0;',
     ' if(m>8.5){gl_FragColor=vec4(c,vC.a);return;}',
     ' vec3 V=normalize(uE-vP);float sheen=0.0;',
     ' if(m>0.5&&m<1.5){vec2 g=vP.xz/0.33;vec2 f=fract(g);float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y));',      // loseta
@@ -455,10 +491,10 @@
     ' else{vec3 a1=texture2D(uAo,(vP.xz+n.xz*0.2-uAoB.xy)*uAoB.zw).rgb;',
     '  ao=1.0-0.42*a1.r-0.32*a1.g*(1.0-smoothstep(0.0,0.75,vP.y));ao*=mix(0.86,1.0,smoothstep(0.0,0.3,vP.y));',
     '  ao*=mix(1.0,0.9,smoothstep(2.05,2.5,vP.y)*uRoof*a0.b);}',
-    ' float sh=shadow();if(n.y<0.5)sh*=1.0-smoothstep(2.2,2.4,vP.y)*uRoof*a0.b;float nl=max(dot(n,uL),0.0);float hemi=0.5+0.5*n.y;',
+    ' ao=mix(ao,1.0,up);float sh=shadow();if(n.y<0.5)sh*=1.0-smoothstep(2.2,2.4,vP.y)*uRoof*a0.b*(1.0-up);float nl=max(dot(n,uL),0.0);float hemi=0.5+0.5*n.y;',
     ' float side=0.5+0.5*dot(n,vec3(-0.55,0.0,0.83));',
     ' vec3 amb=mix(vec3(0.55,0.57,0.62),vec3(0.70,0.70,0.70),hemi)*(0.88+0.12*side);',
-    ' amb+=vec3(0.19,0.18,0.16)*a0.b*uRoof;',                                                                    // luz rebotada dentro de la casa
+    ' amb+=vec3(0.19,0.18,0.16)*a0.b*uRoof*(1.0-up);',                                                                    // luz rebotada dentro de la casa
     ' vec3 col=c*(amb*ao+vec3(1.0,0.95,0.85)*0.48*nl*sh)+sheen*(0.4+0.6*sh);',
     ' col=mix(col,uSky,smoothstep(24.0,60.0,dist));',
     ' gl_FragColor=vec4(col,vC.a);}'].join('\n');
@@ -551,7 +587,7 @@
     function draw() {
       var d = dirOf(cam);
       eye = [cam.tx - d[0] * cam.dist, cam.ty - d[1] * cam.dist, cam.tz - d[2] * cam.dist];
-      var nr = eye[1] < 2.62 ? 1 : 0;
+      var nr = (eye[1] < 2.62 || cam.pitch < 0.3) ? 1 : 0; // con techo si la cámara está adentro o mira la casa de frente
       if (nr !== roof || shDirty) { roof = nr; shDirty = false; drawShadow(); }
       var ctr = [eye[0] + d[0], eye[1] + d[1], eye[2] + d[2]];
       // en vertical (celular) se abre el campo de visión para que la casa quepa
@@ -638,7 +674,8 @@
 
     var api = {
       goTo: goTo,
-      setFurniture: setGeo,
+      setFurniture: function (on) { furnOn = on; setGeo(on); },
+      setPlan: function (p) { plan = p; sky = hex(plan.sky || '#e9eef1'); zen = hex(plan.zenith || '#8fb8e3'); setGeo(furnOn); },
       eye: function () { return eye; },
       // proyecta un punto del plano a pixeles CSS; null si queda detrás de la cámara
       project: function (p) {
@@ -649,7 +686,8 @@
       },
       zoom: function (f) { anim = null; zoom(f); }
     };
-    setGeo(plan.furnitureOn !== false);
+    var furnOn = plan.furnitureOn !== false;
+    setGeo(furnOn);
     resize();
     requestAnimationFrame(loop);
     return api;

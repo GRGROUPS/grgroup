@@ -24,6 +24,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = "https://grgroups.github.io/grgroup/"
 
 
+# versión de los archivos del recorrido 3D: cambia cuando cambian, para que el navegador no use una copia vieja
+VER = str(int(max(os.path.getmtime(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "recorrido", f))
+                  for f in ("visor.js", "tour.js", "tour.css"))))
+
+
 def esc(s):
     return html.escape(str(s), quote=True)
 
@@ -185,7 +190,7 @@ def page(h, todas, wa):
 <p class="zn">📍 {esc(h["zona"])}</p>
 <div class="gal">{imgs}</div>
 {f'<p class="hint">Desliza para ver las {len(fotos)} fotos.</p>' if len(fotos) > 1 else ''}
-{f'<a class="btn t3" href="../../recorrido/{code}/">Recorrer la casa en 3D</a>' if os.path.exists(os.path.join(ROOT, "recorrido", code, "index.html")) else ''}
+{f'<a class="btn t3" href="../../recorrido/{code}/">Recorrer la casa en 3D</a>' if tiene_recorrido(code) else ''}
 <ul class="facts">{facts_html}</ul>
 {f'<h2>Lo más destacado</h2><ul class="dst">{dst}</ul>' if dst else ''}
 <div class="cta">
@@ -202,6 +207,94 @@ def page(h, todas, wa):
 """
 
 
+def tiene_recorrido(code):
+    return os.path.exists(os.path.join(ROOT, "recorrido", code, "plan.js"))
+
+
+def recorrido_page(h, wa):
+    """Página del recorrido 3D. El plano vive en recorrido/<código>/plan.js; lo demás sale del catálogo."""
+    code, name = h["code"], h["name"]
+    corto = h.get("corto") or name
+    url = BASE + "recorrido/" + code + "/"
+    precio = price_txt(h)
+    bits = [f"{h['rec']} recámaras"]
+    if h.get("banos") is not None:
+        bits.append(f"{num(h['banos'])} baños")
+    if h.get("constr"):
+        bits.append(f"{num(h['constr'])} m²")
+    desc = f"Recorre en 3D desde tu celular: {name}, {h['zona']}. " + ", ".join(bits) + ". Representación ilustrativa."
+    wa_link = wa_url(wa, f"Hola, vi el recorrido 3D de la casa {code} – {name} ({money(h['precio'])}). ¿Cuándo la puedo visitar?")
+    meta = {"code": code, "name": name, "precio": precio, "url": url, "fotos": f"../../fotos/{code}/"}
+    return f"""<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Recorrido 3D: {esc(name)} | GR GROUP</title>
+<meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{url}">
+<meta property="og:title" content="Recorrido 3D: {esc(corto)} · {precio} | GR GROUP">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:image" content="{BASE}casa/{code}/og.jpg">
+<link rel="icon" type="image/png" href="../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:400,500,600%7CCormorant+Garamond:500,600,700&amp;display=swap">
+<link rel="stylesheet" href="../tour.css?v={VER}">
+</head>
+<body>
+<canvas id="c" aria-label="Maqueta 3D de la casa. Arrastra para girar."></canvas>
+
+<div class="top">
+  <div class="id">
+    <a href="../../"><img src="../../logo.png" width="528" height="189" alt="GR GROUP, Tu hogar ahora"></a>
+    <div><h1>{esc(corto)}</h1><p><i>Recorrido 3D · </i>{precio}</p></div>
+  </div>
+  <a class="ficha" href="../../casa/{code}/">Ver ficha y fotos</a>
+</div>
+
+<div id="labels" aria-hidden="true"></div>
+
+<div class="side">
+  <button id="furn" type="button" aria-pressed="true" title="Mostrar u ocultar muebles sugeridos" aria-label="Muebles sugeridos">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M3 13a2 2 0 0 1 4 0v2h10v-2a2 2 0 0 1 4 0v4H3z"/><path d="M6 17v2M18 17v2"/></svg>
+  </button>
+  <button id="share" type="button" title="Compartir este recorrido" aria-label="Compartir este recorrido">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+  </button>
+  <button class="zm" id="zin" type="button" aria-label="Acercar">+</button>
+  <button class="zm" id="zout" type="button" aria-label="Alejar">−</button>
+</div>
+
+<div class="hint" id="hint">Arrastra para girar la casa</div>
+
+<div class="bottom">
+  <div class="row">
+    <div class="foto" id="foto" hidden><b>Así se ve en la foto real</b><div class="th" id="th"></div></div>
+    <span></span>
+    <a class="wa" href="{esc(wa_link)}">Agendar visita</a>
+  </div>
+  <div class="dock">
+    <div class="cap"><div aria-live="polite"><strong id="capT"></strong><span id="capD"></span></div><button class="auto" id="auto" type="button" aria-pressed="false">Ver casa completa</button></div>
+    <div class="stops" id="stops" role="group" aria-label="Espacios de la casa"></div>
+    <p class="nota">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<dialog id="dlg"><img id="dimg" alt=""><form method="dialog"><span id="dcap"></span><button>Cerrar</button></form></dialog>
+
+<div class="fail" id="fail" hidden><p>Tu navegador no pudo mostrar el recorrido 3D.<br><a href="../../casa/{code}/">Ver las fotos de la casa</a></p></div>
+
+<script>window.TOUR_META={json.dumps(meta, ensure_ascii=False)};</script>
+<script src="../visor.js?v={VER}"></script>
+<script src="plan.js?v={VER}"></script>
+<script src="../tour.js?v={VER}"></script>
+</body>
+</html>
+"""
+
+
 def main():
     force = set(sys.argv[sys.argv.index("--og") + 1:]) if "--og" in sys.argv else set()
     casas, wa = load()
@@ -215,12 +308,14 @@ def main():
         os.makedirs(os.path.join(cdir, h["code"]), exist_ok=True)
         open(os.path.join(cdir, h["code"], "index.html"), "w", encoding="utf-8").write(page(h, casas, wa))
         make_og(h, h["code"] in force)
+        if tiene_recorrido(h["code"]):
+            open(os.path.join(ROOT, "recorrido", h["code"], "index.html"), "w", encoding="utf-8").write(recorrido_page(h, wa))
     hoy = datetime.date.today().isoformat()
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
           f"  <url><loc>{BASE}</loc><lastmod>{hoy}</lastmod></url>"]
     sm += [f"  <url><loc>{BASE}casa/{h['code']}/</loc><lastmod>{hoy}</lastmod></url>" for h in casas]
     sm += [f"  <url><loc>{BASE}recorrido/{h['code']}/</loc><lastmod>{hoy}</lastmod></url>" for h in casas
-           if os.path.exists(os.path.join(ROOT, "recorrido", h["code"], "index.html"))]
+           if tiene_recorrido(h["code"])]
     sm.append("</urlset>")
     open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(sm) + "\n")
     print(len(casas), "páginas de casa y sitemap generados")
