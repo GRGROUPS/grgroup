@@ -16,7 +16,7 @@ var v=GRVisor($('c'),levels[stops[0].lvl||0].plan,{
   onTouch:function(){$('hint').classList.add('off');stopAuto()},
   onArrive:function(){if(auto) queue()},
   onFrame:function(api){
-    var high=api.eye()[1]>4, rooms=levels[lvl<0?0:lvl].rooms||[];
+    var high=api.eye()[1]>4&&api.pitch()>.5, rooms=levels[lvl<0?0:lvl].rooms||[];
     labs.forEach(function(e,i){
       var r=rooms[i], p=high&&r?api.project([r[1],2.6,r[2]]):null;
       e.style.opacity=p?1:0;

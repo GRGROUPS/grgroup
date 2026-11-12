@@ -295,11 +295,11 @@
     },
     // escalera recta: arranca en z=0 y sube hacia +z. o = {w, n, alto, huella}
     escalera: function (g, gt, o) {
-      var w = o.w || 0.9, n = o.n || 14, H = o.alto || 2.7, run = o.huella || 0.26, r = H / n, i, c = o.color || '#d9c8ae';
+      var w = o.w || 0.9, n = o.n || 14, H = o.alto || 2.7, run = o.huella || 0.26, r = H / n, i, c = o.color || '#d9c8ae', y0 = o.y0 || 0;
       g.foot(-w / 2, 0, w / 2, n * run);
       for (i = 0; i < n; i++) {
-        g.box(-w / 2, 0, i * run, w / 2, (i + 1) * r - 0.03, (i + 1) * run, '#ecebe6', { mat: 4 });
-        g.box(-w / 2, (i + 1) * r - 0.03, i * run - 0.015, w / 2, (i + 1) * r, (i + 1) * run, c, { mat: o.mat == null ? 6 : o.mat });
+        g.box(-w / 2, y0 ? y0 + i * r - 0.12 : 0, i * run, w / 2, y0 + (i + 1) * r - 0.03, (i + 1) * run, '#ecebe6', { mat: 4 });
+        g.box(-w / 2, y0 + (i + 1) * r - 0.03, i * run - 0.015, w / 2, y0 + (i + 1) * r, (i + 1) * run, c, { mat: o.mat == null ? 6 : o.mat });
       }
       if (o.barandal) { var bx = o.barandal > 0 ? w / 2 - 0.03 : -w / 2; for (i = 0; i < n; i += 2) g.box(bx, (i + 1) * r, (i + 0.5) * run - 0.012, bx + 0.03, (i + 1) * r + 0.9, (i + 0.5) * run + 0.012, COL.dark); }
     },
@@ -327,6 +327,31 @@
       var w = o.w || 3, d = o.d || 3.5, h = o.alto || 2.4;
       [[-w / 2 + 0.06, 0.06], [w / 2 - 0.06, 0.06]].forEach(function (p) { g.box(p[0] - 0.05, 0, p[1] - 0.05, p[0] + 0.05, h, p[1] + 0.05, o.poste || '#5a4636'); });
       g.box(-w / 2, h, 0, w / 2, h + 0.12, d, o.color || '#b5563c', { mat: 11 });
+    },
+    // clóset de madera de piso a techo: puertas corredizas, repisas y cajonera. Espalda en z=0. o = {w, color}
+    closetM: function (g, gt, o) {
+      var w = o.w || 2.2, hw = w / 2, d = 0.58, c = o.color || '#5a2a22', c2 = '#4a221c', i, x1 = hw - 0.75;
+      g.foot(-hw, 0, hw, d);
+      g.box(-hw, 0, 0, x1, 2.05, d, c, { mat: 6 });                                              // puertas corredizas
+      g.box((-hw + x1) / 2 - 0.004, 0.05, d, (-hw + x1) / 2 + 0.004, 2.0, d + 0.004, c2);
+      g.box(-hw, 2.05, 0, hw, 2.4, d, c, { mat: 6 }); g.box(-hw, 2.04, d, hw, 2.06, d + 0.004, c2); // maletero
+      g.box(x1, 0, 0, hw, 0.95, d, c, { mat: 6 });                                               // cajonera
+      for (i = 0; i < 4; i++) { g.box(x1 + 0.02, 0.04 + i * 0.23, d, hw - 0.02, 0.045 + i * 0.23, d + 0.004, c2); g.box((x1 + hw) / 2 - 0.12, 0.15 + i * 0.23, d, (x1 + hw) / 2 + 0.12, 0.165 + i * 0.23, d + 0.03, COL.steel); }
+      g.box(x1, 0.95, 0, x1 + 0.02, 2.05, d, c, { mat: 6 }); g.box(hw - 0.02, 0.95, 0, hw, 2.05, d, c, { mat: 6 });
+      g.box(x1, 0.95, 0, hw, 2.05, 0.02, c, { mat: 6 }); g.box(x1, 1.5, 0, hw, 1.52, d, c, { mat: 6 }); // nicho con repisa
+    },
+    // tocador con dos lavabos y espejos. Espalda en z=0. o = {w, color}
+    tocador: function (g, gt, o) {
+      var w = o.w || 1.6, hw = w / 2, c = o.color || '#4a1f1c';
+      g.foot(-hw, 0, hw, 0.52);
+      g.box(-hw, 0.12, 0, hw, 0.78, 0.5, c, { mat: 6 }); g.box(-hw, 0.78, 0, hw, 0.84, 0.54, '#d9d5cc');
+      [-1, 1].forEach(function (s) {
+        var x = s * w * 0.25;
+        g.rbox(x - 0.22, 0.84, 0.1, x + 0.22, 0.97, 0.46, '#fafaf8', { e: 0.7, nv: 4 }); g.rbox(x - 0.16, 0.93, 0.15, x + 0.16, 0.975, 0.41, '#dfe3e3', { e: 0.8, nv: 4 });
+        g.cyl(x, 0.06, 0.84, 1.08, 0.014, 0.014, COL.steel, { seg: 8 }); g.box(x - 0.01, 1.06, 0.06, x + 0.01, 1.08, 0.18, COL.steel);
+        g.box(x - 0.2, 1.2, 0, x + 0.2, 1.85, 0.012, '#cfe0e6');
+        g.box(x - 0.004, 0.16, 0.5, x + 0.004, 0.74, 0.504, '#2f1412');
+      });
     },
     boiler: function (g, gt, o) { g.cyl(0, 0.2, 0.9, 1.75, 0.19, 0.19, '#f1f1ee', { seg: 16 }); g.cyl(0, 0.2, 1.75, 1.8, 0.19, 0.05, '#dddcd6', { seg: 16 }); }
   };
@@ -677,6 +702,7 @@
       setFurniture: function (on) { furnOn = on; setGeo(on); },
       setPlan: function (p) { plan = p; sky = hex(plan.sky || '#e9eef1'); zen = hex(plan.zenith || '#8fb8e3'); setGeo(furnOn); },
       eye: function () { return eye; },
+      pitch: function () { return cam.pitch; },
       // proyecta un punto del plano a pixeles CSS; null si queda detrás de la cámara
       project: function (p) {
         var m = VPm; if (!m) return null;
