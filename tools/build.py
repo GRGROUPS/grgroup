@@ -310,6 +310,13 @@ def main():
         make_og(h, h["code"] in force)
         if tiene_recorrido(h["code"]):
             open(os.path.join(ROOT, "recorrido", h["code"], "index.html"), "w", encoding="utf-8").write(recorrido_page(h, wa))
+    # lista de casas con recorrido 3D para la portada, el catálogo y la ficha emergente de index.html
+    r3d = [h["code"] for h in casas if tiene_recorrido(h["code"])]
+    ip = os.path.join(ROOT, "index.html")
+    src = open(ip, encoding="utf-8").read()
+    nuevo = re.sub(r"var R3D = \[[^\]]*\];", "var R3D = " + json.dumps(r3d) + ";", src, count=1)
+    if nuevo != src:
+        open(ip, "w", encoding="utf-8").write(nuevo)
     hoy = datetime.date.today().isoformat()
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
           f"  <url><loc>{BASE}</loc><lastmod>{hoy}</lastmod></url>"]

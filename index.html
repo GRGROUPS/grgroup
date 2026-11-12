@@ -519,6 +519,22 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
 .rmore { display: block; width: 100%; background: none; border: 1px dashed rgba(23,20,15,.3); border-radius: 2px; padding: 13px 12px; margin: 14px 0 16px; font-size: 15px; color: var(--lk); cursor: pointer; font-family: inherit; text-align: center; }
 .hero h1.eyebrow { margin: 0; font-family: inherit; }
 .hero .veil { background: -webkit-linear-gradient(top, rgba(0,0,0,.74) 0%, rgba(0,0,0,.56) 55%, rgba(0,0,0,.28) 100%); background: linear-gradient(to bottom, rgba(0,0,0,.74) 0%, rgba(0,0,0,.56) 55%, rgba(0,0,0,.28) 100%); }
+
+/* recorridos 3D */
+.pcard .pimg .r3b, .r3c .r3b { position: absolute; left: 10px; bottom: 10px; background: rgba(14,13,11,.78); color: #f6f2ea; border: 1px solid var(--lkd); font-size: 11px; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; border-radius: 2px; padding: 4px 8px; }
+.r3tile .tx { padding-bottom: 34px; }
+.r3how { list-style: none; margin: 26px auto 6px; padding: 0; max-width: 980px; display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap; -webkit-justify-content: center; justify-content: center; text-align: left; }
+.r3how li { -webkit-flex: 1 1 250px; flex: 1 1 250px; margin: 8px 12px; padding-top: 14px; border-top: 1px solid rgba(216,188,130,.45); color: #bdb5a6; font-size: 15px; line-height: 1.45; }
+.r3how b { display: block; color: #f6f2ea; font-weight: 500; font-size: 17px; margin-bottom: 4px; }
+.r3n { color: #bdb5a6; font-size: 15px; margin: 16px 0 0; } .r3n .lnk { background: none; border: 0; cursor: pointer; margin-left: 6px; padding: 0; }
+.scroll .r3c { text-decoration: none; color: var(--ink); }
+.r3c .pa { margin-top: 12px; } .r3c .pa .pill { margin: 0; }
+.r3d { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; gap: 14px; margin: 16px 0 6px; padding: 14px 16px; background: #0e0d0b; color: #f6f2ea; text-decoration: none; border-radius: 3px; border: 1px solid #0e0d0b; }
+.r3d:hover, .r3d:focus-visible { border-color: var(--lkd); }
+.r3d .r3i { -webkit-flex: 0 0 auto; flex: 0 0 auto; width: 46px; height: 46px; line-height: 44px; text-align: center; border: 1px solid var(--lkd); color: var(--lkd); font-family: "Cormorant Garamond", Georgia, serif; font-size: 21px; font-weight: 700; border-radius: 2px; }
+.r3d .r3t { -webkit-flex: 1 1 auto; flex: 1 1 auto; min-width: 0; } .r3d .r3t b { display: block; font-weight: 500; font-size: 17px; } .r3d .r3t small { display: block; color: #bdb5a6; font-size: 13px; line-height: 1.35; margin-top: 2px; }
+.r3d .r3go { -webkit-flex: 0 0 auto; flex: 0 0 auto; background: #f6f2ea; color: #17140f; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 500; padding: 10px 14px; border-radius: 2px; }
+@media (max-width: 600px) { .r3d .r3go { display: none; } .r3how li { -webkit-flex-basis: 100%; flex-basis: 100%; } }
 </style>
 </head>
 <body class="home">
@@ -574,6 +590,17 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
     <div class="more" id="famMore"></div>
   </div>
 
+  <div id="r3dSec" style="display:none">
+    <div class="tile dark r3tile"><div class="tx">
+      <div class="eyebrow">Recorridos 3D</div>
+      <h2>Camina la casa antes de ir.</h2>
+      <div class="tg">Arma tu visita desde el celular: entra a cada cuarto, mira cómo se conectan y compáralo con las fotos reales.</div>
+      <ul class="r3how"><li><b>Gira la maqueta</b>Ve la planta completa desde arriba y cada nivel por separado.</li><li><b>Entra a cada espacio</b>Toca la sala, la cocina o una recámara y la cámara te lleva adentro.</li><li><b>Compara con la foto</b>En cada parada aparece la foto real de ese espacio.</li></ul>
+      <p class="r3n" id="r3dN"></p>
+    </div></div>
+    <div class="scroll" id="r3dList"></div>
+  </div>
+
   <div class="sec" id="cerSec" style="display:none;padding-bottom:0">
     <div class="sech"><div><h2>Ya tienen dueño.</h2><p class="sub">Casas que ya vendimos o apartamos. Cuéntanos qué buscas y te avisamos de las nuevas.</p></div>
       <button class="lnk" id="cerReg" type="button">Quiero algo parecido</button></div>
@@ -619,7 +646,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
       <div class="field" id="credF"><label for="cred">Crédito aceptado</label><select id="cred"><option value="">Cualquiera</option><option value="infonavit">Infonavit</option><option value="fovissste">Fovissste</option><option value="banco">Crédito bancario</option></select></div>
       <div class="field"><label for="sort">Ordenar por</label><select id="sort"><option value="asc">Precio: menor a mayor</option><option value="desc">Precio: mayor a menor</option><option value="nuevas">Más recientes</option></select></div>
     </div>
-    <div><span class="chk"><label><input id="soloNuevas" type="checkbox">Solo casas nuevas</label></span><span class="chk" id="verTodasW" style="display:none"><label><input id="verTodasC" type="checkbox">Mostrar apartadas y vendidas</label></span></div>
+    <div><span class="chk"><label><input id="soloNuevas" type="checkbox">Solo casas nuevas</label></span><span class="chk"><label><input id="solo3d" type="checkbox">Con recorrido 3D</label></span><span class="chk" id="verTodasW" style="display:none"><label><input id="verTodasC" type="checkbox">Mostrar apartadas y vendidas</label></span></div>
     </div>
   </div>
   <div id="count" class="count"></div><div id="selShare" class="selshare"></div>
@@ -813,6 +840,9 @@ var ZONAS = ["Juriquilla", "Corregidora", "El Marqués", "Cerrito Colorado", "Vi
 
 /* Mosaicos del inicio: primero la casa más exclusiva (el gancho), después las demás. */
 var HERO_FOTO = "fotos/GR-023/1.jpg";
+var R3D = ["GR-002", "GR-004", "GR-010", "GR-013", "GR-015", "GR-018", "GR-019", "GR-022", "GR-023"]; /* casas con recorrido 3D: lo llena tools/build.py */
+function tiene3D(code) { return inArr(R3D, code); }
+function r3dUrl(code) { return "recorrido/" + code + "/"; }
 var STORY = [
   { code: "GR-018", title: "Hacienda Carlota", eyebrow: "La más exclusiva", tag: "Vive en grande.", line: "4 recámaras, cada una con baño completo y vestidor. Roof garden y 395 m² de construcción, en residencial con vigilancia.", foto: 1, kind: "wide", theme: "light" },
   { code: "GR-022", title: "Mykonos II", eyebrow: "Nueva · Entrega inmediata", tag: "Estrénala ya.", line: "3 recámaras, 2.5 baños, alberca y gimnasio en San Isidro Juriquilla.", foto: 2, kind: "half", theme: "light" },
@@ -1036,6 +1066,7 @@ function filtered() {
     if (st.max && h.precio > st.max) { continue; }
     if (st.cred && !inArr(h.creditos, st.cred)) { continue; }
     if (st.soloNuevas && !esNueva(h)) { continue; }
+    if (st.solo3d && !tiene3D(h.code)) { continue; }
     if (q && haystack(h).indexOf(q) === -1) { continue; }
     out.push(h);
   }
@@ -1051,7 +1082,7 @@ function syncUI() {
   $("opR").className = st.op === "Renta" ? "on" : "";
   fillMax("max", "maxL", st.op);
   sliderSet("max", st.op, st.max); $("rec").value = String(st.rec); $("cred").value = st.cred; $("sort").value = st.sort; $("q").value = st.q;
-  $("soloNuevas").checked = st.soloNuevas; $("verTodasC").checked = st.verTodas;
+  $("soloNuevas").checked = st.soloNuevas; $("solo3d").checked = !!st.solo3d; $("verTodasC").checked = st.verTodas;
   $("credF").style.display = st.op === "Renta" ? "none" : "";
 }
 function goCasas(p) {
@@ -1075,6 +1106,7 @@ function pcard(h) {
   if (h.status === "Apartada") { off = " off"; stt = '<div class="st ap">APARTADA</div>'; }
   else if (h.status === "Vendida") { off = " off"; stt = '<div class="st">VENDIDA</div>'; }
   if (h.fotos && h.fotos.length > 1) { nf = '<div class="nf">📷 ' + h.fotos.length + "</div>"; }
+  if (tiene3D(h.code)) { nf += '<div class="r3b">Recorrido 3D</div>'; }
   return '<div class="pcard' + off + '"><div class="pimg" style="' + bg(cover(h)) + '" onclick="openDetail(\'' + h.code + '\')">' + stt + nf + "</div>" +
     '<button class="heart' + (fv ? " on" : "") + '" type="button" data-c="' + h.code + '" onclick="toggleFav(\'' + h.code + '\')" aria-label="Guardar">' + (fv ? "♥" : "♡") + "</button>" +
     '<div class="pb"><div class="pbad">' + e + '</div><div class="pn">' + esc(h.corto || h.name) + '</div><div class="pz">📍 ' + esc(h.zona) + "</div>" +
@@ -1089,7 +1121,7 @@ function render() {
   $("list").innerHTML = html;
   $("count").innerHTML = shown.length + (shown.length === 1 ? " casa" : " casas") + " · " + (st.sel ? "selección para ti" : (st.favs ? "guardadas" : (st.op === "Renta" ? "en renta" : "en venta")));
   $("selShare").innerHTML = (st.favs && !st.sel && shown.length) ? '<button class="pill" type="button" onclick="enviarSeleccion()">Enviar mi selección por WhatsApp</button><span class="selh">Se manda un enlace con solo estas casas.</span>' : "";
-  if (st.rec) { n++; } if (st.max) { n++; } if (st.cred) { n++; } if (st.soloNuevas) { n++; } if (st.verTodas) { n++; } if (st.op === "Renta" && !st.favs) { n++; }
+  if (st.rec) { n++; } if (st.max) { n++; } if (st.cred) { n++; } if (st.soloNuevas) { n++; } if (st.solo3d) { n++; } if (st.verTodas) { n++; } if (st.op === "Renta" && !st.favs) { n++; }
   $("ftog").innerHTML = "Filtros" + (n ? " (" + n + ")" : "") + ($("fbody").className === "open" ? " ▴" : " ▾");
 }
 
@@ -1151,6 +1183,16 @@ function videoHtml(h) {
   if (/\.(mp4|mov|m4v)(\?|$)/i.test(u)) { return '<div class="vid"><h4>Recorrido en video</h4><video controls playsinline preload="none" src="' + esc(u) + '" style="width:100%;border-radius:2px;background:#000"></video></div>'; }
   return '<div class="vid"><h4>Recorrido en video</h4><a class="pill ol" target="_blank" href="' + esc(u) + '">Ver el video</a></div>';
 }
+function r3dHtml(h) {
+  if (!tiene3D(h.code)) { return ""; }
+  return '<a class="r3d" href="' + r3dUrl(h.code) + '"><span class="r3i" aria-hidden="true">3D</span><span class="r3t"><b>Recorre esta casa en 3D</b>' +
+    '<small>Entra a cada cuarto desde tu celular y compáralo con las fotos reales.</small></span><span class="r3go">Entrar</span></a>';
+}
+function r3card(h) {
+  return '<a class="pcard r3c" href="' + r3dUrl(h.code) + '"><div class="pimg" style="' + bg(cover(h)) + '"><div class="r3b">Recorrido 3D</div></div>' +
+    '<div class="pb"><div class="pbad">' + esc(h.op === "Renta" ? "Renta" : "Venta") + '</div><div class="pn">' + esc(h.corto || h.name) + '</div><div class="pz">📍 ' + esc(h.zona) + "</div>" +
+    '<div class="pp">' + priceLine(h) + '</div><div class="pa"><span class="pill sm">Recorrer en 3D</span></div></div></a>';
+}
 function openDetail(code) {
   var h = byCode(code), g = "", li = "", j, eb, html;
   if (!h) { return; }
@@ -1166,7 +1208,7 @@ function openDetail(code) {
     '<div class="eb">' + (eb ? eb + " · " : "") + esc(h.code) + "</div><h2>" + esc(h.name) + "</h2>" +
     '<div class="big">' + priceLine(h) + (notaP(h) ? "<small>" + esc(notaP(h)) + "</small>" : "") + "</div>" +
     (mensEj(h) ? '<div class="mens"><b>' + mensLine(h) + '</b><span>Ejemplo con ' + Math.round(MENS.eng * 100) + '% de enganche, ' + MENS.anios + ' años y tasa de ' + MENS.tasa + '%. <a onclick="openCalc(\'' + h.code + '\')">Calcula la tuya ›</a></span></div>' : "") +
-    '<p class="zonaL">📍 ' + esc(h.zona) + "</p>" + galleryHtml(h) + videoHtml(h) + '<div class="grid">' + g + "</div>" +
+    '<p class="zonaL">📍 ' + esc(h.zona) + "</p>" + galleryHtml(h) + r3dHtml(h) + videoHtml(h) + '<div class="grid">' + g + "</div>" +
     (li ? '<h4>Lo más destacado</h4><div class="chips">' + li + "</div>" : "");
   /*A2*/
   html += '<div class="cta2"><button class="pill" type="button" onclick="pedirVisita(\'' + h.code + '\')">Agendar visita</button>' +
@@ -1466,6 +1508,15 @@ function renderHome() {
   list.sort(function (a, b) { return (b.agregada || "").localeCompare(a.agregada || "") || b.orden - a.orden; });
   for (i = 0; i < list.length && i < 6; i++) { fam += pcard(list[i]); }
   $("fam").innerHTML = fam;
+  (function () {
+    var r = [], k, t = "";
+    for (k = 0; k < DATA.length; k++) { if (DATA[k].status === "Disponible" && tiene3D(DATA[k].code)) { r.push(DATA[k]); } }
+    r.sort(function (a, b) { return a.precio - b.precio; });
+    for (k = 0; k < r.length; k++) { t += r3card(r[k]); }
+    $("r3dList").innerHTML = t;
+    $("r3dN").innerHTML = r.length + (r.length === 1 ? " casa ya tiene" : " casas ya tienen") + ' recorrido 3D. <button class="lnk" type="button" onclick="goCasas({op:\'Venta\', solo3d:true})">Verlas en el catálogo</button>';
+    $("r3dSec").style.display = r.length ? "" : "none";
+  })();
   $("famMore").innerHTML = '<button class="pill" type="button" onclick="goCasas({op:\'Venta\'})">Ver las ' + list.length + ' casas en venta</button>' +
     (rent.length ? ' <button class="pill ol" type="button" onclick="goCasas({op:\'Renta\'})">Ver ' + (rent.length === 1 ? "la casa" : "las " + rent.length + " casas") + ' en renta</button>' : "");
   $("hero").innerHTML = '<div class="tile hero" style="' + bg(HERO_FOTO) + '"><div class="veil"><div class="tx">' +
@@ -1958,6 +2009,7 @@ function init() {
   $("sort").onchange = function () { st.sort = this.value; render(); };
   $("q").oninput = function () { st.q = this.value; render(); };
   $("soloNuevas").onchange = function () { st.soloNuevas = this.checked; render(); };
+  $("solo3d").onchange = function () { st.solo3d = this.checked; render(); };
   $("verTodasC").onchange = function () { st.verTodas = this.checked; render(); };
   /* registro */
   fillCasaSelect();
