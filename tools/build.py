@@ -104,7 +104,7 @@ h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:27px;margin:26px 0 1
 .facts b{display:block;font-size:12px;color:#6f6a62;letter-spacing:.4px;text-transform:uppercase;font-weight:500}.facts span{font-size:19px;font-weight:600}
 ul.dst{margin:0;padding-left:22px}ul.dst li{margin-bottom:6px}
 .btn{display:block;text-align:center;text-decoration:none;border-radius:2px;padding:15px 12px;font-size:13px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;margin:0 0 10px}
-.wa{background:#1fa855;color:#fff;border:1px solid #1fa855}.dk{background:#17140f;color:#f6f2ea;border:1px solid #17140f}.ol{border:1px solid #b8965a}
+.wa{background:#1fa855;color:#fff;border:1px solid #1fa855}.dk{background:#17140f;color:#f6f2ea;border:1px solid #17140f}.ol{border:1px solid #b8965a}.t3{background:#14213d;color:#fff;border:1px solid #14213d;margin:14px 0 4px}
 .cta{margin-top:24px}
 .sim{display:flex;overflow-x:auto;margin:0 -16px;padding:0 16px 6px}.sim a{flex:none;width:200px;margin-right:12px;text-decoration:none}
 .sim img{width:200px;height:140px;object-fit:cover;border-radius:3px;display:block;background:#f6f2ea}.sim b{display:block;margin-top:6px;font-weight:600}.sim span{color:#6f6a62;font-size:15px}
@@ -185,6 +185,7 @@ def page(h, todas, wa):
 <p class="zn">📍 {esc(h["zona"])}</p>
 <div class="gal">{imgs}</div>
 {f'<p class="hint">Desliza para ver las {len(fotos)} fotos.</p>' if len(fotos) > 1 else ''}
+{f'<a class="btn t3" href="../../recorrido/{code}/">Recorrer la casa en 3D</a>' if os.path.exists(os.path.join(ROOT, "recorrido", code, "index.html")) else ''}
 <ul class="facts">{facts_html}</ul>
 {f'<h2>Lo más destacado</h2><ul class="dst">{dst}</ul>' if dst else ''}
 <div class="cta">
@@ -218,6 +219,8 @@ def main():
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
           f"  <url><loc>{BASE}</loc><lastmod>{hoy}</lastmod></url>"]
     sm += [f"  <url><loc>{BASE}casa/{h['code']}/</loc><lastmod>{hoy}</lastmod></url>" for h in casas]
+    sm += [f"  <url><loc>{BASE}recorrido/{h['code']}/</loc><lastmod>{hoy}</lastmod></url>" for h in casas
+           if os.path.exists(os.path.join(ROOT, "recorrido", h["code"], "index.html"))]
     sm.append("</urlset>")
     open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8").write("\n".join(sm) + "\n")
     print(len(casas), "páginas de casa y sitemap generados")

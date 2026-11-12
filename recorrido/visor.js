@@ -212,8 +212,8 @@
       g.foot(-hl, 0, hl, d);
       g.box(-hl, 0, 0.04, hl, 0.1, d - 0.06, '#8d8a84');                                       // zoclo del mueble
       g.box(-hl, 0.1, 0, hl, 0.86, d, COL.white);
-      g.box(-hl - 0.01, 0.86, -0.0, hl + 0.01, 0.9, d + 0.02, o.cubierta || '#cfcac1');         // cubierta
-      g.box(-hl, 0.9, 0, hl, 1.0, 0.02, o.cubierta || '#cfcac1');                               // copete
+      g.box(-hl - 0.01, 0.86, -0.0, hl + 0.01, 0.9, d + 0.02, o.cubierta || '#c9c7c2', { mat: 8 });         // cubierta
+      g.box(-hl, 0.9, 0, hl, 1.0, 0.02, o.cubierta || '#c9c7c2', { mat: 8 });                               // copete
       for (i = 0; i <= n; i++) { var x = -hl + len * i / n; g.box(x - 0.003, 0.12, d, x + 0.003, 0.84, d + 0.004, '#c4c4bf'); }
       for (i = 0; i < n; i++) { var xc = -hl + len * (i + 0.5) / n; g.box(xc - 0.05, 0.74, d + 0.004, xc + 0.05, 0.755, d + 0.03, COL.steel); }
       if (o.estufa != null) {
@@ -286,7 +286,7 @@
         g.rbox(b[0] - b[3], b[1] - b[3] * 0.85, b[2] - b[3], b[0] + b[3], b[1] + b[3] * 0.85, b[2] + b[3], k % 2 ? '#5f8a52' : '#6f9a5c', { e: 0.9, nu: 10, nv: 6 });
       });
     },
-    plafon: function (g, gt, o) { var y = o.y || 2.5; g.cyl(0, 0, y - 0.05, y - 0.045, 0.17, 0.17, '#fffaf0', { seg: 18, mat: 9 }); g.cyl(0, 0, y - 0.05, y, 0.17, 0.19, '#e4e2dc', { seg: 18, cap: false }); },
+    plafon: function (g, gt, o) { var y = o.y || 2.5; g.cyl(0, 0, y - 0.05, y - 0.045, 0.17, 0.17, '#fffaf0', { seg: 18, mat: 10 }); g.cyl(0, 0, y - 0.05, y, 0.17, 0.19, '#e4e2dc', { seg: 18, cap: false, mat: 10 }); },
     lavadero: function (g, gt, o) {
       g.foot(-0.4, 0, 0.4, 0.6);
       g.box(-0.4, 0, 0.04, -0.3, 0.6, 0.56, '#bdb8ad'); g.box(0.3, 0, 0.04, 0.4, 0.6, 0.56, '#bdb8ad');
@@ -429,23 +429,26 @@
     'varying vec3 vP;varying vec3 vN;varying vec4 vC;varying float vM;varying vec4 vS;',
     'uniform vec3 uL;uniform vec3 uE;uniform vec3 uSky;uniform sampler2D uSh;uniform sampler2D uAo;uniform vec4 uAoB;uniform float uRoof;uniform float uTx;uniform float uShOn;',
     'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+    'float vn(vec2 p){vec2 i=floor(p);vec2 f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(h(i),h(i+vec2(1.0,0.0)),f.x),mix(h(i+vec2(0.0,1.0)),h(i+vec2(1.0,1.0)),f.x),f.y);}',
     'float unpack(vec4 c){return dot(c,vec4(1.0,1.0/255.0,1.0/65025.0,1.0/16581375.0));}',
     'float shadow(){if(uShOn<0.5)return 1.0;vec3 p=vS.xyz/vS.w*0.5+0.5;',
     ' if(p.x<0.0||p.x>1.0||p.y<0.0||p.y>1.0||p.z>1.0)return 1.0;float s=0.0;',
     ' for(int i=0;i<4;i++){for(int j=0;j<4;j++){vec2 o=(vec2(float(i),float(j))-1.5)*uTx*1.35;',
     '  s+=step(p.z-0.0010,unpack(texture2D(uSh,p.xy+o)));}}return s/16.0;}',
     'void main(){vec3 n=normalize(vN);vec3 c=vC.rgb;float m=vM;float dist=distance(uE,vP);',
+    ' if(m>9.5&&uRoof<0.5)discard;',
     ' if(m>8.5){gl_FragColor=vec4(c,vC.a);return;}',
     ' vec3 V=normalize(uE-vP);float sheen=0.0;',
     ' if(m>0.5&&m<1.5){vec2 g=vP.xz/0.33;vec2 f=fract(g);float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y));',      // loseta
     '  float k=mix(0.84,1.0,smoothstep(0.0,0.035,e));k=mix(k,0.97,clamp((dist-8.0)/8.0,0.0,1.0));c*=k;',
     '  c*=0.955+0.07*h(floor(g))+0.02*h(floor(vP.xz*60.0));sheen=0.10*pow(1.0-max(dot(V,n),0.0),3.0);}',
-    ' else if(m>1.5&&m<2.5){c*=0.94+0.12*h(floor(vP.xz*14.0));}',                                                // pasto
+    ' else if(m>1.5&&m<2.5){float nr=1.0-clamp(dist/16.0,0.0,1.0);c*=0.80+0.20*vn(vP.xz*0.55)+0.14*vn(vP.xz*5.0)+0.10*nr*vn(vP.xz*38.0);c.r*=0.94+0.12*vn(vP.zx*1.7);}',                                                // pasto
     ' else if(m>2.5&&m<3.5){vec2 g=vP.xz/1.5;vec2 f=fract(g);float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y));',  // concreto
     '  c*=mix(0.9,1.0,smoothstep(0.0,0.014,e));c*=0.98+0.04*h(floor(vP.xz*20.0));}',
     ' else if(m>3.5&&m<5.5){c*=0.985+0.03*h(floor((vP.xz+vP.yy)*90.0));}',                                       // muro y techo: textura de pintura
     ' else if(m>5.5&&m<6.5){float gr=sin((vP.x*0.7+vP.z+vP.y*0.5)*85.0+4.0*h(floor(vP.xz*9.0)));c*=0.95+0.05*gr;sheen=0.05*pow(1.0-max(dot(V,n),0.0),3.0);}', // madera
     ' else if(m>6.5&&m<7.5){c*=0.95+0.09*h(floor((vP.xz+vP.yy*1.7)*220.0));}',                                   // tela
+    ' else if(m>7.5&&m<8.5){vec2 q=vP.xz+vP.yy*1.3;c*=0.80+0.14*vn(q*55.0)+0.12*h(floor(q*300.0))+0.08*vn(q*9.0);sheen=0.16*pow(1.0-max(dot(V,n),0.0),2.5);}', // granito
     ' vec3 a0=texture2D(uAo,(vP.xz-uAoB.xy)*uAoB.zw).rgb;float ao=1.0;',
     ' if(n.y>0.5){ao=1.0-0.44*a0.r-0.52*a0.g*step(vP.y,0.03);}',
     ' else if(n.y<-0.5){ao=1.0-0.34*a0.r;}',
@@ -460,9 +463,13 @@
     ' col=mix(col,uSky,smoothstep(24.0,60.0,dist));',
     ' gl_FragColor=vec4(col,vC.a);}'].join('\n');
   var VS2 = 'attribute vec3 aP;attribute float aM;uniform mat4 uLVP;uniform float uRoof;' +
-    'void main(){if(aM>4.5&&aM<5.5&&uRoof<0.5){gl_Position=vec4(2.0,2.0,2.0,1.0);}else{gl_Position=uLVP*vec4(aP,1.0);}}';
+    'void main(){if((aM>9.5||(aM>4.5&&aM<5.5))&&uRoof<0.5){gl_Position=vec4(2.0,2.0,2.0,1.0);}else{gl_Position=uLVP*vec4(aP,1.0);}}';
   var FS2 = '#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n' +
     'void main(){float d=gl_FragCoord.z;vec4 e=fract(d*vec4(1.0,255.0,65025.0,16581375.0));e-=e.yzww*vec4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);gl_FragColor=e;}';
+
+  var VS3 = 'attribute vec2 aQ;varying vec2 vQ;void main(){vQ=aQ;gl_Position=vec4(aQ,0.0,1.0);}';
+  var FS3 = 'precision mediump float;varying vec2 vQ;uniform vec3 uH;uniform vec3 uZ;uniform vec2 uK;' +
+    'void main(){float t=(vQ.y-uK.x)*uK.y;gl_FragColor=vec4(mix(uH,uZ,smoothstep(0.0,0.75,t)),1.0);}';
 
   var MIRROR = new Float32Array([-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]); // el plano se dibuja como se ve desde la calle
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
@@ -479,12 +486,14 @@
       if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
       return p;
     }
-    var pr, pr2;
-    try { pr = prog(VS, FS); pr2 = prog(VS2, FS2); } catch (err) { if (window.console) console.error(err); if (hooks.onFail) hooks.onFail(); return null; }
+    var pr, pr2, pr3;
+    try { pr = prog(VS, FS); pr2 = prog(VS2, FS2); pr3 = prog(VS3, FS3); } catch (err) { if (window.console) console.error(err); if (hooks.onFail) hooks.onFail(); return null; }
     function U(p, names) { var o = {}; names.forEach(function (n) { o[n] = gl.getUniformLocation(p, n); }); return o; }
     function A(p, names) { var o = {}; names.forEach(function (n) { o[n] = gl.getAttribLocation(p, n); }); return o; }
     var u1 = U(pr, ['uVP', 'uLVP', 'uL', 'uE', 'uSky', 'uSh', 'uAo', 'uAoB', 'uRoof', 'uTx', 'uShOn']), a1 = A(pr, ['aP', 'aN', 'aC', 'aM']);
     var u2 = U(pr2, ['uLVP', 'uRoof']), a2 = A(pr2, ['aP', 'aN', 'aC', 'aM']);
+    var u3 = U(pr3, ['uH', 'uZ', 'uK']), a3 = gl.getAttribLocation(pr3, 'aQ'), bufQ = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufQ); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     var bufS = gl.createBuffer(), bufG = gl.createBuffer(), nS = 0, nG = 0;
 
     // sol: entra por el frente de la casa
@@ -530,7 +539,7 @@
 
     // cámara: mira hacia dir(yaw,pitch) desde eye = target - dir*dist. dist≈0 → vista en primera persona.
     var cam = { tx: 0, ty: 1, tz: 0, yaw: 0, pitch: 0.9, dist: 14, fov: 0.7 }, anim = null, dirty = true, VPm = null, W = 1, H = 1, eye = [0, 0, 0];
-    var sky = hex(plan.sky || '#e9eef1');
+    var sky = hex(plan.sky || '#e9eef1'), zen = hex(plan.zenith || '#8fb8e3');
 
     function dirOf(c) { var cp = Math.cos(c.pitch); return [Math.sin(c.yaw) * cp, -Math.sin(c.pitch), Math.cos(c.yaw) * cp]; }
     function resize() {
@@ -555,6 +564,13 @@
       }
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clearColor(sky[0], sky[1], sky[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      // cielo: degradado del horizonte al cenit
+      var th = Math.tan(fov / 2), oy0 = cam.dist > 0.6 ? (asp < 1 ? 0.34 : 0.2) * Math.min(1, (cam.dist - 0.6) / 6) : 0;
+      gl.useProgram(pr3); gl.disable(gl.DEPTH_TEST); gl.disable(gl.CULL_FACE); gl.disable(gl.BLEND); gl.depthMask(false);
+      gl.uniform3f(u3.uH, sky[0], sky[1], sky[2]); gl.uniform3f(u3.uZ, zen[0], zen[1], zen[2]);
+      gl.uniform2f(u3.uK, Math.tan(Math.min(1.45, cam.pitch)) / th + oy0, th);
+      gl.bindBuffer(gl.ARRAY_BUFFER, bufQ); gl.enableVertexAttribArray(a3); gl.vertexAttribPointer(a3, 2, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
       gl.useProgram(pr);
       gl.uniformMatrix4fv(u1.uVP, false, VPm); gl.uniformMatrix4fv(u1.uLVP, false, LVP);
       gl.uniform3f(u1.uL, L[0], L[1], L[2]); gl.uniform3f(u1.uE, -eye[0], eye[1], eye[2]); gl.uniform3f(u1.uSky, sky[0], sky[1], sky[2]);
