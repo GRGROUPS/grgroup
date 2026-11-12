@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Casas en venta en Querétaro | GR GROUP</title>
 <link rel="canonical" href="https://grgroups.github.io/grgroup/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"RealEstateAgent","name":"GR GROUP","slogan":"Tu hogar ahora","url":"https://grgroups.github.io/grgroup/","telephone":"+524921121116","areaServed":["Querétaro","Corregidora","El Marqués"],"description":"Casas en venta en Querétaro, Corregidora y El Marqués."}</script>
-<meta name="description" content="Casas en venta en Querétaro, Corregidora y El Marqués. Mira fotos y precios, encuentra las que aceptan Infonavit y agenda tu visita por WhatsApp.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"RealEstateAgent","name":"GR GROUP","slogan":"Tu hogar ahora","url":"https://grgroups.github.io/grgroup/","telephone":"+524921121116","areaServed":["Querétaro","Corregidora"],"description":"Casas en venta en Querétaro y Corregidora."}</script>
+<meta name="description" content="Casas en venta en Querétaro y Corregidora. Mira fotos y precios, encuentra las que aceptan Infonavit y agenda tu visita por WhatsApp.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Casas en venta en Querétaro | GR GROUP">
 <meta property="og:description" content="Casas en venta en Querétaro. Fotos, precios, casas que aceptan Infonavit y visitas por WhatsApp.">
@@ -602,7 +602,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
   </div>
 
   <div class="sec" id="cerSec" style="display:none;padding-bottom:0">
-    <div class="sech"><div><h2>Ya tienen dueño.</h2><p class="sub">Casas que ya vendimos o apartamos. Cuéntanos qué buscas y te avisamos de las nuevas.</p></div>
+    <div class="sech"><div><h2>Ya tienen dueño.</h2><p class="sub">Casas que ya se vendieron, apartaron o rentaron. Cuéntanos qué buscas y te avisamos de las nuevas.</p></div>
       <button class="lnk" id="cerReg" type="button">Quiero algo parecido</button></div>
     <div class="scroll cscroll" id="cerList"></div>
   </div>
@@ -840,7 +840,7 @@ var ZONAS = ["Juriquilla", "Corregidora", "El Marqués", "Cerrito Colorado", "Vi
 
 /* Mosaicos del inicio: primero la casa más exclusiva (el gancho), después las demás. */
 var HERO_FOTO = "fotos/GR-023/1.jpg";
-var R3D = ["GR-002", "GR-004", "GR-010", "GR-013", "GR-015", "GR-018", "GR-019", "GR-022", "GR-023"]; /* casas con recorrido 3D: lo llena tools/build.py */
+var R3D = ["GR-002", "GR-004", "GR-013", "GR-015", "GR-018", "GR-019", "GR-022", "GR-023"]; /* casas con recorrido 3D: lo llena tools/build.py */
 function tiene3D(code) { return inArr(R3D, code); }
 function r3dUrl(code) { return "recorrido/" + code + "/"; }
 var STORY = [
@@ -1117,7 +1117,7 @@ function pcard(h) {
 function render() {
   var shown = filtered(), html = "", i, n = 0;
   for (i = 0; i < shown.length; i++) { html += pcard(shown[i]); }
-  if (!shown.length) { html = '<div class="vacio">' + (st.favs ? "Aún no guardas casas.<br>Toca el ♡ en las que te gusten." : "No hay casas con esos filtros.<br>Prueba quitando alguno.") + "</div>"; }
+  if (!shown.length) { html = '<div class="vacio">' + (st.favs ? "Aún no guardas casas.<br>Toca el ♡ en las que te gusten." : "No hay casas con esos filtros.<br>Prueba quitando alguno.<br><a class=\"pill wa2\" target=\"_blank\" rel=\"noopener\" style=\"margin-top:14px;display:inline-block\" href=\"" + waUrl("Hola, no encontré una casa con los filtros que puse. Busco una casa en Querétaro. ¿Me ayudas?") + "\">Cuéntanos qué buscas por WhatsApp</a>") + "</div>"; }
   $("list").innerHTML = html;
   $("count").innerHTML = shown.length + (shown.length === 1 ? " casa" : " casas") + " · " + (st.sel ? "selección para ti" : (st.favs ? "guardadas" : (st.op === "Renta" ? "en renta" : "en venta")));
   $("selShare").innerHTML = (st.favs && !st.sel && shown.length) ? '<button class="pill" type="button" onclick="enviarSeleccion()">Enviar mi selección por WhatsApp</button><span class="selh">Se manda un enlace con solo estas casas.</span>' : "";
@@ -1521,8 +1521,8 @@ function renderHome() {
     (rent.length ? ' <button class="pill ol" type="button" onclick="goCasas({op:\'Renta\'})">Ver ' + (rent.length === 1 ? "la casa" : "las " + rent.length + " casas") + ' en renta</button>' : "");
   $("hero").innerHTML = '<div class="tile hero" style="' + bg(HERO_FOTO) + '"><div class="veil"><div class="tx">' +
     '<h1 class="eyebrow">Casas en venta en Querétaro</h1><h2>Casas desde ' + (min ? money(min) : "$1,050,000") + '</h2>' +
-    '<div class="tg">Con Infonavit, Fovissste o crédito bancario.</div>' +
-    '<div class="ln">' + list.length + ' casas disponibles hoy en Querétaro, Corregidora y El Marqués. ' + nInf + ' aceptan Infonavit.</div>' +
+    '<div class="tg">Algunas aceptan Infonavit, Fovissste o crédito bancario.</div>' +
+    '<div class="ln">' + list.length + ' casas disponibles hoy en Querétaro y Corregidora. ' + nInf + ' aceptan Infonavit.</div>' +
     '<div class="ctas"><button class="pill" type="button" onclick="goCasas({op:\'Venta\'})">Ver las ' + list.length + ' casas</button>' +
     '<button class="lnk" type="button" onclick="goCasas({cred:\'infonavit\'})">Solo las que aceptan Infonavit</button></div></div></div></div>';
   renderPremium(list);
