@@ -4,8 +4,13 @@
 (function(){
 var T=window.TOUR, M=window.TOUR_META, levels=T.levels, stops=T.stops, F=M.fotos;
 var $=function(i){return document.getElementById(i)}, cur=0, lvl=-1, labs=[], auto=false, timer=0;
-function stopAuto(){if(!auto) return; auto=false; clearTimeout(timer); $('auto').setAttribute('aria-pressed','false'); $('auto').textContent='Ver casa completa'}
-function queue(){clearTimeout(timer); timer=setTimeout(function(){if(!auto) return; if(cur===stops.length-1){stopAuto(); show(0)} else show(cur+1)},3600)}
+// velocidad del recorrido automático: cambia la pausa en cada espacio y lo que tarda la cámara en moverse
+var VEL=[.5,.75,1,1.5,2], vi=2; try{var vs=+localStorage.getItem('grVel'); if(VEL.indexOf(vs)>=0) vi=VEL.indexOf(vs)}catch(e){}
+function setVel(d){vi=Math.max(0,Math.min(VEL.length-1,vi+d)); var v=VEL[vi]; $('vtxt').textContent=(v===.5?'½':v===.75?'¾':v===1.5?'1½':v)+'×';
+  $('vmenos').disabled=vi===0; $('vmas').disabled=vi===VEL.length-1; try{localStorage.setItem('grVel',v)}catch(e){}
+  if(auto) queue()}
+function stopAuto(){if(!auto) return; auto=false; clearTimeout(timer); $('auto').setAttribute('aria-pressed','false'); $('auto').textContent='▶ Empezar recorrido'}
+function queue(){clearTimeout(timer); timer=setTimeout(function(){if(!auto) return; if(cur===stops.length-1){stopAuto(); show(0)} else show(cur+1)},3600/VEL[vi])}
 function setLabels(){
   $('labels').textContent=''; labs=[];
   (levels[lvl].rooms||[]).forEach(function(r){var e=document.createElement('div');e.className='lab';e.textContent=r[0];e.style.opacity=0;$('labels').appendChild(e);labs.push(e)});
@@ -33,6 +38,7 @@ function show(i,instant){
     var first=lvl<0; lvl=L; if(!first) v.setPlan(levels[L].plan); setLabels(); instant=true;
     if(!first){var c=$('c'); c.classList.remove('sw'); void c.offsetWidth; c.classList.add('sw');}
   }
+  if(auto){if(g===s){g={}; for(k in s) g[k]=s[k];} g.ms=(s.ms||1400)/Math.sqrt(VEL[vi]);}
   v.goTo(g,instant);
   $('capT').textContent=s.n; $('capD').textContent=s.d;
   Array.prototype.forEach.call($('stops').children,function(b,j){
@@ -51,9 +57,10 @@ function show(i,instant){
 }
 stops.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.textContent=s.n;b.onclick=function(){stopAuto();show(i)};$('stops').appendChild(b)});
 $('furn').onclick=function(){var on=this.getAttribute('aria-pressed')!=='true';this.setAttribute('aria-pressed',on);v.setFurniture(on)};
+$('vmenos').onclick=function(){setVel(-1)}; $('vmas').onclick=function(){setVel(1)}; setVel(0);
 $('auto').onclick=function(){
   if(auto){stopAuto();return}
-  auto=true; this.setAttribute('aria-pressed','true'); this.textContent='Detener'; $('hint').classList.add('off');
+  auto=true; this.setAttribute('aria-pressed','true'); this.textContent='❚❚ Detener'; $('hint').classList.add('off');
   show(cur===stops.length-1?0:cur+1);
 };
 function toast(t){var e=$('toast'); e.textContent=t; e.classList.add('on'); setTimeout(function(){e.classList.remove('on')},2200)}

@@ -40,6 +40,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .cap div{display:flex;align-items:baseline;gap:10px;flex:1;min-width:0}
 .auto{flex:none;border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:6px;padding:8px 14px;font-size:15px;font-weight:600;white-space:nowrap}
 .auto[aria-pressed=true]{background:#fff;color:var(--navy)}
+.cap .vel{flex:none;display:flex;flex-direction:row;align-items:center;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff}
+.vel button{border:0;background:none;color:var(--navy);font-size:19px;font-weight:600;width:34px;height:36px;line-height:1;cursor:pointer}
+.vel button:disabled{opacity:.3;cursor:default}
+.cap .vel span{min-width:34px;text-align:center;font-size:14px;font-weight:600;color:var(--navy);font-variant-numeric:tabular-nums}
 .toast{position:fixed;left:50%;bottom:calc(210px + env(safe-area-inset-bottom));transform:translateX(-50%);background:rgba(23,20,15,.9);color:#fff;padding:9px 16px;border-radius:999px;font-size:15px;pointer-events:none;opacity:0;transition:opacity .3s}
 .toast.on{opacity:1}
 .cap strong{font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;font-weight:600;line-height:1}
@@ -74,6 +78,8 @@ dialog button{background:#fff;border:0;border-radius:6px;padding:9px 16px;font-w
   .wa{padding:11px 14px;font-size:15px}
   .cap div{flex-direction:column;gap:2px;align-items:flex-start}.cap span{font-size:14px}
   .auto{padding:8px 11px;font-size:14px}
+  .cap{flex-wrap:wrap}.cap>div:first-child{flex:1 1 100%}.cap .auto{flex:1}
+  .vel button{width:34px;height:34px}.cap .vel span{min-width:30px;font-size:13px}
 }
 @media (prefers-reduced-motion:reduce){.lab,.hint,.toast{transition:none}}
 canvas.sw{animation:sw .45s ease-out}

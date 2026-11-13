@@ -274,7 +274,7 @@ def recorrido_page(h, wa):
     <a class="wa" href="{esc(wa_link)}">Agendar visita</a>
   </div>
   <div class="dock">
-    <div class="cap"><div aria-live="polite"><strong id="capT"></strong><span id="capD"></span></div><button class="auto" id="auto" type="button" aria-pressed="false">Ver casa completa</button></div>
+    <div class="cap"><div aria-live="polite"><strong id="capT"></strong><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false">▶ Empezar recorrido</button></div>
     <div class="stops" id="stops" role="group" aria-label="Espacios de la casa"></div>
     <p class="nota">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</p>
   </div>
