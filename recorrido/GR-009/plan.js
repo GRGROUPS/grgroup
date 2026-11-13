@@ -1,4 +1,4 @@
-/* Casa en Viñedos, privada (dos niveles, sin muebles). No hay plano: la distribución se armó con las fotos, la descripción
+/* Casa en Viñedos, privada (dos niveles). No hay plano: la distribución se armó con las fotos, la descripción
    de Iñaki y la ficha (93 m² de construcción, 138.79 m² de terreno); medidas aproximadas.
    Metros. x = ancho visto desde la calle, z = fondo. La calle queda en z negativo. */
 (function(){
@@ -56,6 +56,11 @@ var baja={
     /* cocina: muebles blancos con cubierta negra, estufa y tarja */
     ['barra',.08,8.0,90,{len:2.6,estufa:.3,tarja:-.6,color:'#f1efe9',mat:6,cubierta:'#2b2b2d'}],
     ['lavadero',4.5,12.45,180],['boiler',.6,12.4,0],
+    /* sala-comedor */
+    ['tv',.08,2.3,90,{w:1.5}],['tapete',1.9,2.3,90,{s:1,w:2.2,d:1.7,color:'#6f6259',color2:'#5f534b'}],['sofa',3.45,2.3,-90,{s:1,w:2.0,color:'#7f8c99',color2:'#93a0ad'}],['mesaCentro',1.9,2.3,90,{s:1}],
+    ['mesa',1.8,5.2,0,{s:1,w:.9,d:1.4}],['silla',1.8,4.5,0,{s:1}],['silla',1.8,5.9,180,{s:1}],['silla',1.1,5.2,90,{s:1}],['silla',2.5,5.2,-90,{s:1}],
+    /* recámara de planta baja */
+    ['cama',4.7,8.0,-90,{s:1,w:1.4,manta:'#7f8c99'}],['buro',5.3,7.1,-90,{s:1}],
     ['plafon',1.5,1.2,0],['plafon',3.2,3.4,0],['plafon',2.4,5.2,0],['plafon',3.7,8.0,0],['plafon',.95,8.0,0]
   ]
 };
@@ -86,6 +91,8 @@ var alta={
   boxes:[[-6.6,0,0,-.09,3.4,9.6,'#e9e8e4',{mat:11}],[5.59,0,0,12,3.4,9.6,'#e9e8e4',{mat:11}]],
   items:[
     ['hueco',5.0,3.0,0,{w:.9,l:3.2,lados:[-1,1],color:'#d8cdb9'}],
+    ['cama',.85,2.4,90,{s:1,w:1.5,manta:'#8f8a6a'}],['buro',.3,1.5,90,{s:1}],['cama',.85,8.0,90,{s:1,w:1.2,manta:'#b9703f'}],['buro',.3,7.1,90,{s:1}],
+    ['tv',.08,5.1,90,{w:1.5}],['sofa',3.3,5.1,-90,{s:1,w:2.0,color:'#7f8c99',color2:'#93a0ad'}],['tapete',1.8,5.1,90,{s:1,w:2.0,d:1.5}],
     /* baño principal */
     ['regadera',3.28,.08,0,{w:.95,d:.92}],['wc',5.42,1.5,-90],['lavabo',5.42,.9,-90],
     /* baño completo */

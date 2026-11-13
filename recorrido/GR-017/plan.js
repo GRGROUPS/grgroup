@@ -1,4 +1,4 @@
-/* Casa en Paseos del Bosque (dos niveles, sin muebles). No hay plano: la distribución se armó con las fotos y la ficha;
+/* Casa en Paseos del Bosque (dos niveles). No hay plano: la distribución se armó con las fotos y la ficha;
    medidas aproximadas, distribución aprobada por Iñaki. Metros. x = ancho visto desde la calle, z = fondo. La calle queda en z negativo. */
 (function(){
 // fotos: casa de dos niveles, planta baja con muro gris y ventanal de reja, puerta recesada oscura, loseta beige-gris,
@@ -55,6 +55,9 @@ var baja={
     ['barra',1.35,8.12,180,{len:2.2,tarja:0,color:OSC,mat:6,cubierta:GRAN}],
     /* área de lavado */
     ['lavadero',5.3,8.12,180],['boiler',4.3,8.12,0],
+    /* sala-comedor */
+    ['tv',.08,2.0,90,{w:1.5}],['tapete',1.8,2.0,90,{s:1,w:2.2,d:1.7,color:'#6f6259',color2:'#5f534b'}],['sofa',3.3,2.0,-90,{s:1,w:2.0,color:'#7f8c99',color2:'#93a0ad'}],['mesaCentro',1.8,2.0,90,{s:1}],
+    ['mesa',3.0,4.2,0,{s:1,w:.9,d:1.4}],['silla',3.0,3.5,0,{s:1}],['silla',3.0,4.9,180,{s:1}],['silla',2.35,4.2,90,{s:1}],['silla',3.65,4.2,-90,{s:1}],
     ['plafon',3.0,1.2,0],['plafon',3.0,3.6,0],['plafon',1.9,6.6,0],['plafon',5.0,6.6,0]
   ]
 };
@@ -88,6 +91,7 @@ var alta={
   boxes:[[-6.6,0,0,-.09,3.4,8.2,'#e9e8e4',{mat:11}],[6.09,0,0,12,3.4,8.2,'#e9e8e4',{mat:11}]],
   items:[
     ['hueco',5.5,1.8,0,{w:.9,l:3.2,lados:[-1,1],color:'#d8d4c8'}],
+    ['cama',.85,2.2,90,{s:1,w:1.6,manta:'#8f8a6a'}],['buro',.3,1.2,90,{s:1}],['cama',.85,6.6,90,{s:1,w:1.3,manta:'#b9703f'}],['buro',.3,5.7,90,{s:1}],['cama',5.15,6.6,-90,{s:1,w:1.2,manta:'#5f7f8f'}],['buro',5.7,5.7,-90,{s:1}],
     /* baño principal */
     ['regadera',3.68,.08,0,{w:.95,d:.9}],['wc',5.92,1.2,-90],['lavabo',5.92,.65,-90],
     /* baño compartido */
