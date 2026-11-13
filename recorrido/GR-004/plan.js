@@ -72,51 +72,63 @@ var rooms=[['Sala',3.0,1.5],['Comedor',5.4,1.5],['Cocina',8.4,2.0],['Recámara 1
    PISO y LADO marcan el departamento disponible (se resalta en la fachada y el recorrido entra a ese piso). */
 var PISOS=[3,4], LADO=0, PISO=PISOS[0]; // pisos con depa disponible; LADO 0 = izquierda viendo desde la calle, 1 = derecha
 var FH=2.9, NP=5, BW=21, BD=11, CX0=9.4, CX1=11.6;
-var EST='#efece5', GRIS='#8f8c87', VID='#33424f', MAD='#b98d60', NAR='#f08a2c', LUZ='#ffd9a0';
-var eb=[], y, p, u, k;
-/* losas, muros y remate */
-for(p=0;p<NP;p++){ y=p*FH;
-  eb.push([0,y,0,BW,y+.22,BD,'#d9d6cf',{mat:3}]);
-  eb.push([0,y+.22,.06,CX0,y+FH,BD,EST,{mat:14}],[CX1,y+.22,.06,BW,y+FH,BD,EST,{mat:14}]);
-  eb.push([CX0,y+.22,.6,CX1,y+FH,BD,'#dcd9d2',{mat:14}]);
-  /* cubo de escalera con cristal al frente */
-  eb.push([CX0+.1,y+.5,.55,CX1-.1,y+FH-.15,.6,VID,{mat:16}]);
-  for(u=0;u<2;u++){
-    var x0=u?CX1:0, m=function(a,b){return u?[BW-b,BW-a]:[a,b];}, hot=(PISOS.indexOf(p+1)>=0&&u===LADO);
-    /* ventanas de cada depa a la calle: recámaras, baño y servicio */
-    [[1.0,2.4,.95],[3.7,5.2,.95],[6.2,6.8,1.6],[7.6,8.7,1.1]].forEach(function(w){
-      var a=m(w[0],w[1]);
-      eb.push([a[0]-.06,y+w[2]-.08,-.03,a[1]+.06,y+2.18,.06,'#2b2b2d']);
-      eb.push([a[0],y+w[2],-.04,a[1],y+2.1,.0,hot?LUZ:VID,{mat:hot?9:16}]);
-      eb.push([a[0]-.1,y+w[2]-.12,-.16,a[1]+.1,y+w[2]-.06,.06,'#d9d6cf',{mat:3}]);
-    });
-    /* lambrín de madera entre ventanas, como el de adentro */
-    var lm=m(5.5,5.9); eb.push([lm[0],y+.3,-.05,lm[1],y+FH-.1,.06,MAD,{mat:6}]);
-    if(hot){ var f=m(.25,9.15);
-      eb.push([f[0],y+.24,-.12,f[1],y+.36,-.04,NAR,{mat:9}],[f[0],y+FH-.12,-.12,f[1],y+FH,-.04,NAR,{mat:9}],
-              [f[0],y+.24,-.12,f[0]+.12,y+FH,-.04,NAR,{mat:9}],[f[1]-.12,y+.24,-.12,f[1],y+FH,-.04,NAR,{mat:9}]); }
-  }
+/* diseño tomado del video de Gran Valle: fachada blanca con juntas marcadas, módulos blancos que sobresalen con
+   ventanas de marco grueso, módulos hundidos color arena, remate plano; pérgola de madera, bugambilias, agaves y muro de piedra */
+var BL='#eceae6', JN='#cfcbc5', AR='#b8a089', VID='#2e3238', MAR='#3a3a3c', MAD='#7a5536', NAR='#f08a2c', LUZ='#ffd9a0';
+var eb=[], y, p, u, k, H=NP*FH;
+function bay(x0,x1,z0,col,mat){ eb.push([x0,0,z0,x1,H+.9,BD-z0,col,{mat:mat}]); }
+/* masa: módulos blancos al frente (z=-.45) y hundidos color arena (z=0); el cubo de escalera, blanco y hundido */
+for(u=0;u<2;u++){ var o=u?CX1:0, m=function(a,b){return u?[BW-b,BW-a]:[a,b];};
+  var w1=m(0,3.3), w2=m(3.3,6.3), w3=m(6.3,CX0);
+  bay(w1[0],w1[1],-.45,BL,14); bay(w2[0],w2[1],0,AR,14); bay(w3[0],w3[1],-.45,BL,14); }
+eb.push([CX0,0,.35,CX1,H+1.6,BD-.35,BL,{mat:14}]);
+/* juntas horizontales (cada medio piso) y verticales en los módulos blancos */
+for(k=1;k<NP*2;k++){ y=k*FH/2; [[0,3.3],[6.3,CX0],[CX1,BW-6.3],[BW-3.3,BW]].forEach(function(r){ eb.push([r[0],y-.015,-.47,r[1],y+.015,-.44,JN]); }); }
+[1.65,7.85,BW-1.65,BW-7.85].forEach(function(x){ eb.push([x-.015,0,-.47,x+.015,H+.9,-.44,JN]); });
+/* ventanas: marco grueso que sobresale en los módulos blancos; ventana simple en los hundidos */
+function ventana(x0,x1,y0,y1,z,marco,hot){
+  if(marco) eb.push([x0-.16,y0-.16,z-.28,x1+.16,y0,z,BL,{mat:14}],[x0-.16,y1,z-.28,x1+.16,y1+.16,z,BL,{mat:14}],[x0-.16,y0,z-.28,x0,y1,z,BL,{mat:14}],[x1,y0,z-.28,x1+.16,y1,z,BL,{mat:14}]);
+  eb.push([x0,y0,z-.03,x1,y1,z+.01,MAR],[x0+.05,y0+.05,z-.05,x1-.05,y1-.05,z-.02,hot?LUZ:VID,{mat:hot?9:16}],[x0+(x1-x0)/2-.02,y0+.05,z-.07,x0+(x1-x0)/2+.02,y1-.05,z-.04,MAR]);
 }
-y=NP*FH;
-eb.push([0,y,0,BW,y+.25,BD,'#d9d6cf',{mat:3}],[-.05,y+.25,-.05,BW+.05,y+1.0,.2,EST,{mat:14}],[-.05,y+.25,BD-.2,BW+.05,y+1.0,BD+.05,EST,{mat:14}],
-        [-.05,y+.25,0,.2,y+1.0,BD,EST,{mat:14}],[BW-.2,y+.25,0,BW+.05,y+1.0,BD,EST,{mat:14}],
-        [CX0-.3,y,.6,CX1+.3,y+2.4,4.0,'#dcd9d2',{mat:14}],[2,y+.25,6,3.6,y+1.6,7.6,'#7c8085',{mat:3}],[17,y+.25,6,18.6,y+1.6,7.6,'#7c8085',{mat:3}]);
-/* basamento de piedra, acceso y marquesina */
-eb.push([-.04,0,-.08,CX0,.9,.06,'#a99f92',{mat:12}],[CX1,0,-.08,BW+.04,.9,.06,'#a99f92',{mat:12}],
-        [CX0+.2,.22,.0,CX1-.2,2.4,.6,VID,{mat:16}],[CX0-.6,2.55,-1.6,CX1+.6,2.75,.06,'#3a3b3e'],
-        [CX0+.1,0,-1.6,CX1-.1,.12,0,'#bdb8ad',{mat:19}]);
-/* lado y fondo: algunas ventanas */
-for(p=0;p<NP;p++){ y=p*FH; [[2,3.2],[7,8.2]].forEach(function(w){
+for(p=0;p<NP;p++){ y=p*FH;
+  for(u=0;u<2;u++){ var m2=function(a,b){return u?[BW-b,BW-a]:[a,b];}, hot=(PISOS.indexOf(p+1)>=0&&u===LADO), q;
+    q=m2(1.05,2.25); ventana(q[0],q[1],y+.95,y+2.15,-.45,1,hot);
+    q=m2(4.15,5.45); ventana(q[0],q[1],y+.95,y+2.15,0,0,hot);
+    q=m2(7.35,8.35); ventana(q[0],q[1],y+1.15,y+2.15,-.45,1,hot);
+    if(hot){ var f=m2(-.12,CX0+.05);
+      eb.push([f[0],y+.12,-.86,f[1],y+.24,-.76,NAR,{mat:9}],[f[0],y+FH-.06,-.86,f[1],y+FH+.06,-.76,NAR,{mat:9}],
+              [f[0],y+.12,-.86,f[0]+.12,y+FH+.06,-.76,NAR,{mat:9}],[f[1]-.12,y+.12,-.86,f[1],y+FH+.06,-.76,NAR,{mat:9}]); }
+  }
+  /* ventanita del cubo de escalera */
+  eb.push([BW/2-.35,y+1.4,.31,BW/2+.35,y+2.1,.36,VID,{mat:16}]);
+}
+/* acceso al cubo de escalera */
+eb.push([CX0+.3,0,.3,CX1-.3,2.3,.36,VID,{mat:16}],[CX0-.2,2.45,-1.2,CX1+.2,2.6,.36,MAR]);
+/* lado y fondo: ventanas sencillas */
+for(p=0;p<NP;p++){ y=p*FH; [[2,3.1],[6.5,7.6]].forEach(function(w){
   eb.push([-.04,y+1.0,w[0],.0,y+2.1,w[1],VID,{mat:16}],[BW,y+1.0,w[0],BW+.04,y+2.1,w[1],VID,{mat:16}]);
   eb.push([w[0]+1,y+1.0,BD,w[1]+1,y+2.1,BD+.04,VID,{mat:16}],[BW-w[1]-1,y+1.0,BD,BW-w[0]-1,y+2.1,BD+.04,VID,{mat:16}]); }); }
-/* amenidades: alberca, camastros, gimnasio, jardín y setos */
+/* pérgola de madera con techo, como en el video */
+(function(x0,z0){ var t=.16, W=3.4, D=3.4, h=2.5;
+  [[0,0],[W-t,0],[0,D-t],[W-t,D-t]].forEach(function(c){ eb.push([x0+c[0],0,z0+c[1],x0+c[0]+t,h,z0+c[1]+t,MAD,{mat:6}]); });
+  eb.push([x0-.15,h,z0-.15,x0+W+.15,h+.18,z0+D+.15,MAD,{mat:6}],[x0-.35,h+.18,z0-.35,x0+W+.35,h+.3,z0+D+.35,'#5b4a3c',{mat:6}],
+          [x0+.4,h+.3,z0+.4,x0+W-.4,h+.62,z0+D-.4,'#4c4038',{mat:6}],[x0+.5,0,z0+1.3,x0+W-.5,.45,z0+2.1,'#8a6a4a',{mat:6}]);
+})(1.2,-6.0);
+/* bugambilias, agaves, muro de piedra y postes de luz */
+[[.8,-2.2],[5.0,-1.9],[13.5,-2.1],[19.8,-2.0]].forEach(function(b){ eb.push([b[0]-.5,0,b[1]-.4,b[0]+.5,1.1,b[1]+.4,'#4f7a3a',{mat:2}],[b[0]-.45,.75,b[1]-.45,b[0]+.4,1.35,b[1]+.35,'#e98a6a',{mat:7}],[b[0]-.2,1.1,b[1]-.3,b[0]+.3,1.5,b[1]+.2,'#d9707f',{mat:7}]); });
+[[3.2,-1.1],[8.2,-1.2],[16.5,-1.1]].forEach(function(a){ for(k=0;k<5;k++){ var dx=Math.cos(k*1.26)*.28, dz=Math.sin(k*1.26)*.28; eb.push([a[0]+dx-.07,0,a[1]+dz-.07,a[0]+dx+.07,.75,a[1]+dz+.07,'#6f8f62',{mat:2}]); } });
+eb.push([-6,0,-8.4,-.6,1.4,-1.2,'#8e8476',{mat:12}],[BW+.6,0,-1.2,BW+6,1.6,BD+6,'#8e8476',{mat:12}]);
+[[-1,-4.6],[11,-4.6],[23,-4.6]].forEach(function(l){ eb.push([l[0],0,l[1],l[0]+.12,6.5,l[1]+.12,'#5d6166'],[l[0],6.4,l[1]-.9,l[0]+.12,6.5,l[1]+.12,'#5d6166'],[l[0]-.12,6.25,l[1]-1.1,l[0]+.24,6.4,l[1]-.75,'#f4f1e6',{mat:9}]); });
+/* otros edificios del fraccionamiento al fondo */
+[[-26,8,-14,22],[30,4,38,16],[-8,28,8,38],[14,30,30,40]].forEach(function(t){
+  eb.push([t[0],0,t[1],t[2],H+.6,t[3],BL,{mat:14}]);
+  for(p=0;p<NP;p++) for(k=t[0]+1;k<t[2]-1;k+=2.4) eb.push([k,p*FH+1,t[1]-.04,k+1.1,p*FH+2.1,t[1],VID,{mat:16}]); });
+/* amenidades: alberca, camastros, gimnasio */
 eb.push([1.5,-.02,15,13.5,.12,22.5,'#e7e3da',{mat:19}],[2.2,-.3,15.7,12.8,.08,21.8,'#3fa6c9',{mat:16}],
-        [15,0,14.5,20.5,3.0,21,'#efece5',{mat:14}],[15,.4,14.46,20.5,2.6,14.5,VID,{mat:16}],[15,3.0,14.5,20.5,3.15,21,'#d9d6cf',{mat:3}],
-        [-.2,0,-2.2,CX0-.8,.9,-1.6,'#5f8a43',{mat:2}],[CX1+.8,0,-2.2,BW+.2,.9,-1.6,'#5f8a43',{mat:2}]);
+        [15,0,14.5,20.5,3.0,21,BL,{mat:14}],[15,.4,14.46,20.5,2.6,14.5,VID,{mat:16}],[15,3.0,14.5,20.5,3.15,21,'#d9d6cf',{mat:3}]);
 for(k=0;k<4;k++) eb.push([3+k*2.4,0,23.2,4.6+k*2.4,.35,24,'#f2f0ea',{mat:7}]);
-for(k=0;k<5;k++){ var tx=-1+k*5.6; eb.push([tx,0,-4.3,tx+.22,2.3,-4.08,'#6b4f3a',{mat:6}],[tx-.85,2.1,-4.75,tx+1.07,3.3,-3.6,'#5c8a40',{mat:2}],[tx-.55,1.85,-5.05,tx+.77,3.55,-3.3,'#6a9a4a',{mat:2}],[tx-.35,3.3,-4.6,tx+.57,3.95,-3.75,'#73a352',{mat:2}]); }
 var edif={
-  sky:'#d7e5f0', center:[BW/2,0,BD/2+3], frame:'#2b2b2d', tile:0, gloss:.2, wallOut:EST, wallMat:14, wallIn:EST, zoclo:EST,
+  sky:'#cfe2f3', center:[BW/2,0,BD/2+3], frame:'#2b2b2d', tile:0, gloss:.2, wallOut:BL, wallMat:14, wallIn:BL, zoclo:BL,
   ground:[
     [-20,-0.09,-30,42,40,'#8fae6b',2],
     [-20,-0.06,-14,42,-6.5,'#6d6f72',0],
@@ -129,7 +141,7 @@ var edif={
 };
 var ux=LADO?(CX1+(BW-CX1)/2):(CX0/2), uy=(PISO-1)*FH, NOM=PISOS.length>1?'pisos '+PISOS.join(' y '):'piso '+PISO;
 var pre=[
-  {n:'El edificio',d:'Edificio de 5 pisos con 2 departamentos por piso y ventanas a la calle; alberca, gimnasio y áreas verdes atrás.',lvl:0,t:[BW/2,7,4],yaw:-.5,pitch:.16,dist:31,fov:.75,f:[6],v:{dist:38}},
+  {n:'El edificio',d:'Torre de 5 pisos del fraccionamiento Gran Valle, con 2 departamentos por piso y ventanas a la calle; pérgola, áreas verdes, alberca y gimnasio.',lvl:0,t:[BW/2,7.5,2],yaw:-.45,pitch:.12,dist:33,fov:.75,f:[6],v:{dist:31}},
   {n:'Disponibles: '+NOM,d:'Quedan los departamentos de los '+NOM+', marcados en naranja; los dos son el mismo modelo. Entremos.',lvl:0,t:[ux,uy+FH*(PISOS.length>1?1:.5),0],yaw:LADO?.25:-.25,pitch:.04,dist:15,fov:.7,f:[],v:{dist:20}}
 ];
 /* el depa está en un piso alto: el ventanal de la sala da al vacío, con barandal, y el jardín queda abajo */
