@@ -269,20 +269,20 @@ def recorrido_page(h, wa):
 
 <div class="bottom">
   <div class="row">
-    <div class="foto" id="foto" hidden><b>Así se ve en la foto real</b><div class="th" id="th"></div></div>
+    <div class="foto" id="foto" hidden><b>Así se ve en la foto real</b><div class="th" id="th"></div><i id="fn"></i></div>
     <span></span>
     <a class="wa" href="{esc(wa_link)}">Agendar visita</a>
   </div>
   <div class="dock">
     <div class="cap"><div aria-live="polite"><strong id="capT"></strong><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false">▶ Empezar recorrido</button></div>
     <div class="stops" id="stops" role="group" aria-label="Espacios de la casa"></div>
-    <p class="nota">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</p>
+    <p class="nota"><span class="lg">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</span><span class="sm">Recorrido ilustrativo: medidas y muebles aproximados.</span></p>
   </div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
 
-<dialog id="dlg"><img id="dimg" alt=""><form method="dialog"><span id="dcap"></span><button>Cerrar</button></form></dialog>
+<dialog id="dlg"><img id="dimg" alt=""><form method="dialog"><span id="dcap"></span><span class="db"><button type="button" id="dnext" hidden>Siguiente ›</button><button>Cerrar</button></span></form></dialog>
 
 <div class="fail" id="fail" hidden><p>Tu navegador no pudo mostrar el recorrido 3D.<br><a href="../../casa/{code}/">Ver las fotos de la casa</a></p></div>
 

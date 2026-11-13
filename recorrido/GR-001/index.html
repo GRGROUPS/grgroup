@@ -12,7 +12,7 @@
 <link rel="icon" type="image/png" href="../../icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:400,500,600%7CCormorant+Garamond:500,600,700&amp;display=swap">
-<link rel="stylesheet" href="../tour.css?v=1794554130">
+<link rel="stylesheet" href="../tour.css?v=1794598682">
 </head>
 <body>
 <canvas id="c" aria-label="Maqueta 3D de la casa. Arrastra para girar."></canvas>
@@ -42,26 +42,26 @@
 
 <div class="bottom">
   <div class="row">
-    <div class="foto" id="foto" hidden><b>Así se ve en la foto real</b><div class="th" id="th"></div></div>
+    <div class="foto" id="foto" hidden><b>Así se ve en la foto real</b><div class="th" id="th"></div><i id="fn"></i></div>
     <span></span>
     <a class="wa" href="https://wa.me/524921121116?text=Hola%2C%20vi%20el%20recorrido%203D%20de%20la%20casa%20GR-001%20%E2%80%93%20Casa%20en%20Rancho%20San%20Pedro%20%28%241%2C050%2C000%29.%20%C2%BFCu%C3%A1ndo%20la%20puedo%20visitar%3F">Agendar visita</a>
   </div>
   <div class="dock">
     <div class="cap"><div aria-live="polite"><strong id="capT"></strong><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false">▶ Empezar recorrido</button></div>
     <div class="stops" id="stops" role="group" aria-label="Espacios de la casa"></div>
-    <p class="nota">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</p>
+    <p class="nota"><span class="lg">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</span><span class="sm">Recorrido ilustrativo: medidas y muebles aproximados.</span></p>
   </div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
 
-<dialog id="dlg"><img id="dimg" alt=""><form method="dialog"><span id="dcap"></span><button>Cerrar</button></form></dialog>
+<dialog id="dlg"><img id="dimg" alt=""><form method="dialog"><span id="dcap"></span><span class="db"><button type="button" id="dnext" hidden>Siguiente ›</button><button>Cerrar</button></span></form></dialog>
 
 <div class="fail" id="fail" hidden><p>Tu navegador no pudo mostrar el recorrido 3D.<br><a href="../../casa/GR-001/">Ver las fotos de la casa</a></p></div>
 
 <script>window.TOUR_META={"code": "GR-001", "name": "Casa en Rancho San Pedro", "precio": "$1,050,000", "url": "https://grgroups.github.io/grgroup/recorrido/GR-001/", "fotos": "../../fotos/GR-001/"};</script>
-<script src="../visor.js?v=1794554130"></script>
-<script src="plan.js?v=1794554130"></script>
-<script src="../tour.js?v=1794554130"></script>
+<script src="../visor.js?v=1794598682"></script>
+<script src="plan.js?v=1794598682"></script>
+<script src="../tour.js?v=1794598682"></script>
 </body>
 </html>

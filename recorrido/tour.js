@@ -48,14 +48,16 @@ function show(i,instant){
     if(j===cur){b.setAttribute('aria-current','true'); if(b.scrollIntoView&&!instant) b.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});}
     else b.removeAttribute('aria-current');
   });
-  var th=$('th'); th.textContent='';
-  (s.f||[]).forEach(function(n){
+  var th=$('th'), fl=s.f||[]; th.textContent='';
+  fl.forEach(function(n,j){
     var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Ampliar foto real de '+s.n);
     var im=new Image(); im.src=F+n+'.jpg'; im.alt='Foto real: '+s.n; im.loading='lazy'; b.appendChild(im);
-    b.onclick=function(){$('dimg').src=F+n+'.jpg';$('dimg').alt='Foto real: '+s.n;$('dcap').textContent='Foto real: '+s.n;$('dlg').showModal()};
+    b.onclick=function(){verFoto(s.n,fl,j);$('dlg').showModal()};
     th.appendChild(b);
   });
-  $('foto').hidden=!(s.f&&s.f.length);
+  $('fn').textContent='📷 Foto real'+(fl.length>1?' · '+fl.length:'');
+  $('foto').hidden=!fl.length;
+  $('capD').classList.remove('full');
   if(cur>0) $('hint').classList.add('off');
 }
 stops.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.textContent=s.n;b.onclick=function(){stopAuto();show(i)};$('stops').appendChild(b)});
@@ -66,6 +68,12 @@ $('auto').onclick=function(){
   auto=true; this.setAttribute('aria-pressed','true'); this.textContent='❚❚ Detener'; $('hint').classList.add('off');
   show(cur===stops.length-1?0:cur+1);
 };
+function verFoto(nom,fl,j){ j=(j+fl.length)%fl.length;
+  $('dimg').src=F+fl[j]+'.jpg'; $('dimg').alt='Foto real: '+nom;
+  $('dcap').textContent='Foto real: '+nom+(fl.length>1?' ('+(j+1)+' de '+fl.length+')':'');
+  var nx=$('dnext'); nx.hidden=fl.length<2; nx.onclick=function(){verFoto(nom,fl,j+1)};
+}
+$('capD').onclick=function(){this.classList.toggle('full')};
 function toast(t){var e=$('toast'); e.textContent=t; e.classList.add('on'); setTimeout(function(){e.classList.remove('on')},2200)}
 $('share').onclick=function(){
   var txt='Mira el recorrido 3D de esta casa: '+M.name+' ('+M.precio+')';
