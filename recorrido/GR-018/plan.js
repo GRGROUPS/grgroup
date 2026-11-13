@@ -1,14 +1,17 @@
 /* Casa en Hacienda Carlota, Privada Flandes (395 m² en tres niveles, terreno de 360 m²).
    Sin plano: distribución deducida de las fotos; medidas aproximadas. Metros. x = ancho visto desde la calle, z = fondo. */
 (function(){
-var T='#cfc8b8', TAN='#cdb48f', STONE='#6b5d58', LSTONE='#d9d3c5', WOOD='#8a5a3a', CLAR='#d8c3a0', GRAN='#cfc9bd', DARK='#6b3f26', DECK='#7a5038', FR='#26282b', NEG='#1f2123';
+// colores tomados de las fotos: porcelanato crema, estuco arena, piedra café en la torre, cantera clara en el volumen del balcón,
+// cocina de nogal con gabinetes altos blancos, clósets y tocadores de encino claro, duela de porcelanato en la terraza
+var T='#d8d2c5', TAN='#c8ad85', STONE='#6f5a55', LSTONE='#d6cfbf', WOOD='#94755a', CLAR='#d6c2a1', GRAN='#d3ccbd', DARK='#6e442a', DECK='#8b6148', FR='#26282b', NEG='#1f2123',
+    IN='#eee8da', ACC='#c9b08a', BEI='#dccbac', BLA='#f2f1ed';
 var W=11, D=14;
-function ext(o){o.t=.15; o.h=2.7; if(!o.color) o.color=TAN; return o}
+function ext(o){o.t=.15; o.h=2.7; if(!o.color) o.color=TAN; if(!o.mat) o.mat=(o.color===STONE||o.color===LSTONE)?12:14; return o}
 var baja={
-  sky:'#e9eef1', center:[5.5,0,7], frame:FR,
+  sky:'#e9eef1', center:[5.5,0,7], frame:FR, tile:.6, gloss:1, wallIn:IN, zoclo:'#e2dccd', indoor:[[2.2,0,4.4,4.5]],
   ground:[
     [-10,-0.09,-16,21,26,'#8fae6b',2],
-    [-10,-0.06,-16,21,-8.2,'#8a7f78',3],
+    [-10,-0.06,-16,21,-8.2,'#a8978b',15],
     [-10,-0.03,-8.2,21,-6.6,'#cfccc5',3],
     [.5,-0.02,-6.6,2.0,0,'#d6d3cc',3],
     [3.0,-0.02,-6.6,3.9,0,'#d6d3cc',3],[4.6,-0.02,-6.6,5.5,0,'#d6d3cc',3],[6.2,-0.02,-6.6,7.1,0,'#d6d3cc',3],[7.8,-0.02,-6.6,8.7,0,'#d6d3cc',3],[9.4,-0.02,-6.6,10.3,0,'#d6d3cc',3],
@@ -18,10 +21,11 @@ var baja={
           [0,4.5,6.8,D,T],[6.8,4.5,8.6,7,T],[8.6,4.5,W,7,T],[6.8,7,W,8.5,T],[6.8,8.5,W,D,T]],
   ceilings:[[0,0,2.2,4.5],[4.4,0,6.4,1.7],[4.4,1.7,6.4,2.9],[4.4,2.9,6.4,4.5],[6.4,0,W,4.5],[0,4.5,6.8,D],[6.8,4.5,8.6,7],[8.6,4.5,W,7],[6.8,7,W,8.5],[6.8,8.5,W,D]],
   walls:[
-    ext({ax:'x',c:0,from:0,to:2.2,open:[{from:.65,to:1.75,head:2.3,kind:'door',hinge:'from',ang:0,color:DARK}]}),
+    ext({ax:'x',c:0,from:0,to:2.2,open:[{from:.65,to:1.75,head:2.3,kind:'door',hinge:'from',ang:0,color:DARK,mat:6,marco:NEG}]}),
     ext({ax:'x',c:0,from:2.2,to:4.4,color:STONE,open:[{from:2.7,to:3.9,sill:1.75,head:2.1,kind:'window',mid:false}]}),
     ext({ax:'x',c:0,from:4.4,to:W,open:[{from:7.3,to:10.3,sill:1.0,head:2.1,kind:'window'}]}),
-    ext({ax:'z',c:0,from:0,to:D,open:[{from:1.6,to:2.2,sill:.9,head:2.0,kind:'window',mid:false}]}),
+    ext({ax:'z',c:0,from:0,to:4.5,open:[{from:1.6,to:2.2,sill:.9,head:2.0,kind:'window',mid:false}]}),
+    ext({ax:'z',c:0,from:4.5,to:D,cin:ACC}),   // muro de acento de la sala-comedor
     ext({ax:'z',c:W,from:0,to:D,open:[
       {from:5.4,to:6.3,sill:1.2,head:2.0,kind:'window',mid:false},
       {from:7.25,to:8.25,sill:1.15,head:2.1,kind:'window',mid:false},
@@ -37,7 +41,7 @@ var baja={
     {ax:'x',c:7,from:6.8,to:W,open:[{from:7.35,to:8.05,head:2.1,kind:'gap'},{from:9.2,to:9.95,head:2.1,kind:'gap'}]},
     {ax:'x',c:8.5,from:6.8,to:W,open:[{from:7.0,to:7.8,head:2.1,kind:'gap'}]},
     // bardas del jardín
-    {ax:'x',c:21,from:-.5,to:11.5,h:2.2,color:'#d9c7a8'},{ax:'z',c:-.5,from:14,to:21,h:2.2,color:'#d9c7a8'},{ax:'z',c:11.5,from:14,to:21,h:2.2,color:'#d9c7a8'}
+    {ax:'x',c:21,from:-.5,to:11.5,h:2.2,color:TAN,mat:14},{ax:'z',c:-.5,from:14,to:21,h:2.2,color:TAN,mat:14},{ax:'z',c:11.5,from:14,to:21,h:2.2,color:TAN,mat:14}
   ],
   boxes:[
     // descanso de la escalera
@@ -45,14 +49,15 @@ var baja={
     // marquesina de la entrada
     [.3,2.45,-1.1,2.3,2.57,0,NEG],
     // mueble alto de la cocina con nicho para refrigerador
-    [8.2,0,8.58,9.3,2.3,9.2,WOOD],[9.3,1.9,8.58,10.4,2.3,9.2,WOOD],[10.4,0,8.58,10.47,2.3,9.2,WOOD],[8.45,1.05,9.2,9.05,1.5,9.22,'#f2f1ed'],
+    [8.2,0,8.58,9.3,2.3,9.2,WOOD,{mat:6}],[9.3,1.9,8.58,10.4,2.3,9.2,WOOD,{mat:6}],[10.4,0,8.58,10.47,2.3,9.2,WOOD,{mat:6}],[8.45,1.05,9.2,9.05,1.5,9.22,BLA],
+    [8.74,.12,9.2,8.76,1.0,9.205,'#6f5642'],[8.74,1.55,9.2,8.76,2.26,9.205,'#6f5642'],[8.66,.5,9.2,8.68,.8,9.23,'#c9cdd0',{mat:16}],[8.82,.5,9.2,8.84,.8,9.23,'#c9cdd0',{mat:16}],[8.66,1.7,9.2,8.68,2.0,9.23,'#c9cdd0',{mat:16}],[8.82,1.7,9.2,8.84,2.0,9.23,'#c9cdd0',{mat:16}],
     // planta alta y tercer nivel vistos desde la calle (se ocultan al ver la maqueta desde arriba)
-    [-.075,2.7,-.075,4.475,5.5,14.075,TAN,{mat:11}],
-    [4.4,2.7,1.6,11.075,5.5,14.075,LSTONE,{mat:11}],
-    [4.4,2.7,-.075,11.075,2.82,1.6,TAN,{mat:11}],
-    [-.075,5.5,-.075,6.575,8.3,10.075,TAN,{mat:11}],
-    [6.5,5.5,1.6,11.075,6.6,1.75,TAN,{mat:11}],[10.925,5.5,1.6,11.075,6.6,14.075,TAN,{mat:11}],
-    [2.2,2.7,-.13,4.4,8.3,-.075,STONE,{mat:11}],
+    [-.075,2.7,-.075,4.475,5.5,14.075,TAN,{mat:34}],
+    [4.4,2.7,1.6,11.075,5.5,14.075,LSTONE,{mat:32}],
+    [4.4,2.7,-.075,11.075,2.82,1.6,TAN,{mat:34}],
+    [-.075,5.5,-.075,6.575,8.3,10.075,TAN,{mat:34}],
+    [6.5,5.5,1.6,11.075,6.6,1.75,TAN,{mat:34}],[10.925,5.5,1.6,11.075,6.6,14.075,TAN,{mat:34}],
+    [2.2,2.7,-.13,4.4,8.3,-.075,STONE,{mat:32}],
     [2.7,3.9,-.17,3.9,4.3,-.14,'#3d4a55',{mat:10}],[2.7,5.0,-.17,3.9,5.4,-.14,'#3d4a55',{mat:10}],[2.7,6.7,-.17,3.9,7.1,-.14,'#3d4a55',{mat:10}],
     [.5,3.6,-.11,1.0,4.6,-.08,'#3d4a55',{mat:10}],[.5,6.3,-.11,1.0,7.3,-.08,'#3d4a55',{mat:10}],
     [6.6,2.95,1.5,10.3,5.1,1.57,'#3d4a55',{mat:10}],
@@ -62,16 +67,16 @@ var baja={
     ['escalera',2.75,4.45,180,{w:1.0,n:9,alto:1.35,huella:.3,mat:1,color:T}],
     ['escalera',3.85,1.75,0,{w:1.0,n:9,alto:1.35,y0:1.35,huella:.3,mat:1,color:T}],
     // cocina en U
-    ['barra',9.1,13.92,180,{len:3.5,estufa:0,altos:[[-1.6,-.5],[.5,1.6]],color:WOOD,cubierta:GRAN}],
-    ['barra',10.92,12.3,-90,{len:2.1,tarja:0,color:WOOD,cubierta:GRAN}],
-    ['barra',6.95,12.55,90,{len:2.7,copete:false,color:WOOD,cubierta:GRAN}],
+    ['barra',9.1,13.92,180,{len:3.5,estufa:0,horno:1,altos:[[-1.6,-.5],[.5,1.6]],color:WOOD,mat:6,colorAltos:BLA,cubierta:GRAN}],
+    ['barra',10.92,12.3,-90,{len:2.1,tarja:0,color:WOOD,mat:6,cubierta:GRAN}],
+    ['barra',6.95,12.55,90,{len:2.7,copete:false,color:WOOD,mat:6,cubierta:GRAN}],
     // recámara de planta baja: baño y vestidor
-    ['regadera',4.48,.08,0,{w:.9,d:1.54}],['wc',5.5,.08,0],['lavabo',5.9,1.62,180],
-    ['closetM',4.48,2.3,90,{w:1.0,color:CLAR}],
+    ['regadera',4.48,.08,0,{w:.9,d:1.54}],['wc',5.5,.08,0],['tocadorF',5.85,1.62,180,{w:.8,color:CLAR}],
+    ['vestidor',4.48,2.3,90,{w:1.0,color:CLAR}],
     // medio baño de visitas
-    ['tocador',4.48,3.7,90,{w:1.4,color:CLAR}],['wc',5.9,2.98,0],
+    ['tocadorF',4.48,3.7,90,{w:1.3,color:CLAR}],['wc',5.9,2.98,0],
     // cuarto de servicio y lavado
-    ['regadera',6.88,4.58,0,{w:.85,d:1.0}],['wc',8.1,4.58,0],['lavabo',8.52,6.3,-90],
+    ['regadera',6.88,4.58,0,{w:.85,d:1.0}],['wc',8.1,4.58,0],['tocadorF',8.52,6.3,-90,{w:.7,color:CLAR}],
     ['lavadero',10.3,7.08,0],
     ['plafon',1.1,2.2,0],['plafon',8.7,2.2,0],['plafon',5.4,.85,0],['plafon',5.4,3.7,0],['plafon',3.4,7.0,0],['plafon',3.4,11.5,0],['plafon',9.0,11.5,0],['plafon',9.8,5.7,0],['plafon',8.9,7.75,0],['plafon',7.7,5.7,0],
     ['refri',9.85,8.62,0,{s:1}],
@@ -86,7 +91,7 @@ var baja={
   ]
 };
 var alta={
-  sky:'#e9eef1', center:[5.5,0,7], frame:FR,
+  sky:'#e9eef1', center:[5.5,0,7], frame:FR, tile:.6, gloss:1, wallIn:IN, zoclo:'#e2dccd', indoor:[[2.2,0,4.4,4.5]],
   ground:[[-10,-0.09,-16,21,26,'#d9dcde',0]],
   floors:[[0,0,2.2,4.5,T],[2.2,0,4.4,.1,T],[0,4.5,4.4,8.8,T],[4.4,6,6,8.8,T],[4.4,1.6,W,6,T],[6,6,8.2,8.8,T],[8.2,6,W,8.8,T],
           [0,8.8,3.4,D,T],[3.4,8.8,5,11,T],[3.4,11,5,D,T],[5,8.8,9.2,D,T],[9.2,8.8,W,11,T],[9.2,11,W,D,T],[4.4,0,W,1.6,T]],
@@ -95,20 +100,20 @@ var alta={
     ext({ax:'x',c:0,from:0,to:2.2,open:[{from:.5,to:1.0,sill:.9,head:1.9,kind:'window',mid:false}]}),
     ext({ax:'x',c:0,from:2.2,to:4.4,color:STONE,open:[{from:2.7,to:3.9,sill:1.2,head:1.6,kind:'window',mid:false}]}),
     ext({ax:'z',c:4.4,from:0,to:1.6}),
-    ext({ax:'x',c:1.6,from:4.4,to:W,color:LSTONE,open:[{from:6.6,to:10.3,sill:.05,head:2.35,kind:'window'}]}),
+    ext({ax:'x',c:1.6,from:4.4,to:W,color:LSTONE,cin:BEI,open:[{from:6.6,to:10.3,sill:.05,head:2.35,kind:'window',blind:.42}]}),
     ext({ax:'z',c:0,from:0,to:D}),
     ext({ax:'z',c:W,from:1.6,to:D,open:[
       {from:2.5,to:3.0,sill:.8,head:2.2,kind:'window',mid:false},{from:4.0,to:4.5,sill:.8,head:2.2,kind:'window',mid:false},
       {from:6.4,to:7.0,sill:1.3,head:2.1,kind:'window',mid:false}]}),
     ext({ax:'x',c:D,from:0,to:W,open:[
-      {from:.7,to:2.8,sill:.9,head:2.2,kind:'window'},{from:3.9,to:4.5,sill:1.3,head:2.1,kind:'window',mid:false},
-      {from:5.9,to:8.3,sill:.9,head:2.2,kind:'window'},{from:9.8,to:10.4,sill:1.3,head:2.1,kind:'window',mid:false}]}),
+      {from:.7,to:2.8,sill:.9,head:2.2,kind:'window',blind:.4},{from:3.9,to:4.5,sill:1.3,head:2.1,kind:'window',mid:false},
+      {from:5.9,to:8.3,sill:.9,head:2.2,kind:'window',blind:.4},{from:9.8,to:10.4,sill:1.3,head:2.1,kind:'window',mid:false}]}),
     // barandal de cristal del balcón
     {ax:'x',c:0,from:4.4,to:W,h:1.08,t:.06,color:'#c9cdd0',open:[{from:4.5,to:10.9,sill:.08,head:1.02,kind:'window',mid:false}]},
     {ax:'z',c:W,from:0,to:1.6,h:1.08,t:.1,color:TAN},
     {ax:'z',c:2.2,from:0,to:4.5},
-    {ax:'z',c:4.4,from:1.6,to:6},
-    {ax:'x',c:6,from:4.4,to:W,open:[{from:4.55,to:5.4,head:2.1,kind:'gap'},{from:6.7,to:7.45,head:2.1,kind:'gap'},{from:9.0,to:9.75,head:2.1,kind:'gap'}]},
+    {ax:'z',c:4.4,from:1.6,to:6,cin:[null,BEI]},
+    {ax:'x',c:6,from:4.4,to:W,cin:[BEI,null],open:[{from:4.55,to:5.4,head:2.1,kind:'gap'},{from:6.7,to:7.45,head:2.1,kind:'gap'},{from:9.0,to:9.75,head:2.1,kind:'gap'}]},
     {ax:'z',c:6,from:6,to:8.8},{ax:'z',c:8.2,from:6,to:8.8},
     {ax:'x',c:8.8,from:0,to:W,open:[{from:2.4,to:3.2,head:2.1,kind:'gap'},{from:5.1,to:5.9,head:2.1,kind:'gap'}]},
     {ax:'z',c:5,from:8.8,to:D},
@@ -122,12 +127,12 @@ var alta={
     ['escalera',2.75,4.45,180,{w:1.0,n:9,alto:1.35,huella:.3,mat:1,color:T}],
     ['escalera',3.85,1.75,0,{w:1.0,n:9,alto:1.35,y0:1.35,huella:.3,mat:1,color:T}],
     // recámara principal: vestidor y baño
-    ['closetM',6.08,7.5,90,{w:2.2,color:CLAR}],['closetM',8.12,7.6,-90,{w:2.0,color:CLAR}],
-    ['tocador',8.28,7.6,90,{w:1.6,color:CLAR}],['regadera',10.92,8.72,180,{w:1.2,d:1.4}],['wc',9.4,8.72,180],
+    ['vestidor',6.08,7.5,90,{w:2.2,color:CLAR}],['vestidor',8.12,7.6,-90,{w:2.0,color:CLAR}],
+    ['tocadorF',8.28,7.6,90,{w:1.5,n:2,color:CLAR}],['regadera',10.92,8.72,180,{w:1.2,d:1.4}],['wc',9.4,8.72,180],
     // recámara 2
-    ['closetM',4.92,9.9,-90,{w:1.8,color:CLAR}],['regadera',4.92,13.92,180,{w:1.44,d:1.0}],['wc',4.5,11.08,0],['lavabo',4.92,12.3,-90],
+    ['vestidor',4.92,9.9,-90,{w:1.8,color:CLAR}],['regadera',4.92,13.92,180,{w:1.44,d:1.0}],['wc',4.5,11.08,0],['tocadorF',4.92,12.3,-90,{w:.8,color:CLAR}],
     // recámara 3
-    ['closetM',10.92,9.9,-90,{w:1.8,color:CLAR}],['regadera',10.92,13.92,180,{w:1.64,d:1.0}],['wc',10.4,11.08,0],['lavabo',10.92,12.3,-90],
+    ['vestidor',10.92,9.9,-90,{w:1.8,color:CLAR}],['regadera',10.92,13.92,180,{w:1.64,d:1.0}],['wc',10.4,11.08,0],['tocadorF',10.92,12.3,-90,{w:.8,color:CLAR}],
     ['plafon',1.1,2.2,0],['plafon',2.4,6.7,0],['plafon',7.7,3.8,0],['plafon',7.1,7.4,0],['plafon',9.6,7.4,0],['plafon',1.7,11.4,0],['plafon',7.1,11.4,0],['plafon',4.2,9.9,0],['plafon',4.2,12.5,0],['plafon',10.1,9.9,0],['plafon',10.1,12.5,0],
     ['sofa',3.8,6.7,-90,{s:1,w:2.4,color:'#8a8d91',color2:'#9b9ea2'}],['tv',.1,6.7,90,{s:1,w:1.6}],['tapete',2.1,6.7,90,{s:1,w:2.4,d:1.8,color:'#d6d1c6',color2:'#bfb9ad'}],
     ['mesa',1.1,.6,0,{s:1,w:1.3,d:.6}],['silla',1.1,1.2,180,{s:1}],
@@ -138,9 +143,9 @@ var alta={
   ]
 };
 var roof={
-  sky:'#e9eef1', center:[5.5,0,7], frame:FR,
+  sky:'#e9eef1', center:[5.5,0,7], frame:FR, tile:.6, gloss:1, wallIn:'#e9dfca', zoclo:'#e2dccd', indoor:[[2.2,0,4.4,4.5]],
   ground:[[-10,-0.09,-16,21,26,'#d9dcde',0]],
-  floors:[[0,0,2.2,4.5,T],[2.2,0,4.4,.1,T],[0,4.5,6.5,10,T],[4.4,3.2,6.5,4.5,T],[4.4,1.6,6.5,3.2,DECK,6],[6.5,1.6,W,10,DECK,6],[0,10,W,D,DECK,6]],
+  floors:[[0,0,2.2,4.5,T],[2.2,0,4.4,.1,T],[0,4.5,6.5,10,T],[4.4,3.2,6.5,4.5,T],[4.4,1.6,6.5,3.2,DECK,13],[6.5,1.6,W,10,DECK,13],[0,10,W,D,DECK,13]],
   ceilings:[[0,0,2.2,4.5],[2.2,0,4.4,4.5],[0,4.5,6.5,10],[4.4,3.2,6.5,4.5],[4.4,1.6,6.5,3.2]],
   walls:[
     ext({ax:'x',c:0,from:0,to:2.2,open:[{from:.5,to:1.0,sill:.9,head:1.9,kind:'window',mid:false}]}),
@@ -154,18 +159,18 @@ var roof={
     {ax:'x',c:3.2,from:4.4,to:6.5},
     {ax:'x',c:4.5,from:0,to:6.5,open:[{from:3.4,to:4.3,head:2.1,kind:'glassdoor',mid:true,frame:NEG},{from:5.1,to:5.85,head:2.1,kind:'gap'}]},
     // pretiles de la terraza
-    {ax:'x',c:1.6,from:6.5,to:W,h:1.2,t:.14,color:TAN},{ax:'z',c:W,from:1.6,to:D,h:1.2,t:.14,color:TAN},{ax:'x',c:D,from:0,to:W,h:1.2,t:.14,color:TAN},{ax:'z',c:0,from:10,to:D,h:1.2,t:.14,color:TAN}
+    {ax:'x',c:1.6,from:6.5,to:W,h:1.2,t:.14,color:TAN,mat:14},{ax:'z',c:W,from:1.6,to:D,h:1.2,t:.14,color:TAN,mat:14},{ax:'x',c:D,from:0,to:W,h:1.2,t:.14,color:TAN,mat:14},{ax:'z',c:0,from:10,to:D,h:1.2,t:.14,color:TAN,mat:14}
   ],
   boxes:[
     // asador de obra
-    [7.4,0,13.25,10.85,.82,13.92,TAN],[7.35,.82,13.2,10.9,.9,13.93,GRAN],[9.5,.9,13.3,10.6,.98,13.85,NEG],
+    [7.4,0,13.25,10.85,.82,13.92,TAN,{mat:14}],[7.35,.82,13.2,10.9,.9,13.93,GRAN],[9.5,.9,13.3,10.6,.98,13.85,NEG],
     // tragaluz
     [6.75,0,3.5,7.6,.3,4.6,'#c9c4b6'],[6.8,.3,3.55,7.55,.34,4.55,'#a9cfd2']
   ],
   items:[
     ['hueco',3.3,.1,0,{w:2.1,l:4.3,lados:[],color:T}],
     ['barra',.08,7.3,90,{len:3.0,tarja:-.8,color:CLAR,cubierta:GRAN}],
-    ['wc',5.9,3.28,0],['lavabo',4.48,3.9,90],
+    ['wc',5.9,3.28,0],['tocadorF',4.48,3.9,90,{w:.7,color:CLAR}],
     ['lavadero',5.0,1.68,0],['boiler',4.48,2.7,90],
     ['plafon',3.2,7.2,0],['plafon',5.4,3.85,0],
     ['mesa',3.6,7.4,0,{s:1,w:1.8,d:.9}],['silla',3.0,6.75,0,{s:1}],['silla',4.2,6.75,0,{s:1}],['silla',3.0,8.05,180,{s:1}],['silla',4.2,8.05,180,{s:1}],
