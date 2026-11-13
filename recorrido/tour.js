@@ -30,6 +30,8 @@ var v=GRVisor($('c'),levels[stops[0].lvl||0].plan,{
   }
 });
 if(!v) return;
+function inset(){var d=document.querySelector('.dock'); if(d) v.setInset((innerHeight-d.getBoundingClientRect().top)/innerHeight)}
+addEventListener('resize',inset);
 
 function show(i,instant){
   cur=(i+stops.length)%stops.length; var s=stops[cur], g=s, k, L=s.lvl||0;
@@ -40,6 +42,7 @@ function show(i,instant){
   }
   if(auto){if(g===s){g={}; for(k in s) g[k]=s[k];} g.ms=(s.ms||1400)/Math.sqrt(VEL[vi]);}
   v.goTo(g,instant);
+  setTimeout(inset,0);
   $('capT').textContent=s.n; $('capD').textContent=s.d;
   Array.prototype.forEach.call($('stops').children,function(b,j){
     if(j===cur){b.setAttribute('aria-current','true'); if(b.scrollIntoView&&!instant) b.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});}

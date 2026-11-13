@@ -870,13 +870,14 @@
       if (nr !== roof || shDirty) { roof = nr; shDirty = false; drawShadow(); }
       var ctr = [eye[0] + d[0], eye[1] + d[1], eye[2] + d[2]];
       // en vertical (celular) se abre el campo de visión para que la casa quepa
-      var asp = canvas.width / canvas.height, fov = cam.fov;
+      var asp = canvas.width / canvas.height, fov = cam.fov, oy = 0;
       if (asp < 1) fov = 2 * Math.atan(Math.tan(cam.fov / 2) / Math.max(asp, 0.5));
-      VPm = mul(mul(persp(fov, asp, 0.08, 140), lookAt(eye, ctr, [0, 1, 0])), MIRROR);
-      if (cam.dist > 0.6) { // sube la maqueta para que no la tape la barra inferior
-        var oy = (asp < 1 ? 0.34 : 0.2) * Math.min(1, (cam.dist - 0.6) / 6);
-        VPm[1] += oy * VPm[3]; VPm[5] += oy * VPm[7]; VPm[9] += oy * VPm[11]; VPm[13] += oy * VPm[15];
+      if (cam.dist > 0.6) oy = (asp < 1 ? 0.34 : 0.2) * Math.min(1, (cam.dist - 0.6) / 6);   // sube la maqueta para que no la tape la barra inferior
+      else if (inset > 0) {   // adentro: centra la vista en la parte de la pantalla que no tapa el panel y abre el lente en proporción
+        oy = inset; fov = 2 * Math.atan(Math.tan(fov / 2) / (1 - inset * 0.55));
       }
+      VPm = mul(mul(persp(fov, asp, 0.08, 140), lookAt(eye, ctr, [0, 1, 0])), MIRROR);
+      if (oy) { VPm[1] += oy * VPm[3]; VPm[5] += oy * VPm[7]; VPm[9] += oy * VPm[11]; VPm[13] += oy * VPm[15]; }
       var gloss = plan.gloss == null ? 0.55 : plan.gloss, doRf = gloss > 0 && eye[1] < 4 && ensureRf();
       function setU(vp, pass) {
         gl.useProgram(pr);
@@ -898,7 +899,7 @@
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clearColor(sky[0], sky[1], sky[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       // cielo: degradado del horizonte al cenit
-      var th = Math.tan(fov / 2), oy0 = cam.dist > 0.6 ? (asp < 1 ? 0.34 : 0.2) * Math.min(1, (cam.dist - 0.6) / 6) : 0;
+      var th = Math.tan(fov / 2), oy0 = oy;
       gl.useProgram(pr3); gl.disable(gl.DEPTH_TEST); gl.disable(gl.CULL_FACE); gl.disable(gl.BLEND); gl.depthMask(false);
       gl.uniform3f(u3.uH, sky[0], sky[1], sky[2]); gl.uniform3f(u3.uZ, zen[0], zen[1], zen[2]);
       gl.uniform2f(u3.uK, Math.tan(Math.min(1.45, cam.pitch)) / th + oy0, th); gl.uniform2f(u3.uC, cam.yaw, asp * th);
@@ -923,9 +924,12 @@
       requestAnimationFrame(loop);
     }
 
+    var ZO = window.GR_ZO || 1.1, ZOD = window.GR_ZOD || 1.06, inset = 0;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function goTo(s, instant) {
       var to = { tx: -s.t[0], ty: s.t[1], tz: s.t[2], yaw: -s.yaw, pitch: s.pitch, dist: s.dist, fov: s.fov || 0.75 };
+      // adentro, lente más abierto (como foto inmobiliaria) para que cada cuarto quepa completo en pantalla; afuera, la cámara un poco más lejos
+      if (s.dist < 0.6) to.fov = Math.min(1.75, to.fov * ZO); else to.dist = s.dist * ZOD;
       var dy = to.yaw - cam.yaw; dy = Math.atan2(Math.sin(dy), Math.cos(dy)); to.yaw = cam.yaw + dy;
       if (instant || reduce) { for (var k in to) cam[k] = to[k]; anim = null; dirty = true; if (hooks.onArrive) hooks.onArrive(); return; }
       var from = {}; for (var k2 in to) from[k2] = cam[k2];
@@ -936,7 +940,7 @@
     var pts = {}, lastPinch = 0;
     function inside() { return cam.dist < 0.6; }
     function zoom(f) {
-      if (inside()) cam.fov = Math.min(1.5, Math.max(0.6, cam.fov * f));
+      if (inside()) cam.fov = Math.min(1.85, Math.max(0.6, cam.fov * f));
       else cam.dist = Math.min(40, Math.max(3, cam.dist * f));
       dirty = true;
     }
@@ -976,7 +980,9 @@
         if (w <= 0.01) return null;
         return [(x / w * 0.5 + 0.5) * W, (1 - (y / w * 0.5 + 0.5)) * H];
       },
-      zoom: function (f) { anim = null; zoom(f); }
+      zoom: function (f) { anim = null; zoom(f); },
+      // fracción de la altura de la pantalla que tapa el panel de abajo
+      setInset: function (f) { f = Math.max(0, Math.min(0.5, f || 0)); if (Math.abs(f - inset) > 0.005) { inset = f; dirty = true; } }
     };
     var furnOn = plan.furnitureOn !== false;
     setGeo(furnOn);
