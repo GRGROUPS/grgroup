@@ -39,6 +39,7 @@ var plan={
       {from:5.7,to:6.5,head:2.1,kind:'door',hinge:'from',ang:1.35},
       {from:8.1,to:8.9,head:2.1,kind:'door',hinge:'from',ang:1.35}]},
     {ax:'x',c:7.5,from:3,to:5},
+    {ax:'x',c:5.4,from:3,to:5},   // muro entre la sala y la recámara 1
     // bardas
     {ax:'x',c:0,from:0,to:5,h:1.1,color:'#cdb391',mat:12},
     {ax:'z',c:0,from:0,to:2.6,h:2.2,color:'#d9d6cf'},
@@ -55,7 +56,7 @@ var plan={
     ['regadera',.08,7.68,0,{w:.8,d:1.9}],['wc',1.3,7.68,0],['lavabo',1.85,7.68,0],
     ['lavadero',.75,11.93,180],['boiler',4.0,9.68,0],
     ['plafon',2.5,4.0,0],['plafon',1.1,6.5,0],['plafon',1.1,8.6,0],['plafon',4.0,6.4,0],['plafon',4.0,8.5,0],
-    ['tapete',3.3,3.9,0,{s:1,w:2.3,d:1.5}],['sofa',3.3,5.2,180,{s:1,w:2.0}],
+    ['tapete',3.3,3.9,0,{s:1,w:2.3,d:1.5}],['sofa',3.6,4.92,180,{s:1,w:2.0}],
     ['mesa',1.0,4.0,0,{s:1,w:.75,d:.75}],['silla',1.0,3.4,0,{s:1}],['silla',1.0,4.6,180,{s:1}],
     ['cama',4.2,6.4,-90,{s:1,w:1.4,manta:'#b9703f'}],['buro',4.8,5.6,-90,{s:1}],
     ['cama',4.2,8.5,-90,{s:1,w:1.4,color:'#cfd8dc',manta:'#5f7f8f'}],['buro',4.8,9.3,-90,{s:1,lampara:false}]
@@ -69,8 +70,8 @@ var stops=[
   {n:'Pasillo',d:'Pasillo que comunica recámaras y baño.',t:[2.6,1.5,9.35],yaw:3.14,pitch:.12,dist:.01,fov:1.1,f:[5,15]},
   {n:'Cocina',d:'Cocina con tarja y barra; salida al patio.',t:[1.8,1.55,5.6],yaw:-1.9,pitch:.3,dist:.01,fov:1.15,f:[8,6,9]},
   {n:'Baño',d:'Baño completo con regadera en acabado tipo mármol.',t:[2.0,1.6,9.4],yaw:-2.6,pitch:.5,dist:.01,fov:1.35,f:[13,14]},
-  {n:'Recámara 1',d:'Recámara con ventana.',t:[3.3,1.5,5.65],yaw:1.1,pitch:.26,dist:.01,fov:1.15,f:[7,17]},
-  {n:'Recámara 2',d:'Recámara con ventana y piso cerámico.',t:[3.3,1.5,7.6],yaw:.96,pitch:.26,dist:.01,fov:1.15,f:[16]},
+  {n:'Recámara 1',d:'Recámara con ventana.',t:[3.2,1.5,7.3],yaw:2.25,pitch:.26,dist:.01,fov:1.2,f:[7,17]},
+  {n:'Recámara 2',d:'Recámara con ventana y piso cerámico.',t:[3.2,1.5,9.45],yaw:1.75,pitch:.26,dist:.01,fov:1.2,f:[16]},
   {n:'Patio de servicio',d:'Patio al fondo con lavadero y espacio para lavadora.',t:[4.6,1.5,9.9],yaw:-1.07,pitch:.2,dist:.01,fov:1.08,f:[10,11,12]}
 ];
 var rooms=[['Sala-comedor',2.5,4.0],['Cocina',1.1,6.5],['Baño',1.1,8.6],['Recámara 1',4.0,6.4],['Recámara 2',4.0,8.5],['Patio',2.5,10.8]];
