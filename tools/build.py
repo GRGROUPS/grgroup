@@ -225,6 +225,14 @@ def recorrido_page(h, wa):
     desc = f"Recorre en 3D desde tu celular: {name}, {h['zona']}. " + ", ".join(bits) + ". Representación ilustrativa."
     wa_link = wa_url(wa, f"Hola, vi el recorrido 3D de la casa {code} – {name} ({money(h['precio'])}). ¿Cuándo la puedo visitar?")
     meta = {"code": code, "name": name, "precio": precio, "url": url, "fotos": f"../../fotos/{code}/"}
+    cr = set(h.get("creditos") or []); ctx = (h.get("credito") or "").lower()
+    if {"infonavit", "fovissste"} <= cr: cred = "✓ Infonavit y Fovissste"
+    elif "fovissste" in cr: cred = "✓ Fovissste"
+    elif "infonavit" in cr: cred = "✓ Infonavit"
+    elif "contado" in ctx: cred = "Solo de contado"
+    elif "crédito" in ctx: cred = "✓ Acepta créditos"
+    else: cred = ""
+    cred_html = f'<p class="cr">{esc(cred)}</p>' if cred and h["op"] == "Venta" else ""
     return f"""<!doctype html>
 <html lang="es-MX">
 <head>
@@ -247,7 +255,7 @@ def recorrido_page(h, wa):
 <div class="top">
   <div class="id">
     <a href="../../"><img src="../../logo.png" width="528" height="189" alt="GR GROUP, Tu hogar ahora"></a>
-    <div><h1>{esc(corto)}</h1><p><i>Recorrido 3D · </i>{precio}</p></div>
+    <div><h1>{esc(corto)}</h1><p><i>Recorrido 3D · </i>{precio}</p>{cred_html}</div>
   </div>
   <a class="ficha" href="../../casa/{code}/">Ver ficha y fotos</a>
 </div>
@@ -274,7 +282,7 @@ def recorrido_page(h, wa):
     <a class="wa" href="{esc(wa_link)}">Agendar visita</a>
   </div>
   <div class="dock">
-    <div class="cap"><div aria-live="polite"><strong id="capT"></strong><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false">▶ Empezar recorrido</button></div>
+    <div class="cap"><div aria-live="polite"><strong id="capT"></strong><em class="badge" id="capB" hidden></em><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false">▶ Empezar recorrido</button></div>
     <div class="stops" id="stops" role="group" aria-label="Espacios de la casa"></div>
     <p class="nota"><span class="lg">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</span><span class="sm">Recorrido ilustrativo: medidas y muebles aproximados.</span></p>
   </div>

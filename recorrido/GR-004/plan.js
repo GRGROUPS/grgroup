@@ -154,8 +154,8 @@ var edif={
 };
 var ux=LADO?(CX1+(BW-CX1)/2):(CX0/2), uy=(PISO-1)*FH, NOM=PISOS.length>1?'pisos '+PISOS.join(' y '):'piso '+PISO;
 var pre=[
-  {n:'El edificio',d:'Torre de 5 pisos del fraccionamiento Gran Valle, con 2 departamentos por piso y ventanas a la calle; pérgola, áreas verdes, alberca y gimnasio.',lvl:0,t:[BW/2,7.5,2],yaw:-.45,pitch:.12,dist:33,fov:.75,f:[],v:{dist:31}},
-  {n:'Disponibles: '+NOM,d:'Quedan los departamentos de los '+NOM+', marcados en naranja; los dos son el mismo modelo. Entremos.',lvl:0,t:[ux,uy+FH*(PISOS.length>1?1:.5),0],yaw:LADO?.25:-.25,pitch:.04,dist:15,fov:.7,f:[],v:{dist:20}}
+  {n:'El edificio',badge:'Quedan '+PISOS.length,d:'Torre de 5 pisos del fraccionamiento Gran Valle, con 2 departamentos por piso y ventanas a la calle; pérgola, áreas verdes, alberca y gimnasio.',lvl:0,t:[BW/2,7.5,2],yaw:-.45,pitch:.12,dist:33,fov:.75,f:[],v:{dist:31}},
+  {n:'Disponibles: '+NOM,badge:'Quedan '+PISOS.length,d:'Quedan los departamentos de los '+NOM+', marcados en naranja; los dos son el mismo modelo. Entremos.',lvl:0,t:[ux,uy+FH*(PISOS.length>1?1:.5),0],yaw:LADO?.25:-.25,pitch:.04,dist:15,fov:.7,f:[],v:{dist:20}}
 ];
 /* el depa está en un piso alto: el ventanal de la sala da al vacío, con barandal, y el jardín queda abajo */
 var hy=-uy-.1;
