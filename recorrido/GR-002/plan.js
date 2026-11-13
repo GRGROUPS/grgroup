@@ -40,6 +40,8 @@ var plan={
     ['escalera',4.45,.9,0,{w:.9,n:11,huella:.3,mat:3,color:'#c9c6bf'}],
     ['barra',4.92,5.6,-90,{len:1.8,estufa:.35,tarja:-.5,cubierta:'#d9d4cc',color:'#e2ddd2',mat:17,copete:false}],
     ['regadera',4.92,8.12,180,{w:.8,d:1.44}],['wc',3.78,6.68,0],['lavabo',3.8,8.13,180],
+    /* banqueta: dos árboles en jardineras blancas, como en la foto */
+    ['arbol',1.3,-.85,0,{maceta:'#ecebe6',h:3.3,r:1.5,tronco:'#9a948c',seed:2}],['arbol',3.9,-.85,0,{maceta:'#ecebe6',h:3.1,r:1.4,tronco:'#9a948c',seed:5}],
     ['plafon',1.6,6.4,0],['plafon',4.15,5.6,0],['plafon',4.15,7.4,0],['plafon',1.25,9.9,0],['plafon',3.75,9.9,0],
     ['refri',3.22,6.35,-90,{s:1}],
     ['mesa',1.3,6.3,0,{s:1,w:.9,d:1.4}],['silla',.68,5.95,90,{s:1,color:'#a8323c'}],['silla',.68,6.65,90,{s:1,color:'#a8323c'}],['silla',1.92,5.95,-90,{s:1,color:'#a8323c'}],['silla',1.92,6.65,-90,{s:1,color:'#a8323c'}],

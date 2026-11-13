@@ -316,6 +316,22 @@
         g.rbox(-t + 0.04, 0.96, 0.06, t - 0.04, 1.1, 0.38, '#8fa3b3', { mat: 7, e: 0.3, nu: 10, nv: 4 });
       }
     },
+    arbol: function (g, gt, o) {   // árbol de banqueta: tronco, ramas y copa de hojas; o.maceta = jardinera redonda
+      var h = o.h || 3.2, R = o.r || 1.3, k, rnd = function (n) { var x = Math.sin(n * 12.9898 + (o.seed || 3) * 78.233) * 43758.5453; return x - Math.floor(x); };
+      var y0 = 0, tc = o.tronco || '#8a8178';
+      if (o.maceta) { g.cyl(0, 0, 0, 0.45, 0.5, 0.5, o.maceta, { seg: 24 }); g.cyl(0, 0, 0.4, 0.46, 0.46, 0.46, '#4a3a2a', { seg: 20 }); y0 = 0.45; }
+      g.foot(-0.2, -0.2, 0.2, 0.2);
+      g.cyl(0, 0, y0, h * 0.62, 0.11, 0.08, tc, { seg: 10 });
+      for (k = 0; k < 5; k++) { var a = k * 1.3 + rnd(k), d = 0.35 + 0.3 * rnd(k + 4); g.cyl(Math.cos(a) * d, Math.sin(a) * d, h * 0.5, h * (0.75 + 0.1 * rnd(k)), 0.045, 0.03, tc, { seg: 6 }); }
+      g.rbox(-R * 0.82, h * 0.78 - R * 0.45, -R * 0.82, R * 0.82, h * 0.78 + R * 0.5, R * 0.82, o.copa || '#3f6a32', { e: 1, nu: 18, nv: 10 });
+      var greens = o.hojas || ['#4d7a3c', '#5e8c47', '#6d9a52', '#426d35', '#7aa35a'], n = o.n || 260;
+      for (k = 0; k < n; k++) {
+        var u = rnd(k * 3 + 1) * 6.283, v = Math.acos(2 * rnd(k * 3 + 2) - 1) * 0.62, rr = R * (0.72 + 0.28 * rnd(k * 3 + 3));
+        var dx = Math.sin(v) * Math.cos(u), dy = Math.cos(v), dz = Math.sin(v) * Math.sin(u);
+        var c = [dx * rr, h * 0.78 + dy * rr * 0.55, dz * rr];
+        g.leaf(c, [dx * 0.8 + (rnd(k) - 0.5) * 0.6, 0.35 + dy, dz * 0.8 + (rnd(k + 7) - 0.5) * 0.6], 0.42, 0.26, greens[k % greens.length], { droop: 0.25 });
+      }
+    },
     planta: function (g, gt, o) {   // maceta de cerámica y follaje de hojas
       var h = o.h || 1.2, k, rnd = function (n) { var x = Math.sin(n * 12.9898 + (o.seed || 1) * 78.233) * 43758.5453; return x - Math.floor(x); };
       g.foot(-0.17, -0.17, 0.17, 0.17);
