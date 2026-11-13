@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Recorrido 3D: Casa en Lomas de San Pedro | GR GROUP</title>
+<meta name="description" content="Recorre en 3D desde tu celular: Casa en Lomas de San Pedro, Lomas de San Pedro, Cerrito Colorado, Querétaro. 4 recámaras, 3.5 baños, 117 m². Representación ilustrativa.">
+<link rel="canonical" href="https://grgroups.github.io/grgroup/recorrido/GR-020/">
+<meta property="og:title" content="Recorrido 3D: Lomas de San Pedro · $2,300,000 | GR GROUP">
+<meta property="og:description" content="Recorre en 3D desde tu celular: Casa en Lomas de San Pedro, Lomas de San Pedro, Cerrito Colorado, Querétaro. 4 recámaras, 3.5 baños, 117 m². Representación ilustrativa.">
+<meta property="og:image" content="https://grgroups.github.io/grgroup/casa/GR-020/og.jpg">
+<link rel="icon" type="image/png" href="../../icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:400,500,600%7CCormorant+Garamond:500,600,700&amp;display=swap">
+<link rel="stylesheet" href="../tour.css?v=1794554130">
+</head>
+<body>
+<canvas id="c" aria-label="Maqueta 3D de la casa. Arrastra para girar."></canvas>
+
+<div class="top">
+  <div class="id">
+    <a href="../../"><img src="../../logo.png" width="528" height="189" alt="GR GROUP, Tu hogar ahora"></a>
+    <div><h1>Lomas de San Pedro</h1><p><i>Recorrido 3D · </i>$2,300,000</p></div>
+  </div>
+  <a class="ficha" href="../../casa/GR-020/">Ver ficha y fotos</a>
+</div>
+
+<div id="labels" aria-hidden="true"></div>
+
+<div class="side">
+  <button id="furn" type="button" aria-pressed="true" title="Mostrar u ocultar muebles sugeridos" aria-label="Muebles sugeridos">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M3 13a2 2 0 0 1 4 0v2h10v-2a2 2 0 0 1 4 0v4H3z"/><path d="M6 17v2M18 17v2"/></svg>
+  </button>
+  <button id="share" type="button" title="Compartir este recorrido" aria-label="Compartir este recorrido">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+  </button>
+  <button class="zm" id="zin" type="button" aria-label="Acercar">+</button>
+  <button class="zm" id="zout" type="button" aria-label="Alejar">−</button>
+</div>
+
+<div class="hint" id="hint">Arrastra para girar la casa</div>
+
+<div class="bottom">
+  <div class="row">
+    <div class="foto" id="foto" hidden><b>Así se ve en la foto real</b><div class="th" id="th"></div></div>
+    <span></span>
+    <a class="wa" href="https://wa.me/524921121116?text=Hola%2C%20vi%20el%20recorrido%203D%20de%20la%20casa%20GR-020%20%E2%80%93%20Casa%20en%20Lomas%20de%20San%20Pedro%20%28%242%2C300%2C000%29.%20%C2%BFCu%C3%A1ndo%20la%20puedo%20visitar%3F">Agendar visita</a>
+  </div>
+  <div class="dock">
+    <div class="cap"><div aria-live="polite"><strong id="capT"></strong><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false">▶ Empezar recorrido</button></div>
+    <div class="stops" id="stops" role="group" aria-label="Espacios de la casa"></div>
+    <p class="nota">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<dialog id="dlg"><img id="dimg" alt=""><form method="dialog"><span id="dcap"></span><button>Cerrar</button></form></dialog>
+
+<div class="fail" id="fail" hidden><p>Tu navegador no pudo mostrar el recorrido 3D.<br><a href="../../casa/GR-020/">Ver las fotos de la casa</a></p></div>
+
+<script>window.TOUR_META={"code": "GR-020", "name": "Casa en Lomas de San Pedro", "precio": "$2,300,000", "url": "https://grgroups.github.io/grgroup/recorrido/GR-020/", "fotos": "../../fotos/GR-020/"};</script>
+<script src="../visor.js?v=1794554130"></script>
+<script src="plan.js?v=1794554130"></script>
+<script src="../tour.js?v=1794554130"></script>
+</body>
+</html>
