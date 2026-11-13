@@ -84,7 +84,7 @@ var stops=[
   {n:'Recámara 2',d:'Recámara al frente, con ventana a la calle.',lvl:0,t:[3.45,1.5,3.0],yaw:2.5,pitch:.26,dist:.01,fov:1.3,f:[]},
   {n:'Baño compartido',d:'Baño completo entre las dos recámaras.',lvl:0,t:[3.35,1.6,4.3],yaw:1.9,pitch:.4,dist:.01,fov:1.45,f:[]},
   {n:'Recámara 1',d:'Recámara con clóset-vestidor, ventana al patio y baño propio.',lvl:0,t:[5.6,1.5,7.15],yaw:-.85,pitch:.24,dist:.01,fov:1.3,f:[4]},
-  {n:'Patio trasero',d:'Patio con piso de adoquín, lavadero junto a la puerta y barda de block.',lvl:0,t:[3,1.0,10.8],yaw:-.2,pitch:.55,dist:8,fov:.8,f:[3]}
+  {n:'Patio trasero',d:'Patio con piso de adoquín, lavadero junto a la puerta y barda de block.',lvl:0,t:[3,1.0,10.8],yaw:3.14,pitch:1.0,dist:8.5,fov:.8,f:[3]}
 ];
 var rooms=[['Sala',1.55,1.9],['Comedor',1.55,5.0],['Cocina',1.55,7.8],['Recámara 2',4.55,1.65],['Baño',4.55,4.15],['Baño',5.25,5.9],['Recámara 1',4.55,7.9],['Patio',3.0,10.8],['Jardín',3.0,-3.0]];
 window.TOUR={levels:[{n:'Casa',plan:plan,rooms:rooms}],stops:stops};

@@ -62,7 +62,7 @@ var stops=[
   {n:'Fachada',d:'Frente con reja, cochera techada y protecciones en ventanas.',t:[3.5,1.2,-1.5],yaw:-.5,pitch:.1,dist:12.5,fov:.72,f:[1],v:{dist:16}},
   {n:'Sala-comedor',d:'Sala y comedor amplios junto a la entrada.',t:[3.7,1.55,4.9],yaw:-2.36,pitch:.22,dist:.01,fov:1.15,f:[3,2]},
   {n:'Cocina',d:'Cocina con barra hacia el comedor y salida al patio.',t:[2.38,1.55,5.45],yaw:-.98,pitch:.3,dist:.01,fov:1.2,f:[4]},
-  {n:'Baño',d:'Baño completo.',t:[4.25,1.6,5.0],yaw:2.28,pitch:.5,dist:.01,fov:1.3,f:[9]},
+  {n:'Baño',d:'Baño completo.',t:[4.25,1.6,5.0],yaw:2.55,pitch:.45,dist:.01,fov:1.4,f:[9]},
   {n:'Recámara 1',d:'Recámara al frente con ventana a la calle.',t:[4.35,1.55,3.0],yaw:2.28,pitch:.25,dist:.01,fov:1.2,f:[7]},
   {n:'Recámara 2',d:'Recámara con clóset.',t:[3.85,1.55,8.1],yaw:2.2,pitch:.25,dist:.01,fov:1.2,f:[8,6]},
   {n:'Recámara 3',d:'Recámara al fondo, con espacio para dos camas.',t:[2.9,1.55,8.7],yaw:.86,pitch:.25,dist:.01,fov:1.2,f:[5]},

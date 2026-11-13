@@ -74,8 +74,7 @@ var alta={
     {ax:'z',c:6,from:0,to:8.2,t:.18,h:2.7},
     {ax:'x',c:8.2,from:0,to:6,t:.18,h:2.7,open:[
       {from:.8,to:2.2,sill:.9,head:2.1,kind:'window'},
-      {from:3.4,to:4.0,sill:1.6,head:2.1,kind:'window',mid:false},
-      {from:4.7,to:5.5,sill:.9,head:2.1,kind:'window'}]},
+      {from:3.9,to:5.3,sill:.9,head:2.1,kind:'window'}]},
     /* recámara principal y su baño */
     {ax:'x',c:3.6,from:0,to:3.6,open:[{from:1.0,to:1.8,head:2.1,kind:'door',hinge:'from',ang:0,color:'#eeece6',mat:6}]},
     {ax:'z',c:3.6,from:0,to:3.6,open:[{from:.6,to:1.4,head:2.1,kind:'door',hinge:'from',ang:0,color:'#eeece6',mat:6}]},
@@ -83,20 +82,20 @@ var alta={
     /* pasillo y recámaras al fondo */
     {ax:'x',c:5.0,from:0,to:6,open:[
       {from:1.2,to:2.0,head:2.1,kind:'door',hinge:'from',ang:0,color:'#eeece6',mat:6},
-      {from:3.2,to:4.0,head:2.1,kind:'door',hinge:'from',ang:0,color:'#eeece6',mat:6},
-      {from:4.45,to:5.15,head:2.1,kind:'door',hinge:'from',ang:0,color:'#eeece6',mat:6}]},
+      {from:3.3,to:4.1,head:2.1,kind:'door',hinge:'from',ang:0,color:'#eeece6',mat:6}]},
     {ax:'z',c:3.0,from:5.0,to:8.2},
-    {ax:'z',c:4.4,from:5.0,to:8.2}
+    /* baño compartido, en el pasillo frente a la escalera */
+    {ax:'z',c:2.0,from:3.6,to:5.0,open:[{from:3.75,to:4.45,head:2.1,kind:'door',hinge:'from',ang:0,color:'#eeece6',mat:6}]}
   ],
   boxes:[[-6.6,0,0,-.09,3.4,8.2,'#e9e8e4',{mat:11}],[6.09,0,0,12,3.4,8.2,'#e9e8e4',{mat:11}]],
   items:[
     ['hueco',5.5,1.8,0,{w:.9,l:3.2,lados:[-1,1],color:'#d8d4c8'}],
-    ['cama',.85,2.2,90,{s:1,w:1.6,manta:'#8f8a6a'}],['buro',.3,1.2,90,{s:1}],['cama',.85,6.6,90,{s:1,w:1.3,manta:'#b9703f'}],['buro',.3,5.7,90,{s:1}],['cama',5.15,6.6,-90,{s:1,w:1.2,manta:'#5f7f8f'}],['buro',5.7,5.7,-90,{s:1}],
+    ['cama',.85,2.2,90,{s:1,w:1.6,manta:'#8f8a6a'}],['buro',.3,1.2,90,{s:1}],['cama',.85,6.6,90,{s:1,w:1.3,manta:'#b9703f'}],['buro',.3,5.7,90,{s:1}],['cama',5.15,6.6,-90,{s:1,w:1.4,manta:'#5f7f8f'}],['buro',5.7,5.7,-90,{s:1}],
     /* baño principal */
     ['regadera',3.68,.08,0,{w:.95,d:.9}],['wc',5.92,1.2,-90],['lavabo',5.92,.65,-90],
     /* baño compartido */
-    ['regadera',4.32,8.12,180,{w:.95,d:.9}],['wc',3.08,6.0,90],['lavabo',3.08,6.6,90],
-    ['plafon',1.8,1.8,0],['plafon',2.4,4.3,0],['plafon',1.5,6.6,0],['plafon',3.7,6.6,0],['plafon',5.2,6.6,0],['plafon',4.8,.9,0]
+    ['regadera',.55,3.68,0,{w:.9,d:.85}],['wc',1.3,4.92,180],['lavabo',1.7,3.68,0],
+    ['plafon',1.8,1.8,0],['plafon',2.4,4.3,0],['plafon',1.5,6.6,0],['plafon',4.5,6.6,0],['plafon',1.0,4.3,0],['plafon',4.8,.9,0]
   ]
 };
 var stops=[
@@ -106,14 +105,14 @@ var stops=[
   {n:'Cocina',d:'Cocina en L con muebles oscuros, cubierta de granito, estufa y doble tarja.',lvl:0,t:[3.2,1.5,5.3],yaw:-.9,pitch:.3,dist:.01,fov:1.3,f:[3,4]},
   {n:'Área de lavado',d:'Área de lavado techada con lavadero y boiler.',lvl:0,t:[4.1,1.6,5.4],yaw:.4,pitch:.28,dist:.01,fov:1.3,f:[5]},
   {n:'Medio baño',d:'Medio baño para visitas.',lvl:0,t:[1.3,1.6,3.7],yaw:-1.1,pitch:.4,dist:.01,fov:1.45,f:[]},
-  {n:'Patio trasero',d:'Patio al fondo, con salida desde la cocina.',lvl:0,t:[3,1.0,10.0],yaw:-.2,pitch:.55,dist:8,fov:.8,f:[]},
+  {n:'Patio trasero',d:'Patio al fondo, con salida desde la cocina.',lvl:0,t:[3,1.0,10.0],yaw:3.14,pitch:1.0,dist:8.5,fov:.8,f:[]},
   {n:'Planta alta',d:'Recámara principal con baño, dos recámaras más y baño compartido.',lvl:1,t:[3,.2,5.2],yaw:-.6,pitch:.9,dist:18,fov:.62,f:[],v:{dist:24}},
   {n:'Recámara principal',d:'Recámara principal con clóset, ventana a la calle y baño propio.',lvl:1,t:[3.0,1.5,3.25],yaw:3.14,pitch:.22,dist:.01,fov:1.25,f:[]},
-  {n:'Baño principal',d:'Baño completo de la recámara principal.',lvl:1,t:[3.9,1.6,.4],yaw:.75,pitch:.4,dist:.01,fov:1.45,f:[]},
+  {n:'Baño principal',d:'Baño completo de la recámara principal.',lvl:1,t:[5.1,1.6,1.55],yaw:-2.5,pitch:.42,dist:.01,fov:1.45,f:[]},
   {n:'Recámara 2',d:'Recámara con clóset y ventana al patio.',lvl:1,t:[2.7,1.5,5.3],yaw:-.5,pitch:.22,dist:.01,fov:1.25,f:[]},
-  {n:'Recámara 3',d:'Recámara con clóset, junto al baño compartido.',lvl:1,t:[5.6,1.5,5.3],yaw:-.3,pitch:.22,dist:.01,fov:1.3,f:[]}
+  {n:'Recámara 3',d:'Recámara con clóset y ventana al patio.',lvl:1,t:[3.3,1.5,5.3],yaw:.6,pitch:.22,dist:.01,fov:1.3,f:[]}
 ];
 var rooms0=[['Sala-comedor',2.6,2.8],['Escalera',5.5,3.4],['Medio baño',.8,4.3],['Cocina',1.9,6.6],['Lavado',4.9,6.6],['Patio',3.0,10.0],['Estacionamiento',4.3,-3.5]];
-var rooms1=[['Recámara principal',1.8,1.8],['Baño',4.8,.9],['Pasillo',2.4,4.3],['Recámara 2',1.5,6.6],['Baño compartido',3.7,6.6],['Recámara 3',5.2,6.6]];
+var rooms1=[['Recámara principal',1.8,1.8],['Baño',4.8,.9],['Pasillo',3.4,4.3],['Recámara 2',1.5,6.6],['Baño',1.0,4.3],['Recámara 3',4.5,6.6]];
 window.TOUR={levels:[{n:'Planta baja',plan:baja,rooms:rooms0},{n:'Planta alta',plan:alta,rooms:rooms1}],stops:stops};
 })();

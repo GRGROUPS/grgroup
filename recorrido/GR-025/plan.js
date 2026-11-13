@@ -80,7 +80,7 @@ var stops=[
   {n:'Baño',d:'Baño completo con regadera en acabado tipo mármol.',t:[2.0,1.6,9.4],yaw:-2.6,pitch:.5,dist:.01,fov:1.35,f:[13,14]},
   {n:'Recámara 1',d:'Recámara con ventana.',t:[3.2,1.5,7.3],yaw:2.25,pitch:.26,dist:.01,fov:1.2,f:[7,17]},
   {n:'Recámara 2',d:'Recámara con ventana y piso cerámico.',t:[3.2,1.5,9.45],yaw:1.75,pitch:.26,dist:.01,fov:1.2,f:[16]},
-  {n:'Patio de servicio',d:'Patio al fondo con lavadero y espacio para lavadora.',t:[4.6,1.5,9.9],yaw:-1.07,pitch:.2,dist:.01,fov:1.08,f:[10,11,12]}
+  {n:'Patio de servicio',d:'Patio al fondo con lavadero y espacio para lavadora.',t:[2.5,.6,10.8],yaw:3.14,pitch:1.0,dist:8.5,fov:.8,f:[10,11,12]}
 ];
 var rooms=[['Recámara 3',3.7,1.3],['Cochera',1.2,1.3],['Sala-comedor',2.5,4.0],['Cocina',1.1,6.5],['Baño',1.1,8.6],['Recámara 1',4.0,6.4],['Recámara 2',4.0,8.5],['Patio',2.5,10.8]];
 

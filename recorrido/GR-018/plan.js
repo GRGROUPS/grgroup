@@ -10,7 +10,7 @@ function ext(o){o.t=.15; o.h=2.7; if(!o.color) o.color=TAN; if(!o.mat) o.mat=o.c
 var baja={
   sky:'#e9eef1', center:[5.5,0,7], frame:FR, tile:.6, gloss:1, wallIn:IN, zoclo:'#e2dccd', indoor:[[2.2,0,4.4,4.5]],
   ground:[
-    [-10,-0.09,-16,21,26,'#8fae6b',2],
+    [-10,-0.09,-40,21,26,'#8fae6b',2],
     [-10,-0.06,-16,21,-8.2,'#a8978b',15],
     [-10,-0.03,-8.2,21,-6.6,'#cfccc5',3],
     [.5,-0.02,-6.6,2.0,0,'#d6d3cc',3],
@@ -181,7 +181,7 @@ var roof={
 };
 var stops=[
   {n:'Planta baja',d:'Sala-comedor, cocina integral, recámara con baño y vestidor, medio baño, cuarto de servicio y lavado.',lvl:0,t:[5.5,.2,7.4],yaw:-.6,pitch:.9,dist:36,fov:.62,f:[],v:{dist:41}},
-  {n:'Fachada',d:'Casa de tres niveles con balcón de cristal y cochera para dos autos.',lvl:0,t:[5.5,3.8,0],yaw:-.4,pitch:.05,dist:27,fov:.75,f:[1],v:{dist:36}},
+  {n:'Fachada',d:'Casa de tres niveles con balcón de cristal y cochera para dos autos.',lvl:0,t:[5.5,3.8,0],yaw:-.4,pitch:.05,dist:27,fov:.75,f:[1],v:{dist:31}},
   {n:'Sala-comedor',d:'Sala-comedor amplia con la escalera al fondo y salida al jardín.',lvl:0,t:[6.2,1.55,13.3],yaw:-2.8,pitch:.2,dist:.01,fov:1.2,f:[5]},
   {n:'Cocina',d:'Cocina integral en U con cubierta de granito y barra.',lvl:0,t:[5.6,1.55,9.9],yaw:.75,pitch:.28,dist:.01,fov:1.2,f:[3,4]},
   {n:'Lavado',d:'Cuarto de lavado junto al cuarto de servicio con baño.',lvl:0,t:[7.05,1.55,7.75],yaw:1.5,pitch:.3,dist:.01,fov:1.25,f:[19]},

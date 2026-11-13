@@ -87,14 +87,14 @@ var stops=[
   {n:'Fachada',d:'Casa nueva de dos plantas con jardín al frente.',lvl:0,t:[3.2,2.5,0],yaw:-.5,pitch:.06,dist:15,fov:.75,f:[1],v:{dist:19}},
   {n:'Sala',d:'Sala con ventanal al jardín del frente.',lvl:0,t:[4.3,1.55,3.7],yaw:-2.28,pitch:.22,dist:.01,fov:1.15,f:[2]},
   {n:'Comedor',d:'Comedor con salida al jardín, abierto a la cocina.',lvl:0,t:[.5,1.55,4.5],yaw:.62,pitch:.25,dist:.01,fov:1.2,f:[2]},
-  {n:'Cocina',d:'Cocina integral con barra y cubierta de granito.',lvl:0,t:[3.9,1.55,8.25],yaw:2.2,pitch:.32,dist:.01,fov:1.2,f:[3]},
+  {n:'Cocina',d:'Cocina integral con barra y cubierta de granito.',lvl:0,t:[4.6,1.55,8.4],yaw:2.45,pitch:.32,dist:.01,fov:1.2,f:[3]},
   {n:'Medio baño',d:'Medio baño de visitas en planta baja.',lvl:0,t:[4.4,1.6,2.28],yaw:1.5,pitch:.5,dist:.01,fov:1.15,f:[]},
   {n:'Planta alta',d:'Tres recámaras y dos baños completos.',lvl:1,t:[3.2,.2,4.6],yaw:-.6,pitch:.9,dist:21,fov:.62,f:[],v:{dist:29}},
   {n:'Recámara principal',d:'Recámara principal con baño propio.',lvl:1,t:[4.3,1.55,.45],yaw:-.95,pitch:.25,dist:.01,fov:1.2,f:[4]},
   {n:'Baño principal',d:'Baño completo de la recámara principal.',lvl:1,t:[4.85,1.6,2.85],yaw:2.65,pitch:.45,dist:.01,fov:1.3,f:[5]},
   {n:'Recámara 2',d:'Recámara con ventana al jardín.',lvl:1,t:[2.85,1.55,5.6],yaw:-.75,pitch:.28,dist:.01,fov:1.2,f:[]},
   {n:'Recámara 3',d:'Recámara con ventana al jardín.',lvl:1,t:[3.45,1.55,8.4],yaw:2.28,pitch:.28,dist:.01,fov:1.2,f:[]},
-  {n:'Baño compartido',d:'Baño completo para las recámaras 2 y 3.',lvl:1,t:[1.95,1.6,5.05],yaw:-2.4,pitch:.5,dist:.01,fov:1.35,f:[]}
+  {n:'Baño compartido',d:'Baño completo para las recámaras 2 y 3.',lvl:1,t:[1.95,1.65,5.3],yaw:-2.6,pitch:.5,dist:.01,fov:1.35,f:[]}
 ];
 window.TOUR={levels:[
   {n:'Planta baja',plan:baja,rooms:[['Sala',1.8,1.7],['Comedor',1.8,6.9],['Cocina',5.2,7.2],['Medio baño',5.5,2.1],['Escalera',5.9,4.2],['Jardín',3.2,10.2]]},

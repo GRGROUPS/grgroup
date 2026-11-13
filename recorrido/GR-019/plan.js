@@ -76,7 +76,7 @@ var stops=[
   {n:'Baño',d:'Baño completo con cancel en la regadera.',t:[2.27,1.6,5.27],yaw:-2.3,pitch:.5,dist:.01,fov:1.35,f:[4],v:{yaw:-2.6}},
   {n:'Recámara 1',d:'Recámara con clóset y ventana.',t:[4.3,1.5,5.7],yaw:.66,pitch:.26,dist:.01,fov:1.15,f:[7]},
   {n:'Recámara 2',d:'Recámara con clóset.',t:[2.62,1.55,8.25],yaw:-2.5,pitch:.24,dist:.01,fov:1.15,f:[8]},
-  {n:'Patio',d:'Patio de servicio al fondo.',t:[5.9,1.5,10.1],yaw:-1.95,pitch:.2,dist:.01,fov:1.08,f:[]}
+  {n:'Patio',d:'Patio de servicio al fondo.',t:[6.0,1.5,9.6],yaw:-1.7,pitch:.3,dist:.01,fov:1.3,f:[]}
 ];
 var rooms=[['Cocina',1.2,1.7],['Sala-comedor',4.5,3.5],['Baño',1.2,4.4],['Recámara 1',5.1,7.1],['Recámara 2',1.45,7.1],['Patio',3.2,9.5]];
 

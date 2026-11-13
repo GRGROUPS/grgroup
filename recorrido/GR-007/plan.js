@@ -95,7 +95,7 @@ var stops=[
   {n:'Planta alta',d:'Dos recámaras, baño, sala de estar y terraza.',lvl:1,t:[3,.2,4.2],yaw:-.6,pitch:.9,dist:16,fov:.62,f:[],v:{dist:22}},
   {n:'Recámara 2',d:'Recámara con clóset de madera, ventana a la calle y puerta corrediza cerca de la terraza.',lvl:1,t:[3.0,1.5,.55],yaw:-.5,pitch:.22,dist:.01,fov:1.3,f:[5]},
   {n:'Recámara 3',d:'Recámara con ventana a la calle.',lvl:1,t:[4.0,1.5,.55],yaw:.5,pitch:.22,dist:.01,fov:1.3,f:[]},
-  {n:'Terraza',d:'Terraza con pretil de herrería y vista a la barranca.',lvl:1,t:[3,1.0,7.0],yaw:.3,pitch:.5,dist:8,fov:.85,f:[2]}
+  {n:'Terraza',d:'Terraza con pretil de herrería y vista a la barranca.',lvl:1,t:[3,1.0,7.0],yaw:3.14,pitch:1.0,dist:8.5,fov:.85,f:[2]}
 ];
 var rooms0=[['Sala-comedor',2.6,2.0],['Cocina',1.6,4.9],['Baño',4.2,5.2],['Escalera',5.45,4.9],['Recámara 1',3.0,7.4]];
 var rooms1=[['Recámara 2',1.7,1.8],['Recámara 3',4.7,1.8],['Baño',4.2,5.4],['Sala de estar',1.7,5.0],['Terraza',3.0,7.3]];

@@ -33,7 +33,7 @@ var baja={
       {from:2.3,to:3.1,head:2.1,kind:'door',hinge:'from',ang:1.2,color:DOOR3,mat:6},
       {from:5.9,to:6.9,head:2.2,kind:'gap'}]},
     /* baño | cocina | recibidor con la escalera */
-    {ax:'z',c:2.2,from:4.5,to:8,open:[{from:7.0,to:7.7,head:2.1,kind:'door',hinge:'from',ang:-1.2,color:DOOR3,mat:6}]},
+    {ax:'z',c:2.2,from:4.5,to:8,open:[{from:7.0,to:7.7,head:2.1,kind:'door',hinge:'from',ang:0,color:DOOR3,mat:6}]},
     {ax:'z',c:5.2,from:4.5,to:8,open:[{from:5.0,to:6.4,head:2.2,kind:'gap'}]},
     /* recámaras al fondo y pasillo al patio */
     {ax:'x',c:8,from:0,to:8,open:[{from:3.2,to:4.8,head:2.2,kind:'gap'},{from:5.4,to:6.2,head:2.1,kind:'door',hinge:'from',ang:1.2,color:DOOR3,mat:6}]},
@@ -83,9 +83,9 @@ var stops=[
   {n:'Fachada',d:'Zaguán negro y puerta azul de entrada, a pie de calle.',lvl:0,t:[4,1.4,0],yaw:-.5,pitch:.08,dist:11,fov:.72,f:[6,11]},
   {n:'Sala',d:'Sala al frente, con piso de concreto listo para el acabado que prefieras.',lvl:0,t:[5.7,1.5,.5],yaw:.8,pitch:.2,dist:.01,fov:1.25,f:[4]},
   {n:'Recámara 1',d:'Recámara al fondo con ventana de repisa profunda.',lvl:0,t:[2.9,1.5,8.2],yaw:-.45,pitch:.22,dist:.01,fov:1.25,f:[2,8]},
-  {n:'Baño',d:'Baño de planta baja junto a la cocina.',lvl:0,t:[1.5,1.6,7.0],yaw:-2.4,pitch:.45,dist:.01,fov:1.45,f:[3,9]},
+  {n:'Baño',d:'Baño de planta baja junto a la cocina.',lvl:0,t:[1.8,1.6,6.75],yaw:-2.6,pitch:.45,dist:.01,fov:1.45,f:[3,9]},
   {n:'Recámara 2',d:'Recámara con puerta verde y salida al pasillo.',lvl:0,t:[7.5,1.5,8.25],yaw:.15,pitch:.22,dist:.01,fov:1.25,f:[5,10]},
-  {n:'Patio',d:'Zona de patio al fondo del terreno.',lvl:0,t:[4,1.0,13.2],yaw:0,pitch:.5,dist:8,fov:.8,f:[]},
+  {n:'Patio',d:'Zona de patio al fondo del terreno.',lvl:0,t:[4,1.0,13.2],yaw:3.14,pitch:1.0,dist:8.5,fov:.8,f:[]},
   {n:'Segundo nivel',d:'Dos recámaras más en obra negra, con muros de tabique, para terminar a tu gusto.',lvl:1,t:[4,.2,8],yaw:-.6,pitch:.9,dist:19,fov:.62,f:[],v:{dist:25}},
   {n:'Azotea',d:'Azotea al frente del segundo nivel, con pretiles de tabique y la escalera.',lvl:1,t:[3.2,1.0,2.0],yaw:-.9,pitch:.5,dist:8,fov:.85,f:[1,7]},
   {n:'Recámaras en obra negra',d:'Dos recámaras con ventana al patio, listas para repellar y poner piso.',lvl:1,t:[2.0,1.5,8.25],yaw:.5,pitch:.2,dist:.01,fov:1.3,f:[]}

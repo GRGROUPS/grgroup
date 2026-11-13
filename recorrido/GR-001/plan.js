@@ -43,7 +43,7 @@ var baja={
     /* sala */
     ['tv',.08,1.8,90,{w:1.5}],['tapete',1.8,1.8,90,{s:1,w:2.2,d:1.7,color:'#6f6259',color2:'#5f534b'}],['sofa',3.15,1.8,-90,{s:1,w:2.0,color:'#7f8c99',color2:'#93a0ad'}],['mesaCentro',1.8,1.8,90,{s:1}],
     /* cocina-comedor con lavatrastes */
-    ['barra',.08,5.6,90,{len:2.2,estufa:.5,tarja:-.5,color:'#d9d4c8',mat:6,cubierta:'#bdb8ad',altos:[[-.9,-.2],[.2,.9]]}],['refri',3.0,6.92,180],
+    ['barra',.08,5.6,90,{len:2.2,estufa:.5,tarja:-.5,color:'#d9d4c8',mat:6,cubierta:'#bdb8ad',altos:[[-.9,-.2],[.2,.9]]}],['refri',4.12,6.5,-90],
     ['mesa',2.4,4.5,0,{s:1,w:.9,d:1.3}],['silla',2.4,3.9,0,{s:1}],['silla',2.4,5.1,180,{s:1}],
     ['escalera',5.1,3.5,0,{w:.9,n:13,huella:.23,alto:2.8,mat:1,color:'#d8d4c8',barandal:-1}],
     ['lavadero',5.0,9.95,180],['boiler',.7,9.9,0],
@@ -84,7 +84,7 @@ var stops=[
   {n:'Fachada',d:'Fachada crema y blanca, con puerta de reja y jardín al frente con andador de losas.',lvl:0,t:[3,1.5,0],yaw:-.5,pitch:.1,dist:11,fov:.72,f:[1]},
   {n:'Sala',d:'Sala al frente de la casa.',lvl:0,t:[1.0,1.5,.55],yaw:.2,pitch:.2,dist:.01,fov:1.25,f:[]},
   {n:'Cocina-comedor',d:'Cocina abierta con lavatrastes y salida con puerta de cristal al patio.',lvl:0,t:[3.4,1.5,3.9],yaw:-.75,pitch:.28,dist:.01,fov:1.35,f:[2]},
-  {n:'Patio',d:'Patio al fondo, con zona de lavado.',lvl:0,t:[3,1.0,8.8],yaw:-.2,pitch:.55,dist:8,fov:.8,f:[]},
+  {n:'Patio',d:'Patio al fondo, con zona de lavado.',lvl:0,t:[3,1.0,8.8],yaw:3.14,pitch:1.0,dist:8.5,fov:.8,f:[]},
   {n:'Planta alta',d:'Dos recámaras, baño completo y pasillo.',lvl:1,t:[3,.2,4.6],yaw:-.6,pitch:.9,dist:17,fov:.62,f:[],v:{dist:23}},
   {n:'Recámara 1',d:'Recámara con ventana a la calle.',lvl:1,t:[2.9,1.5,2.5],yaw:-1.4,pitch:.22,dist:.01,fov:1.35,f:[3]},
   {n:'Recámara 2',d:'Recámara con ventana a la calle.',lvl:1,t:[3.4,1.5,2.5],yaw:1.4,pitch:.22,dist:.01,fov:1.35,f:[]},

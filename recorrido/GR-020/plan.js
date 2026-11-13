@@ -119,7 +119,7 @@ var stops=[
   {n:'Recámara 2',d:'Recámara con ventana a la calle lateral.',lvl:1,t:[2.4,1.5,4.0],yaw:-.9,pitch:.22,dist:.01,fov:1.3,f:[]},
   {n:'Nivel 3',d:'Recámara principal con baño, otra recámara y roof garden.',lvl:2,t:[2.25,.2,4.4],yaw:-.6,pitch:.9,dist:16,fov:.62,f:[],v:{dist:22}},
   {n:'Recámara principal',d:'Recámara principal con baño propio.',lvl:2,t:[4.1,1.5,2.7],yaw:-1.35,pitch:.22,dist:.01,fov:1.3,f:[]},
-  {n:'Roof garden',d:'Terraza en el último nivel, con jardineras.',lvl:2,t:[2.25,.8,7.0],yaw:.3,pitch:.5,dist:8,fov:.8,f:[]}
+  {n:'Roof garden',d:'Terraza en el último nivel, con jardineras.',lvl:2,t:[2.25,.8,7.0],yaw:3.14,pitch:1.0,dist:8.5,fov:.8,f:[]}
 ];
 var rooms0=[['Sala-comedor',2.2,1.8],['Cocina',1.4,4.7],['Escalera',3.65,5.1],['Medio baño',.75,6.5],['Lavado',.75,8.0],['Jardín',2.25,-2.0]];
 var rooms1=[['Balcón',2.25,-.45],['Recámara 1',1.6,1.8],['Recámara 2',1.4,4.7],['Recámara 3',1.4,7.2],['Baño',3.65,8.1]];
