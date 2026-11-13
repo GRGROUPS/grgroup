@@ -6,12 +6,13 @@ var boxes=[[.2,.95,5.0,1.4,1.0,5.42,'#d9cfc4',{mat:8}]], i;
 for(i=0;i<=46;i++) boxes.push([i*.152-.015,0,-3.62,i*.152+.015,1.6,-3.59,'#2b2b2b']);   // reja del frente
 boxes.push([0,1.56,-3.63,7,1.6,-3.58,'#2b2b2b'],[0,.1,-3.63,7,.14,-3.58,'#2b2b2b']);
 var plan={
-  sky:'#e9eef1', center:[3.5,0,5],
+  // se conservan los colores de la casa; solo se suben las texturas y la luz
+  sky:'#e9eef1', center:[3.5,0,5], tile:.33, gloss:.6, wallMat:14, wallIn:'#f0e8d6', zoclo:'#d9cbb2',
   ground:[
     [-10,-0.09,-13,17,22,'#9aa07a',2],
     [-10,-0.06,-13,17,-5.2,'#7b7d80',0],
     [-10,-0.03,-5.2,17,-3.7,'#cfccc5',3],
-    [0,-0.02,-3.7,7,0,'#c9c4b8',3],
+    [0,-0.02,-3.7,7,0,'#b9ad9c',15],
     [0,-0.015,8.4,2.6,11.6,'#bdb9af',3]
   ],
   floors:[[0,0,4.0,5.2,T,1],[4.0,0,7.0,3.3,T],[4.0,3.3,7.0,5.2,'#e6e2da'],[0,5.2,2.6,8.4,T],[2.6,5.2,3.5,8.4,T],[3.5,5.2,7.0,8.4,T],[2.6,8.4,7.0,11.6,T]],
@@ -27,7 +28,7 @@ var plan={
     {ax:'z',c:2.6,from:8.4,to:11.6,t:.15,h:2.7,open:[{from:9.4,to:10.6,sill:.95,head:2.1,kind:'window'}]},
     {ax:'x',c:8.4,from:0,to:2.6,t:.15,h:2.7,open:[
       {from:.75,to:1.4,sill:1.1,head:2.1,kind:'window',mid:false},
-      {from:1.6,to:2.4,head:2.1,kind:'door',hinge:'from',ang:0}]},
+      {from:1.6,to:2.4,head:2.1,kind:'door',hinge:'from',ang:0,color:'#8b4f2e',mat:6}]},
     {ax:'z',c:4.0,from:0,to:5.2,open:[{from:2.35,to:3.1,head:2.1,kind:'gap'},{from:3.9,to:4.65,head:2.1,kind:'gap'}]},
     {ax:'x',c:3.3,from:4.0,to:7},
     {ax:'x',c:5.2,from:0,to:7,open:[
@@ -37,13 +38,13 @@ var plan={
     {ax:'z',c:2.6,from:5.2,to:8.4},
     {ax:'z',c:3.5,from:5.2,to:8.4,open:[{from:6.4,to:7.15,head:2.1,kind:'gap'}]},
     {ax:'x',c:8.4,from:2.6,to:7,open:[{from:2.68,to:3.42,head:2.1,kind:'gap'}]},
-    {ax:'z',c:0,from:8.4,to:11.6,h:2.4,color:'#d9d2c2'},{ax:'x',c:11.6,from:0,to:2.6,h:2.4,color:'#d9d2c2'},
+    {ax:'z',c:0,from:8.4,to:11.6,h:2.4,color:'#d9cbb0'},{ax:'x',c:11.6,from:0,to:2.6,h:2.4,color:'#d9cbb0'},
     {ax:'z',c:0,from:-3.6,to:0,h:1.6,t:.1,color:'#d9d2c2'},{ax:'z',c:7,from:-3.6,to:0,h:1.6,t:.1,color:'#d9d2c2'}
   ],
   boxes:boxes,
   items:[
     ['pergola',4.9,-3.45,0,{w:3.9,d:3.45,alto:2.35}],
-    ['barra',.08,7.0,90,{len:2.6,estufa:.3,tarja:-.7,altos:[[-.2,1.2]],color:CAB,cubierta:'#d9cfc4'}],
+    ['barra',.08,7.0,90,{len:2.6,estufa:.3,horno:1,tarja:-.7,altos:[[-.2,1.2]],color:CAB,mat:6,cubierta:'#d9cfc4'}],
     ['regadera',6.92,5.12,180,{w:.9,d:1.74}],['wc',5.4,3.38,0],['lavabo',4.7,3.38,0],
     ['lavadero',1.3,11.52,180],
     ['plafon',2.0,2.6,0],['plafon',5.5,1.7,0],['plafon',5.3,4.3,0],['plafon',1.3,6.8,0],['plafon',5.2,6.8,0],['plafon',4.8,10.0,0],

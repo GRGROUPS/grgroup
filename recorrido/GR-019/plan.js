@@ -1,10 +1,11 @@
 /* Casa en Viñedos (una planta). Plano deducido de las fotos. */
 (function(){
-var W='#f3f1ec', T='#d8cfc0', WOOD='#b08a62', SOFT='#8d99a6', LIN='#ece7dd', WHT='#f4f4f1';
+// fotos: casa blanca de estuco con franja verde, loseta beige rosada, muros interiores blanco cálido, cocina blanca con cubierta marmoleada
+var W='#f3f1ec', T='#d6cabb', WOOD='#b08a62', SOFT='#8d99a6', LIN='#ece7dd', WHT='#f4f4f1';
 
 /* Plano deducido de las fotos. Metros. x = ancho (0 = muro del vecino), z = fondo (0 = frente a la calle). */
 var plan={
-  sky:'#e9eef1',
+  sky:'#e9eef1', tile:.33, gloss:.45, wallOut:'#f2f1ee', wallMat:14, wallIn:'#f3eee8', zoclo:'#cdbfae',
   ground:[ // [x0, yTop, z0, x1, z1, color, material]  2 pasto, 3 concreto
     [-10,-0.09,-10,17,18,'#8fae6b',2],
     [-10,-0.06,-10,17,-2.7,'#7b7d80',0],
@@ -41,9 +42,9 @@ var plan={
     {ax:'z',c:2.9,from:5.4,to:8.6,open:[{from:5.7,to:6.5,head:2.1,kind:'door',hinge:'from',ang:-1.35}]},
     {ax:'z',c:3.75,from:5.4,to:8.6},
     // bardas del patio
-    {ax:'x',c:10.4,from:0,to:6.4,h:2.2,color:'#d9d6cf'},
-    {ax:'z',c:0,from:8.6,to:10.4,h:2.2,color:'#d9d6cf'},
-    {ax:'z',c:6.4,from:8.6,to:10.4,h:2.2,color:'#d9d6cf'}
+    {ax:'x',c:10.4,from:0,to:6.4,h:2.2,color:'#e4e1da'},
+    {ax:'z',c:0,from:8.6,to:10.4,h:2.2,color:'#e4e1da'},
+    {ax:'z',c:6.4,from:8.6,to:10.4,h:2.2,color:'#e4e1da'}
   ],
   boxes:[
     // contexto: casa vecina y pilastra verde de medidores
@@ -53,7 +54,7 @@ var plan={
   // [mueble, x, z, ángulo, opciones]. Ángulo 0 = frente hacia el fondo de la casa; s:1 = mueble sugerido (se puede ocultar)
   items:[
     // fijos, como en las fotos
-    ['barra',.08,1.85,90,{len:2.7,estufa:.05,tarja:-.92,altos:[[.38,1.35],[-1.3,-.28]]}],
+    ['barra',.08,1.85,90,{len:2.7,estufa:.05,tarja:-.92,altos:[[.38,1.35],[-1.3,-.28]],cubierta:'#dedbd4'}],
     ['regadera',.08,3.47,0,{w:.9,d:1.85}],['wc',1.5,3.47,0],['lavabo',2.05,3.47,0],
     ['closet',5.62,5.47,0,{w:1.4}],['closet',.95,5.47,0,{w:1.6}],
     ['lavadero',.75,10.33,180],['boiler',5.9,8.68,0],

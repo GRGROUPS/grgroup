@@ -6,7 +6,7 @@
 var T='#d8d2c5', TAN='#c8ad85', STONE='#6f5a55', LSTONE='#d6cfbf', WOOD='#94755a', CLAR='#d6c2a1', GRAN='#d3ccbd', DARK='#6e442a', DECK='#8b6148', FR='#26282b', NEG='#1f2123',
     IN='#eee8da', ACC='#c9b08a', BEI='#dccbac', BLA='#f2f1ed';
 var W=11, D=14;
-function ext(o){o.t=.15; o.h=2.7; if(!o.color) o.color=TAN; if(!o.mat) o.mat=(o.color===STONE||o.color===LSTONE)?12:14; return o}
+function ext(o){o.t=.15; o.h=2.7; if(!o.color) o.color=TAN; if(!o.mat) o.mat=o.color===STONE?12:(o.color===LSTONE?19:14); return o}
 var baja={
   sky:'#e9eef1', center:[5.5,0,7], frame:FR, tile:.6, gloss:1, wallIn:IN, zoclo:'#e2dccd', indoor:[[2.2,0,4.4,4.5]],
   ground:[
@@ -53,7 +53,7 @@ var baja={
     [8.74,.12,9.2,8.76,1.0,9.205,'#6f5642'],[8.74,1.55,9.2,8.76,2.26,9.205,'#6f5642'],[8.66,.5,9.2,8.68,.8,9.23,'#c9cdd0',{mat:16}],[8.82,.5,9.2,8.84,.8,9.23,'#c9cdd0',{mat:16}],[8.66,1.7,9.2,8.68,2.0,9.23,'#c9cdd0',{mat:16}],[8.82,1.7,9.2,8.84,2.0,9.23,'#c9cdd0',{mat:16}],
     // planta alta y tercer nivel vistos desde la calle (se ocultan al ver la maqueta desde arriba)
     [-.075,2.7,-.075,4.475,5.5,14.075,TAN,{mat:34}],
-    [4.4,2.7,1.6,11.075,5.5,14.075,LSTONE,{mat:32}],
+    [4.4,2.7,1.6,11.075,5.5,14.075,LSTONE,{mat:39}],
     [4.4,2.7,-.075,11.075,2.82,1.6,TAN,{mat:34}],
     [-.075,5.5,-.075,6.575,8.3,10.075,TAN,{mat:34}],
     [6.5,5.5,1.6,11.075,6.6,1.75,TAN,{mat:34}],[10.925,5.5,1.6,11.075,6.6,14.075,TAN,{mat:34}],

@@ -1,9 +1,12 @@
 /* Casa Cardenal (85.71 m², dos plantas). Distribución tomada del plano del modelo; medidas aproximadas.
    Metros. x = ancho visto desde la calle, z = fondo. */
 (function(){
-var T='#e6e2da', WOODC='#c9a97c', FACH='#d6d4cf', DARK='#4a3428';
+// fotos: fachada de estuco gris claro, porcelanato blanco tipo mármol con vetas, lambrín y escalera de encino,
+// puertas chocolate con marco negro, tocador de encino con lavabo blanco y llave negra
+var T='#ecebe7', WOODC='#cfae84', FACH='#cfcdc7', DARK='#4a3428', OAK='#c9a275';
+var slats=[], k; for(k=0;k<14;k++) slats.push([1.07,0,3.3+k*.068,1.12,2.6,3.34+k*.068,OAK,{mat:6}]);
 var baja={
-  sky:'#e9eef1', center:[2.4,0,4.5], frame:'#3a3c40',
+  sky:'#e9eef1', center:[2.4,0,4.5], frame:'#2a2b2e', tile:.6, gloss:.8, marble:1, indoor:[[0,3.2,1.05,5.7]], wallOut:FACH, wallMat:14, wallIn:'#f4f3f0', zoclo:'#dcdad5',
   ground:[
     [-9,-0.09,-13,14,21,'#8fae6b',2],
     [-9,-0.06,-13,14,-6.2,'#7b7d80',0],
@@ -15,7 +18,7 @@ var baja={
   walls:[
     {ax:'x',c:0,from:0,to:4.8,t:.15,h:2.7,color:FACH,open:[
       {from:.4,to:2.0,sill:.5,head:2.2,kind:'window'},
-      {from:2.4,to:3.3,head:2.15,kind:'door',hinge:'to',ang:0,color:DARK},
+      {from:2.4,to:3.3,head:2.15,kind:'door',hinge:'to',ang:0,color:DARK,mat:6,marco:'#222326'},
       {from:3.6,to:4.4,sill:.9,head:2.2,kind:'window',mid:false}]},
     {ax:'z',c:0,from:0,to:9.0,t:.15,h:2.7},
     {ax:'z',c:4.8,from:0,to:9.0,t:.15,h:2.7},
@@ -32,17 +35,17 @@ var baja={
   ],
   boxes:[
     // planta alta y casas vecinas vistas desde la calle (se ocultan al ver la maqueta desde arriba)
-    [-.075,2.7,-.075,4.875,5.5,9.075,FACH,{mat:11}],
+    [-.075,2.7,-.075,4.875,5.5,9.075,FACH,{mat:34}],
     [.9,2.62,-1.0,3.4,2.74,0,'#e9e7e2',{mat:11}],[.9,2.74,-1.0,3.4,3.6,-.96,'#9db4bf',{mat:10}],
     [1.2,2.85,-.1,3.0,4.95,-.07,'#3d4a55',{mat:10}],
     [3.5,3.6,-.1,4.4,4.6,-.07,'#3d4a55',{mat:10}],
     [-4.95,0,0,-.08,5.5,9.0,'#dddbd6',{mat:11}],[4.88,0,0,9.75,5.5,9.0,'#dddbd6',{mat:11}]
   ],
   items:[
-    ['escalera',.53,3.3,0,{w:.95,n:10,huella:.24}],
-    ['barra',4.72,7.35,-90,{len:3.1,estufa:.2,tarja:-.9,altos:[[-.35,.9]],color:WOODC,cubierta:'#e9e7e2'}],
-    ['barra',2.75,6.95,90,{len:1.8,copete:false,color:WOODC,cubierta:'#e9e7e2'}],
-    ['wc',4.3,4.53,180],['lavabo',4.73,3.62,-90],
+    ['escalera',.53,3.3,0,{w:.95,n:10,huella:.24,color:OAK}],
+    ['barra',4.72,7.35,-90,{len:3.1,estufa:.2,tarja:-.9,altos:[[-.35,.9]],color:WOODC,mat:6,cubierta:'#ecebe7'}],
+    ['barra',2.75,6.95,90,{len:1.8,copete:false,color:WOODC,mat:6,cubierta:'#ecebe7'}],
+    ['wc',4.3,4.53,180],['tocadorF',4.73,3.62,-90,{w:.5,color:OAK,cubierta:OAK}],
     ['plafon',2.4,1.6,0],['plafon',2.4,4.4,0],['plafon',1.4,7.4,0],['plafon',4.0,7.4,0],['plafon',4.25,3.9,0],
     ['refri',4.25,4.68,0,{s:1}],
     ['tapete',2.0,1.6,90,{s:1,w:2.2,d:1.5,color:'#bdb8ae',color2:'#aaa59b'}],['sofa',.58,1.6,90,{s:1,w:2.0,color:'#b9b4aa',color2:'#c9c4ba'}],['mesaCentro',2.0,1.6,90,{s:1}],
@@ -51,8 +54,9 @@ var baja={
     ['silla',2.45,6.5,90,{s:1}],['silla',2.45,7.4,90,{s:1}]
   ]
 };
+baja.boxes=baja.boxes.concat(slats);   // lambrín de listones junto a la escalera
 var alta={
-  sky:'#e9eef1', center:[2.4,0,4.5], frame:'#3a3c40',
+  sky:'#e9eef1', center:[2.4,0,4.5], frame:'#2a2b2e', tile:.6, gloss:.8, marble:1, wallOut:FACH, wallMat:14, wallIn:'#f4f3f0', zoclo:'#dcdad5',
   ground:[[-9,-0.09,-13,14,21,'#d9dcde',0]],
   floors:[[0,0,3.3,3.5,T],[3.3,0,4.8,3.5,'#e4e2dc'],[0,3.5,4.8,6.2,T],[0,6.2,3.3,9.0,T],[3.3,6.2,4.8,9.0,'#e4e2dc']],
   ceilings:[[0,0,3.3,3.5],[3.3,0,4.8,3.5],[0,3.5,4.8,6.2],[0,6.2,3.3,9.0],[3.3,6.2,4.8,9.0]],
@@ -72,9 +76,9 @@ var alta={
   ],
   boxes:[],
   items:[
-    ['hueco',.55,3.62,0,{w:.95,l:2.4,lados:[1]}],
-    ['regadera',4.72,.08,-90,{w:.9,d:1.34}],['wc',4.73,1.7,-90],['lavabo',4.73,2.75,-90],
-    ['regadera',3.38,8.92,90,{w:.9,d:1.34}],['wc',4.73,7.4,-90],['lavabo',4.73,6.65,-90],
+    ['hueco',.55,3.62,0,{w:.95,l:2.4,lados:[1],color:OAK}],
+    ['regadera',4.72,.08,-90,{w:.9,d:1.34}],['wc',4.73,1.7,-90],['tocadorF',4.73,2.75,-90,{w:.7,color:OAK,cubierta:'#ecebe7'}],
+    ['regadera',3.38,8.92,90,{w:.9,d:1.34}],['wc',4.73,7.4,-90],['tocadorF',4.73,6.65,-90,{w:.7,color:OAK,cubierta:'#ecebe7'}],
     ['plafon',1.6,1.7,0],['plafon',4.05,1.7,0],['plafon',2.8,4.85,0],['plafon',1.6,7.6,0],['plafon',4.05,7.6,0],
     ['cama',1.12,1.7,90,{s:1,w:1.6,manta:'#6f8f86'}],['buro',.3,.6,90,{s:1}],['buro',.3,2.8,90,{s:1,lampara:false}],
     ['closet',3.22,1.2,-90,{s:1,w:1.5}],

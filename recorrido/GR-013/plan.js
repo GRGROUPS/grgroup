@@ -1,9 +1,11 @@
 /* Casa en Punta Esmeralda (148 m² en dos plantas, terreno de 9 x 16 m). Plano deducido de las fotos; medidas aproximadas.
    Metros. x = ancho visto desde la calle, z = fondo. */
 (function(){
-var T='#a9a59c', WOODC='#7a3b22', GRAN='#b5b5b2', DARK='#3a2622', PISO='#9d9990';
+// fotos: porcelanato gris tipo cemento, muros blancos, cocina y clósets de madera caoba, cubierta de granito gris claro,
+// puertas de madera oscura y persianas zebra en las recámaras
+var T='#a7a39b', WOODC='#6b2e22', GRAN='#c2c2bf', DARK='#33221e', PISO='#9d9990', BL='#f7f6f3';
 var baja={
-  sky:'#e9eef1', center:[4.5,0,4.1],
+  sky:'#e9eef1', center:[4.5,0,4.1], tile:.6, gloss:.45, wallOut:'#efeeea', wallMat:14, wallIn:BL, zoclo:'#9e9a92', indoor:[[7.2,8.2,9,9.8],[0,0,1.1,1.6],[0,1.6,1.1,4.5]],
   ground:[
     [-9,-0.09,-13,18,20,'#8fae6b',2],
     [-9,-0.06,-13,18,-6.4,'#7b7d80',0],
@@ -18,7 +20,7 @@ var baja={
     {ax:'x',c:0,from:0,to:7.2,t:.15,h:2.7,open:[
       {from:1.5,to:2.0,sill:1.6,head:2.1,kind:'window',mid:false},
       {from:3.4,to:6.4,sill:.3,head:2.2,kind:'window'}]},
-    {ax:'z',c:7.2,from:0,to:1.6,t:.15,h:2.7,open:[{from:.35,to:1.3,head:2.15,kind:'door',hinge:'from',ang:0,color:DARK}]},
+    {ax:'z',c:7.2,from:0,to:1.6,t:.15,h:2.7,open:[{from:.35,to:1.3,head:2.15,kind:'door',hinge:'from',ang:0,color:DARK,mat:6}]},
     {ax:'x',c:1.6,from:7.2,to:9,t:.15,h:2.7},
     {ax:'z',c:9,from:1.6,to:8.2,t:.15,h:2.7,open:[{from:5.9,to:7.3,sill:1.1,head:2.1,kind:'window'}]},
     {ax:'z',c:0,from:0,to:8.2,t:.15,h:2.7},
@@ -38,9 +40,9 @@ var baja={
   ],
   items:[
     ['escalera',.55,4.4,180,{w:1.0,n:12,huella:.26,mat:1,color:PISO,barandal:1}],
-    ['barra',6.9,8.12,180,{len:2.8,estufa:.5,altos:[[-1.35,-.3],[.15,1.35]],color:WOODC,cubierta:GRAN}],
-    ['barra',8.92,6.6,-90,{len:2.0,tarja:0,color:WOODC,cubierta:GRAN}],
-    ['barra',7.47,4.7,0,{len:2.95,copete:false,color:WOODC,cubierta:GRAN}],
+    ['barra',6.9,8.12,180,{len:2.8,estufa:.5,horno:1,altos:[[-1.35,-.3],[.15,1.35]],color:WOODC,mat:6,cubierta:GRAN}],
+    ['barra',8.92,6.6,-90,{len:2.0,tarja:0,color:WOODC,mat:6,cubierta:GRAN}],
+    ['barra',7.47,4.7,0,{len:2.95,copete:false,color:WOODC,mat:6,cubierta:GRAN}],
     ['wc',1.8,.08,0],['lavabo',2.42,1.0,-90],
     ['lavadero',8.3,9.72,180],['boiler',8.92,8.7,-90],
     ['plafon',2.3,6.4,0],['plafon',4.6,3.0,0],['plafon',7.2,6.6,0],['plafon',1.8,.8,0],['plafon',4.8,.8,0],
@@ -53,20 +55,20 @@ var baja={
   ]
 };
 var alta={
-  sky:'#e9eef1', center:[4.5,0,4.1],
+  sky:'#e9eef1', center:[4.5,0,4.1], tile:.6, gloss:.45, wallOut:'#efeeea', wallMat:14, wallIn:BL, zoclo:'#9e9a92',
   ground:[[-9,-0.09,-13,18,20,'#d9dcde',0]],
   floors:[[0,0,3.4,5.2,T],[3.4,1.9,5.6,5.2,T],[3.4,0,5.6,1.9,T],[5.6,0,9,2.2,T],[5.6,2.2,9,4.0,T],[5.6,4.0,9,8.2,T],[0,5.2,2.8,8.2,T],[2.8,5.2,5.6,8.2,T]],
   ceilings:[[0,0,3.4,5.2],[3.4,1.9,5.6,5.2],[3.4,0,5.6,1.9],[5.6,0,9,2.2],[5.6,2.2,9,4.0],[5.6,4.0,9,8.2],[0,5.2,2.8,8.2],[2.8,5.2,5.6,8.2]],
   walls:[
     {ax:'x',c:0,from:0,to:9,t:.15,h:2.7,open:[
-      {from:1.5,to:2.7,sill:.95,head:2.1,kind:'window'},
+      {from:1.5,to:2.7,sill:.95,head:2.1,kind:'window',blind:.35},
       {from:4.2,to:4.8,sill:1.5,head:2.1,kind:'window',mid:false},
       {from:7.0,to:7.6,sill:1.5,head:2.1,kind:'window',mid:false}]},
     {ax:'z',c:0,from:0,to:8.2,t:.15,h:2.7},
-    {ax:'z',c:9,from:0,to:8.2,t:.15,h:2.7,open:[{from:5.2,to:7.2,sill:.3,head:2.2,kind:'window'}]},
+    {ax:'z',c:9,from:0,to:8.2,t:.15,h:2.7,open:[{from:5.2,to:7.2,sill:.3,head:2.2,kind:'window',blind:.3}]},
     {ax:'x',c:8.2,from:0,to:9,t:.15,h:2.7,open:[
-      {from:.7,to:2.1,sill:.95,head:2.1,kind:'window'},
-      {from:3.5,to:4.9,sill:.95,head:2.1,kind:'window'}]},
+      {from:.7,to:2.1,sill:.95,head:2.1,kind:'window',blind:.35},
+      {from:3.5,to:4.9,sill:.95,head:2.1,kind:'window',blind:.35}]},
     {ax:'z',c:5.6,from:0,to:8.2,open:[{from:4.3,to:5.08,head:2.1,kind:'gap'}]},
     {ax:'x',c:2.2,from:5.6,to:9,open:[{from:6.6,to:7.35,head:2.1,kind:'gap'}]},
     {ax:'x',c:4.0,from:5.6,to:9,open:[{from:7.55,to:8.25,head:2.1,kind:'gap'}]},

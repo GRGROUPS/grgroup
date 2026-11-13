@@ -1,15 +1,17 @@
 /* Casa en Fray Junípero Serra (una planta). Plano deducido de las fotos; medidas aproximadas. */
 (function(){
-var T='#d8cfc0';
+// fotos: casa de estuco blanco, loseta beige chica muy brillante, patio del frente con piso de barro decorado y barda con
+// piedra beige, cocina de obra con tarja de acero, baño con muros tipo mármol, patio trasero con muros de block
+var T='#dcd3c6';
 
 /* Metros. x = ancho (0 = muro del vecino), z = fondo (0 = frente a la calle). */
 var plan={
-  sky:'#e9eef1',
+  sky:'#e9eef1', tile:.33, gloss:.7, wallOut:'#efeeea', wallMat:14, wallIn:'#f1efeb', zoclo:'#d2c8ba',
   ground:[
     [-10,-0.09,-10,17,18,'#8fae6b',2],
     [-10,-0.06,-10,17,-2.7,'#7b7d80',0],
     [-10,-0.03,-2.7,17,0.0,'#cfccc5',3],
-    [0,-0.015,0,5,2.6,'#b9a99a',3],
+    [0,-0.015,0,5,2.6,'#b49784',1],
     [0,-0.015,9.6,5,12,'#c6c3bc',3]
   ],
   floors:[
@@ -31,25 +33,25 @@ var plan={
       {from:.5,to:1.2,sill:1.3,head:2.0,kind:'window'}]},
     // interiores
     {ax:'z',c:2.2,from:5.4,to:7.6,open:[{from:5.7,to:7.0,head:2.1,kind:'gap'}]},
-    {ax:'z',c:2.2,from:7.6,to:9.6,open:[{from:8.0,to:8.8,head:2.1,kind:'door',hinge:'from',ang:1.3}]},
+    {ax:'z',c:2.2,from:7.6,to:9.6,open:[{from:8.0,to:8.8,head:2.1,kind:'door',hinge:'from',ang:-1.3}]},
     {ax:'x',c:7.6,from:0,to:2.2},
     {ax:'z',c:3,from:5.4,to:9.6,open:[
-      {from:5.7,to:6.5,head:2.1,kind:'door',hinge:'from',ang:-1.35},
-      {from:8.1,to:8.9,head:2.1,kind:'door',hinge:'from',ang:-1.35}]},
+      {from:5.7,to:6.5,head:2.1,kind:'door',hinge:'from',ang:1.35},
+      {from:8.1,to:8.9,head:2.1,kind:'door',hinge:'from',ang:1.35}]},
     {ax:'x',c:7.5,from:3,to:5},
     // bardas
-    {ax:'x',c:0,from:0,to:5,h:1.1,color:'#d9d6cf'},
+    {ax:'x',c:0,from:0,to:5,h:1.1,color:'#cdb391',mat:12},
     {ax:'z',c:0,from:0,to:2.6,h:2.2,color:'#d9d6cf'},
     {ax:'z',c:5,from:0,to:2.6,h:2.2,color:'#d9d6cf'},
-    {ax:'x',c:12,from:0,to:5,h:2.2,color:'#d9d6cf'},
-    {ax:'z',c:0,from:9.6,to:12,h:2.2,color:'#d9d6cf'},
-    {ax:'z',c:5,from:9.6,to:12,h:2.2,color:'#d9d6cf'}
+    {ax:'x',c:12,from:0,to:5,h:2.2,color:'#c9c7c1',mat:12},
+    {ax:'z',c:0,from:9.6,to:12,h:2.2,color:'#c9c7c1',mat:12},
+    {ax:'z',c:5,from:9.6,to:12,h:2.2,color:'#c9c7c1',mat:12}
   ],
   boxes:[
     [-3.2,0,2.6,-.09,2.7,9.6,'#e6e8e7',{top:'#c9ccca'}]
   ],
   items:[
-    ['barra',.08,6.6,90,{len:2.0,estufa:.05,tarja:-.7}],
+    ['barra',.08,6.6,90,{len:2.0,estufa:.05,tarja:-.7,color:'#eceae4',mat:17,cubierta:'#dcdad4',copete:false}],
     ['regadera',.08,7.68,0,{w:.8,d:1.9}],['wc',1.3,7.68,0],['lavabo',1.85,7.68,0],
     ['lavadero',.75,11.93,180],['boiler',4.0,9.68,0],
     ['plafon',2.5,4.0,0],['plafon',1.1,6.5,0],['plafon',1.1,8.6,0],['plafon',4.0,6.4,0],['plafon',4.0,8.5,0],
@@ -64,7 +66,7 @@ var stops=[
   {n:'Vista general',d:'Casa de una planta con 3 recámaras y 1 baño, a pie de calle.',t:[2.5,.2,6.0],yaw:-.6,pitch:.9,dist:18.5,fov:.62,f:[],v:{dist:25}},
   {n:'Fachada',d:'Patio al frente con escalones y acabado en piedra.',t:[2.5,1.25,1.8],yaw:-.6,pitch:.1,dist:9.5,fov:.72,f:[1,2,3]},
   {n:'Sala-comedor',d:'Espacio amplio y luminoso, recién remodelado.',t:[2.5,1.5,3.0],yaw:0,pitch:.2,dist:.01,fov:1.08,f:[4]},
-  {n:'Pasillo',d:'Pasillo que comunica recámaras y baño.',t:[2.6,1.5,5.6],yaw:0,pitch:.2,dist:.01,fov:1.1,f:[5,15]},
+  {n:'Pasillo',d:'Pasillo que comunica recámaras y baño.',t:[2.6,1.5,9.35],yaw:3.14,pitch:.12,dist:.01,fov:1.1,f:[5,15]},
   {n:'Cocina',d:'Cocina con tarja y barra; salida al patio.',t:[1.8,1.55,5.6],yaw:-1.9,pitch:.3,dist:.01,fov:1.15,f:[8,6,9]},
   {n:'Baño',d:'Baño completo con regadera en acabado tipo mármol.',t:[2.0,1.6,9.4],yaw:-2.6,pitch:.5,dist:.01,fov:1.35,f:[13,14]},
   {n:'Recámara 1',d:'Recámara con ventana.',t:[3.3,1.5,5.65],yaw:1.1,pitch:.26,dist:.01,fov:1.15,f:[7,17]},

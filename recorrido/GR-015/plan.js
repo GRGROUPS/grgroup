@@ -1,9 +1,11 @@
 /* Casa en El Mirador (126 m² en tres niveles). Plano deducido de las fotos; medidas aproximadas.
    Metros. x = ancho visto desde la calle, z = fondo. */
 (function(){
-var T='#b5b3ad', CAB='#d9b98a', GRAN='#e4e2dc', DARK='#2f2a2a', DECK='#9a6a4a', FR='#2b2b2b';
+// fotos: casa blanca con celosía de ladrillo rojo al frente, porcelanato gris claro grande, cocina con altos blancos
+// y bajos de encino, granito blanco moteado, cancelería negra, pérgolas negras de duelas y terraza con duela de porcelanato
+var T='#bcb7af', CAB='#c8a277', GRAN='#e2ded5', DARK='#2f2a2a', DECK='#a77d5c', FR='#232425', WH='#f6f6f4', EXT='#f3f3f1';
 var baja={
-  sky:'#e9eef1', center:[3,0,4.5], frame:FR,
+  sky:'#e9eef1', center:[3,0,4.5], frame:FR, tile:.6, gloss:.6, wallOut:EXT, wallMat:14, wallIn:WH, zoclo:'#c9c4bb', indoor:[[4.0,1.5,6,4.1]],
   ground:[
     [-9,-0.09,-13,15,21,'#8fae6b',2],
     [-9,-0.06,-13,15,-6.6,'#7b7d80',0],
@@ -18,7 +20,7 @@ var baja={
     {ax:'x',c:0,from:2.6,to:6,t:.15,h:2.7,open:[
       {from:2.85,to:3.75,head:2.15,kind:'door',hinge:'from',ang:0,color:DARK},
       {from:4.6,to:5.5,sill:1.35,head:1.95,kind:'window',mid:false}]},
-    {ax:'x',c:0,from:0,to:2.6,t:.15,h:2.5,color:'#a6492f'},
+    {ax:'x',c:0,from:0,to:2.6,t:.15,h:2.5,color:'#a2513a',mat:12},
     {ax:'z',c:0,from:0,to:8.5,t:.15,h:2.7},
     {ax:'z',c:6,from:0,to:8.5,t:.15,h:2.7},
     {ax:'x',c:2.2,from:0,to:2.6,t:.15,h:2.7,open:[{from:.95,to:1.75,head:2.1,kind:'glassdoor',mid:false}]},
@@ -44,11 +46,11 @@ var baja={
   items:[
     ['escalera',4.5,4.05,180,{w:.9,n:7,alto:1.35,huella:.3,mat:1,color:T}],
     ['escalera',5.5,1.97,0,{w:.9,n:7,alto:1.35,y0:1.35,huella:.3,mat:1,color:T}],
-    ['barra',.08,3.7,90,{len:2.7,estufa:-.2,tarja:.85,altos:[[-1.3,.5]],color:CAB,cubierta:GRAN}],
-    ['barra',.98,5.02,0,{len:1.9,copete:false,color:CAB,cubierta:GRAN}],
-    ['barra',2.52,3.9,-90,{len:1.3,copete:false,color:CAB,cubierta:GRAN}],
-    ['wc',5.2,.08,0],['lavabo',5.92,.9,-90],
-    ['pergola',1.6,11.0,180,{w:3.0,d:2.5,alto:2.5,color:'#2b2b2b',poste:'#2b2b2b'}],
+    ['barra',.08,3.7,90,{len:2.7,estufa:-.2,horno:1,tarja:.85,altos:[[-1.3,.5]],color:CAB,mat:6,colorAltos:WH,cubierta:GRAN}],
+    ['barra',.98,5.02,0,{len:1.9,copete:false,color:CAB,mat:6,cubierta:GRAN}],
+    ['barra',2.52,3.9,-90,{len:1.3,copete:false,color:CAB,mat:6,cubierta:GRAN}],
+    ['wc',5.2,.08,0],['tocadorF',5.92,.9,-90,{w:.7,color:'#d8b98c',cubierta:'#d8b98c'}],
+    ['pergola',1.6,11.0,180,{w:3.0,d:2.5,alto:2.5,color:'#2b2b2b',poste:'#2b2b2b',slats:.22}],
     ['plafon',1.3,3.8,0],['plafon',3.3,2.4,0],['plafon',1.6,7.0,0],['plafon',4.6,7.0,0],['plafon',5.0,.8,0],
     ['refri',2.2,2.3,0,{s:1}],
     ['silla',.6,5.95,180,{s:1}],['silla',1.4,5.95,180,{s:1}],
@@ -58,7 +60,7 @@ var baja={
   ]
 };
 var uno={
-  sky:'#e9eef1', center:[3,0,4.5], frame:FR,
+  sky:'#e9eef1', center:[3,0,4.5], frame:FR, tile:.6, gloss:.6, wallOut:EXT, wallMat:14, wallIn:WH, zoclo:'#c9c4bb',
   ground:[[-9,-0.09,-13,15,21,'#d9dcde',0]],
   floors:[[0,0,2.9,3.6,T],[2.9,0,6,1.5,T],[2.9,1.5,4.0,5.0,T],[4.0,1.5,6,4.1,T],[0,3.6,2.9,5.0,T],[0,5.0,3.7,8.5,T],[3.7,5.0,6,8.5,T],[4.0,4.1,6,5.0,T]],
   ceilings:[[0,0,2.9,3.6],[2.9,0,6,1.5],[2.9,1.5,4.0,5.0],[0,3.6,2.9,5.0],[0,5.0,3.7,8.5],[3.7,5.0,6,8.5],[4.0,4.1,6,5.0]],
@@ -83,8 +85,8 @@ var uno={
   items:[
     ['hueco',4.5,1.6,0,{w:.9,l:2.45,lados:[-1],color:T}],
     ['escalera',5.5,1.6,0,{w:.9,n:9,huella:.27,mat:1,color:T}],
-    ['regadera',5.92,1.42,180,{w:.9,d:1.34}],['wc',4.5,.08,0],['lavabo',2.98,.62,90],
-    ['regadera',.08,3.68,0,{w:.9,d:1.24}],['wc',1.6,3.68,0],['lavabo',2.35,3.68,0],
+    ['regadera',5.92,1.42,180,{w:.9,d:1.34}],['wc',4.5,.08,0],['tocadorF',2.98,.62,90,{w:.8,color:'#d8b98c',cubierta:'#d8b98c'}],
+    ['regadera',.08,3.68,0,{w:.9,d:1.24}],['wc',1.6,3.68,0],['tocadorF',2.35,3.68,0,{w:.7,color:'#d8b98c',cubierta:'#d8b98c'}],
     ['plafon',1.4,1.8,0],['plafon',4.2,.75,0],['plafon',3.45,3.2,0],['plafon',1.5,4.3,0],['plafon',1.8,6.8,0],['plafon',4.85,6.8,0],
     ['cama',1.15,7.0,90,{s:1,w:1.8,manta:'#6f7f8f'}],['buro',.3,5.85,90,{s:1}],['buro',.3,8.15,90,{s:1,lampara:false}],['closet',2.2,5.08,0,{s:1,w:1.3}],
     ['cama',4.62,7.45,180,{s:1,w:1.4,manta:'#8fa59a'}],['closet',5.92,7.85,-90,{s:1,w:1.2}],
@@ -92,9 +94,9 @@ var uno={
   ]
 };
 var dos={
-  sky:'#e9eef1', center:[3,0,4.5], frame:FR,
+  sky:'#e9eef1', center:[3,0,4.5], frame:FR, tile:.6, gloss:.6, wallOut:EXT, wallMat:14, wallIn:WH, zoclo:'#c9c4bb',
   ground:[[-9,-0.09,-13,15,21,'#d9dcde',0]],
-  floors:[[0,4.1,6,7.2,T],[3.9,7.2,6,8.5,T],[4.0,1.5,6,4.1,T],[0,0,4.0,4.1,DECK,6],[0,7.2,3.9,8.5,DECK,6]],
+  floors:[[0,4.1,6,7.2,T],[3.9,7.2,6,8.5,T],[4.0,1.5,6,4.1,T],[0,0,4.0,4.1,DECK,13],[0,7.2,3.9,8.5,DECK,13]],
   ceilings:[[0,4.1,6,7.2],[3.9,7.2,6,8.5]],
   walls:[
     {ax:'x',c:4.1,from:0,to:4.0,t:.15,h:2.7,open:[{from:.3,to:3.7,sill:.05,head:2.3,kind:'window'}]},
@@ -106,14 +108,14 @@ var dos={
     {ax:'z',c:3.9,from:7.2,to:8.5,t:.15,h:2.7},
     {ax:'x',c:8.5,from:3.9,to:6,t:.15,h:2.7,open:[{from:4.6,to:5.4,sill:1.6,head:2.05,kind:'window',mid:false}]},
     // pretiles de las terrazas
-    {ax:'x',c:0,from:0,to:4.0,h:1.05,t:.1},{ax:'z',c:0,from:0,to:4.1,h:1.05,t:.1},
+    {ax:'x',c:0,from:0,to:4.0,h:1.05,t:.1,color:EXT},{ax:'z',c:0,from:0,to:4.1,h:1.05,t:.1,color:EXT},
     {ax:'x',c:8.5,from:0,to:3.9,h:1.05,t:.1},{ax:'z',c:0,from:7.2,to:8.5,h:1.05,t:.1}
   ],
   boxes:[],
   items:[
     ['hueco',5.0,1.6,0,{w:1.8,l:2.4,lados:[],color:T}],
-    ['pergola',2.0,.12,0,{w:3.8,d:3.9,alto:2.45,color:'#2b2b2b',poste:'#2b2b2b'}],
-    ['regadera',5.92,8.42,180,{w:.8,d:1.14}],['wc',4.65,8.42,180],['lavabo',4.1,8.42,180],
+    ['pergola',2.0,.12,0,{w:3.8,d:3.9,alto:2.45,color:'#2b2b2b',poste:'#2b2b2b',slats:.22}],
+    ['regadera',5.92,8.42,180,{w:.8,d:1.14}],['wc',4.65,8.42,180],['tocadorF',4.1,8.42,180,{w:.6,color:'#d8b98c',cubierta:'#d8b98c'}],
     ['plafon',2.6,5.6,0],['plafon',5.0,7.8,0],
     ['sofa',.58,6.1,90,{s:1,w:1.8,color:'#8a8d91',color2:'#9b9ea2'}],['mesa',1.9,6.75,0,{s:1,w:1.2,d:.6}],['silla',1.9,6.2,0,{s:1}],
     ['mesa',2.0,2.0,0,{s:1,w:.9,d:.9}],['silla',1.35,2.0,90,{s:1}],['silla',2.65,2.0,-90,{s:1}],['planta',.4,3.7,0,{s:1}],['planta',.4,.45,0,{s:1,h:1.0}]

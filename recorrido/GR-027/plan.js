@@ -2,9 +2,12 @@
    se armó a partir de las fotos y de la ficha (128 m² de terreno, 116 m² de construcción); medidas aproximadas.
    Metros. x = ancho visto desde la calle, z = fondo. La calle queda en z negativo. */
 (function(){
-var T='#e6e5e1', DARK='#4b2a22', MAD='#7a3b26', CAB='#cdbfa9', GRAN='#a9a8a4', CLO='#4d4540', EXT='#e9e8e4', VID='#2b3540';
+// fotos: casa blanca de estuco, porcelanato blanco tipo mármol con vetas grises en toda la casa (también terraza),
+// cocina de madera gris claro con granito gris, puertas y clósets de nogal oscuro, baño principal con cubierta flotante
+// oscura y lavabos de sobreponer
+var T='#ecebe8', DARK='#4b2a22', MAD='#6e3524', CAB='#c6b8a4', GRAN='#8f8e8a', CLO='#4a413c', EXT='#f1f0ed', VID='#2b3540';
 var baja={
-  sky:'#e9eef1', center:[3.75,0,4.7], frame:'#1f2124',
+  sky:'#e9eef1', center:[3.75,0,4.7], frame:'#1f2124', tile:.6, gloss:.8, marble:1, wallOut:EXT, wallMat:14, wallIn:'#f5f4f1', zoclo:'#dddcd8',
   ground:[
     [-10,-0.09,-14,17.5,22,'#9fae7f',2],
     [-10,-0.06,-14,17.5,-6.7,'#7b7d80',0],
@@ -23,7 +26,7 @@ var baja={
     {ax:'x',c:0,from:0,to:7.5,t:.15,h:2.7,open:[
       {from:.75,to:1.35,sill:1.7,head:2.05,kind:'window',mid:false},
       {from:2.35,to:3.25,sill:.9,head:2.15,kind:'window',mid:false},
-      {from:3.85,to:4.8,head:2.3,kind:'door',hinge:'to',ang:0,color:MAD},
+      {from:3.85,to:4.8,head:2.3,kind:'door',hinge:'to',ang:0,color:MAD,mat:6},
       {from:5.5,to:7.1,sill:.05,head:2.3,kind:'window'}]},
     {ax:'z',c:0,from:0,to:9.4,t:.15,h:2.7},
     {ax:'z',c:7.5,from:0,to:9.4,t:.15,h:2.7},
@@ -45,15 +48,15 @@ var baja={
   ],
   boxes:[
     /* planta alta vista desde la calle (se oculta al quitar el techo) */
-    [-.075,2.7,-.075,2.9,5.6,7.675,EXT,{mat:11}],
-    [2.9,2.7,1.4,7.575,5.6,7.675,EXT,{mat:11}],
-    [-.075,5.6,-.075,2.0,6.5,4.3,EXT,{mat:11}],
-    [2.9,2.7,-.075,7.575,3.7,.075,EXT,{mat:11}],
-    [2.9,5.35,-.075,7.575,5.6,1.4,EXT,{mat:11}],[7.4,3.7,-.075,7.575,5.35,1.4,EXT,{mat:11}],
+    [-.075,2.7,-.075,2.9,5.6,7.675,EXT,{mat:34}],
+    [2.9,2.7,1.4,7.575,5.6,7.675,EXT,{mat:34}],
+    [-.075,5.6,-.075,2.0,6.5,4.3,EXT,{mat:34}],
+    [2.9,2.7,-.075,7.575,3.7,.075,EXT,{mat:34}],
+    [2.9,5.35,-.075,7.575,5.6,1.4,EXT,{mat:34}],[7.4,3.7,-.075,7.575,5.35,1.4,EXT,{mat:34}],
     [4.0,2.8,1.38,6.8,5.0,1.4,VID,{mat:10}],
     [.7,4.4,-.09,1.3,4.85,-.075,VID,{mat:10}],[.7,6.0,-.09,1.5,6.25,-.075,VID,{mat:10}],
-    [-.075,2.6,7.675,7.575,2.72,9.475,EXT,{mat:11}],
-    [-.075,2.7,9.3,7.575,3.7,9.475,EXT,{mat:11}],[-.075,2.7,7.675,.075,3.7,9.3,EXT,{mat:11}],[7.425,2.7,7.675,7.575,3.7,9.3,EXT,{mat:11}],
+    [-.075,2.6,7.675,7.575,2.72,9.475,EXT,{mat:34}],
+    [-.075,2.7,9.3,7.575,3.7,9.475,EXT,{mat:34}],[-.075,2.7,7.675,.075,3.7,9.3,EXT,{mat:34}],[7.425,2.7,7.675,7.575,3.7,9.3,EXT,{mat:34}],
     /* descanso de la escalera */
     [.0,1.2,1.6,2.0,1.35,2.5,'#e1e0dc',{mat:1}],
     /* bardas de la cochera y del patio; casas vecinas */
@@ -78,9 +81,9 @@ var baja={
     ['mesa',5.4,5.25,90,{s:1,w:1.0,d:1.8}],
     ['silla',5.0,4.5,0,{s:1}],['silla',5.8,4.5,0,{s:1}],['silla',5.0,6.0,180,{s:1}],['silla',5.8,6.0,180,{s:1}],['silla',4.25,5.25,90,{s:1}],['silla',6.55,5.25,-90,{s:1}],
     /* cocina: barra en L con tarja bajo la ventana, estufa e isla con cubierta de granito */
-    ['barra',1.35,9.32,180,{len:2.5,tarja:.1,color:CAB,cubierta:GRAN,altos:[[-1.25,-.75]]}],
-    ['barra',.08,7.65,90,{len:1.9,estufa:0,color:CAB,cubierta:GRAN,altos:[[-.95,-.35],[.35,.95]]}],
-    ['barra',2.15,7.4,90,{len:1.4,copete:false,color:CAB,cubierta:GRAN}],
+    ['barra',1.35,9.32,180,{len:2.5,tarja:.1,color:CAB,mat:6,cubierta:GRAN,altos:[[-1.25,-.75]]}],
+    ['barra',.08,7.65,90,{len:1.9,estufa:0,horno:1,color:CAB,mat:6,cubierta:GRAN,altos:[[-.95,-.35],[.35,.95]]}],
+    ['barra',2.15,7.4,90,{len:1.4,copete:false,color:CAB,mat:6,cubierta:GRAN}],
     ['refri',.08,6.35,90],
     ['silla',3.1,7.1,-90,{s:1}],['silla',3.1,7.75,-90,{s:1}],
     /* recámara de planta baja, con clóset y salida al patio */
@@ -92,10 +95,10 @@ var baja={
   ]
 };
 var alta={
-  sky:'#e9eef1', center:[3.75,0,4.7], frame:'#1f2124',
+  sky:'#e9eef1', center:[3.75,0,4.7], frame:'#1f2124', tile:.6, gloss:.8, marble:1, wallOut:EXT, wallMat:14, wallIn:'#f5f4f1', zoclo:'#dddcd8',
   ground:[[-10,-0.09,-14,17.5,22,'#d9dcde',0]],
   floors:[[0,0,2.9,5.1,T],[2.9,1.4,7.5,4.3,T],[4.4,4.3,7.5,7.6,T],[0,5.1,4.4,7.6,T],[2.9,4.3,4.4,5.1,T],
-          [2.9,0,7.5,1.4,'#e3e1dc'],[0,7.6,7.5,9.4,'#e3e1dc']],
+          [2.9,0,7.5,1.4,T],[0,7.6,7.5,9.4,T]],
   ceilings:[[0,0,2.9,7.6],[2.9,1.4,7.5,7.6]],
   walls:[
     /* fachada: torre con ventanita y balcón con pretil */
@@ -139,7 +142,7 @@ var alta={
     /* vestidor */
     ['closetM',4.48,5.05,90,{w:1.4,color:CLO}],['closetM',7.42,5.05,-90,{w:1.4,color:CLO}],
     /* baño principal: doble lavabo y regadera */
-    ['tocador',6.45,7.52,180,{w:1.7,color:'#3d3d3f'}],
+    ['tocadorF',6.45,7.52,180,{w:1.7,n:2,color:'#3a3a3c',cubierta:'#3a3a3c'}],
     ['regadera',4.48,5.88,0,{w:1.1,d:1.65}],['wc',7.42,6.25,-90],
     /* balcón y terraza */
     ['planta',3.3,.45,0,{s:1}],['planta',7.1,.45,0,{s:1}],
@@ -148,6 +151,8 @@ var alta={
     ['plafon',1.2,.8,0],['plafon',5.2,2.75,0],['plafon',3.0,6.3,0],['plafon',.75,6.3,0],['plafon',5.95,5.05,0],['plafon',5.95,6.7,0],['plafon',2.45,3.0,0]
   ]
 };
+// azulejo pizarra en la regadera del baño principal, como en las fotos
+alta.boxes=(alta.boxes||[]).concat([[4.47,.03,5.9,4.49,2.45,7.5,'#45474b',{mat:17}],[4.49,.03,7.49,5.6,2.45,7.51,'#45474b',{mat:17}]]);
 var stops=[
   {n:'Planta baja',d:'Sala, comedor, cocina con isla, medio baño, baño completo y una recámara con salida al patio.',lvl:0,t:[3.75,.2,4.7],yaw:-.6,pitch:.9,dist:19,fov:.62,f:[],v:{dist:26}},
   {n:'Fachada',d:'Casa de dos niveles con balcón y cochera para 2 autos.',lvl:0,t:[3.75,2.6,0],yaw:-.45,pitch:.06,dist:17,fov:.75,f:[1,2],v:{dist:21}},

@@ -1,9 +1,11 @@
 /* Casa nueva en Los Robles Juriquilla, modelo Maple (132.09 m², dos plantas). Distribución tomada del plano del modelo; medidas aproximadas.
    Metros. x = ancho visto desde la calle, z = fondo. La calle queda en z negativo. */
 (function(){
-var T='#e3e1dc', CAB='#4a3f39', GRAN='#c9c7c2', DARK='#3b3029';
+// fotos (casa muestra): fachada blanca con franja de piedra café, porcelanato beige grande, muro de cantera clara en la sala,
+// sala de piel gris oxford, cocina de madera chocolate con granito gris moteado y comedor con sillas grafito
+var T='#d8cbb5', CAB='#4a3f39', GRAN='#9e9c97', DARK='#3b3029', SIL='#4b4b4e';
 var baja={
-  sky:'#e9eef1', center:[3.25,0,5.4], frame:'#2e3033',
+  sky:'#e9eef1', center:[3.25,0,5.4], frame:'#232427', tile:.6, gloss:.55, wallOut:'#f2f1ee', wallMat:14, wallIn:'#f4f2ee', zoclo:'#cfc3ad',
   ground:[
     [-10,-0.09,-14,17,21,'#8fae6b',2],
     [-10,-0.06,-14,17,-6.0,'#7b7d80',0],
@@ -17,7 +19,7 @@ var baja={
   ceilings:[[0,0,6.5,9.1],[0,9.1,2.0,11.7]],
   walls:[
     {ax:'x',c:0,from:0,to:6.5,t:.15,h:2.7,open:[
-      {from:2.1,to:3.0,head:2.15,kind:'door',hinge:'to',ang:0,color:DARK},
+      {from:2.1,to:3.0,head:2.15,kind:'door',hinge:'to',ang:0,color:DARK,mat:6},
       {from:3.9,to:5.9,sill:.9,head:2.2,kind:'window'}]},
     {ax:'z',c:0,from:0,to:11.7,t:.15,h:2.7},
     {ax:'z',c:6.5,from:0,to:9.1,t:.15,h:2.7},
@@ -33,31 +35,32 @@ var baja={
     {ax:'x',c:2.9,from:0,to:2.0,h:2.7}
   ],
   boxes:[
-    [-.075,2.7,-.5,6.575,5.6,9.175,'#f1f0ec',{mat:11}],
-    [4.9,2.9,-.56,5.4,5.3,-.5,'#b98d5e',{mat:11}],[2.0,3.3,-.6,4.5,4.9,-.57,'#2b3540',{mat:10}],
+    [-.075,2.7,-.5,6.575,5.6,9.175,'#f1f0ec',{mat:34}],
+    [4.9,2.9,-.56,5.4,5.3,-.5,'#bf9d73',{mat:32}],
+    [6.405,0,1.2,6.425,2.7,4.3,'#ddcfb4',{mat:19}],   // muro de cantera clara detrás de la sala[2.0,3.3,-.6,4.5,4.9,-.57,'#2b3540',{mat:10}],
     [.5,3.7,-.6,1.2,4.7,-.57,'#2b3540',{mat:10}],[5.6,3.7,-.6,6.2,4.7,-.57,'#2b3540',{mat:10}],
     [-6.6,0,0,-.08,5.6,11.7,'#e9e8e4',{mat:11}],[6.58,0,0,13,5.6,11.7,'#e9e8e4',{mat:11}]
   ],
   items:[
     /* medio baño */
-    ['wc',.1,.8,90],['lavabo',1.5,.08,0],
+    ['wc',.1,.8,90],['tocadorF',1.5,.08,0,{w:.6,color:CAB,cubierta:GRAN}],
     /* sala */
     ['tv',2.1,2.35,90,{w:1.1}],
-    ['tapete',4.5,2.7,90,{s:1,w:2.4,d:1.9,color:'#6f6259',color2:'#5f534b'}],
-    ['sofa',6.15,2.7,-90,{s:1,w:2.2,color:'#7f8c99',color2:'#93a0ad'}],['mesaCentro',4.6,2.7,90,{s:1}],
+    ['tapete',4.5,2.7,90,{s:1,w:2.4,d:1.9,color:'#a9a6a1',color2:'#9a9792'}],
+    ['sofa',6.15,2.7,-90,{s:1,w:2.2,color:'#58585b',color2:'#636366',accent:'#cbbfa8'}],['mesaCentro',4.6,2.7,90,{s:1}],
     ['silla',4.4,4.2,180,{s:1}],['planta',3.2,.5,0,{s:1}],
     /* escalera en U */
     ['escalera',.55,3.55,90,{w:.8,n:7,huella:.25,alto:1.35,mat:1,color:'#d9d7d1'}],
     ['escalera',2.3,4.65,-90,{w:.8,n:7,huella:.25,alto:1.35,y0:1.35,mat:1,color:'#d9d7d1'}],
     /* cocina: isla, cubierta y refri */
-    ['barra',2.5,7.25,90,{len:2.3,copete:false,estufa:0,tarja:.7,color:CAB,cubierta:GRAN}],
-    ['barra',.08,7.3,90,{len:2.1,color:CAB,cubierta:GRAN,copete:false}],
+    ['barra',2.5,7.25,90,{len:2.3,copete:false,estufa:0,horno:1,tarja:.7,color:CAB,mat:6,cubierta:GRAN}],
+    ['barra',.08,7.3,90,{len:2.1,color:CAB,mat:6,cubierta:GRAN,copete:false}],
     ['refri',.08,5.85,90,{s:1}],
-    ['silla',3.75,6.5,-90,{s:1}],['silla',3.75,7.2,-90,{s:1}],['silla',3.75,7.9,-90,{s:1}],
+    ['silla',3.75,6.5,-90,{s:1,color:'#9c8a76'}],['silla',3.75,7.2,-90,{s:1,color:'#9c8a76'}],['silla',3.75,7.9,-90,{s:1,color:'#9c8a76'}],
     /* comedor */
     ['mesa',4.85,6.8,0,{s:1,w:1.0,d:2.0}],
-    ['silla',4.1,6.3,90,{s:1}],['silla',4.1,7.3,90,{s:1}],['silla',5.6,6.3,-90,{s:1}],['silla',5.6,7.3,-90,{s:1}],
-    ['silla',4.85,5.6,0,{s:1}],['silla',4.85,8.0,180,{s:1}],
+    ['silla',4.1,6.3,90,{s:1,color:SIL}],['silla',4.1,7.3,90,{s:1,color:SIL}],['silla',5.6,6.3,-90,{s:1,color:SIL}],['silla',5.6,7.3,-90,{s:1,color:SIL}],
+    ['silla',4.85,5.6,0,{s:1,color:SIL}],['silla',4.85,8.0,180,{s:1,color:SIL}],
     /* lavado y alacena */
     ['lavadora',.55,11.62,180],['lavadora',1.4,11.62,180],['closet',.1,10.2,90,{s:1,w:1.2}],
     ['planta',3.0,10.0,0],['planta',5.2,10.9,0],['planta',5.9,9.6,0],
@@ -65,7 +68,7 @@ var baja={
   ]
 };
 var alta={
-  sky:'#e9eef1', center:[3.25,0,4.8], frame:'#2e3033',
+  sky:'#e9eef1', center:[3.25,0,4.8], frame:'#232427', tile:.6, gloss:.55, wallOut:'#f2f1ee', wallMat:14, wallIn:'#f4f2ee', zoclo:'#cfc3ad',
   ground:[[-10,-0.09,-14,17,21,'#d9dcde',0]],
   floors:[[0,0,6.5,3.5,T],[0,3.5,6.5,5.5,'#e6e4de'],[0,5.5,3.25,9.1,T],[3.25,5.5,6.5,9.1,T]],
   ceilings:[[0,0,6.5,9.1]],
@@ -93,10 +96,10 @@ var alta={
   items:[
     ['hueco',.55,3.75,90,{w:1.7,l:2.3,lados:[1],color:'#d9d7d1'}],
     /* baño principal */
-    ['regadera',.08,.08,0,{w:.9,d:1.2}],['wc',1.6,.08,0],['lavabo',1.4,1.62,180],
+    ['regadera',.08,.08,0,{w:.9,d:1.2}],['wc',1.6,.08,0],['tocadorF',1.4,1.62,180,{w:.8,color:CAB,cubierta:GRAN}],
     ['closet',.1,2.1,90,{s:1,w:1.0}],['closet',.1,3.1,90,{s:1,w:1.0}],
     /* baño compartido */
-    ['regadera',4.33,3.58,0,{w:.9,d:1.0}],['wc',6.4,4.4,-90],['lavabo',5.2,5.42,180],
+    ['regadera',4.33,3.58,0,{w:.9,d:1.0}],['wc',6.4,4.4,-90],['tocadorF',5.2,5.42,180,{w:.7,color:CAB,cubierta:GRAN}],
     /* recámara principal */
     ['cama',4.6,1.7,-90,{s:1,w:1.8,manta:'#b9703f',cabecera:'#8c7b68'}],['buro',5.75,.5,-90,{s:1}],['buro',5.75,2.9,-90,{s:1,lampara:false}],
     /* recámaras */

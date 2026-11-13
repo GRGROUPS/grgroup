@@ -47,7 +47,7 @@
      vértice: pos(3) normal(3) color(4) material(1)
      materiales: 0 liso, 1 loseta, 2 pasto, 3 concreto, 4 muro, 5 techo, 6 madera, 7 tela, 8 granito, 9 luminoso,
      10 luminoso que se oculta al quitar el techo, 11 volumen superior (planta alta vista desde la calle; se oculta igual),
-     12 piedra, 13 duela, 14 estuco, 15 adoquín, 16 acero/espejo, 17 azulejo de muro, 18 mármol.
+     12 piedra, 13 duela, 14 estuco, 15 adoquín, 16 acero/espejo, 17 azulejo de muro, 18 mármol, 19 cantera en placas.
      Sumar 20 a un material (32 piedra, 34 estuco…) lo vuelve parte del volumen superior: se oculta al quitar el techo. */
   function Geo() { this.v = []; this.xf = null; this.occW = []; this.occF = []; this.occL = []; }
   Geo.prototype.push = function (x, z, deg) { var a = (deg || 0) * Math.PI / 180; this.xf = { x: x, z: z, c: Math.cos(a), s: Math.sin(a) }; };
@@ -331,7 +331,10 @@
     pergola: function (g, gt, o) {
       var w = o.w || 3, d = o.d || 3.5, h = o.alto || 2.4;
       [[-w / 2 + 0.06, 0.06], [w / 2 - 0.06, 0.06]].forEach(function (p) { g.box(p[0] - 0.05, 0, p[1] - 0.05, p[0] + 0.05, h, p[1] + 0.05, o.poste || '#5a4636'); });
-      g.box(-w / 2, h, 0, w / 2, h + 0.12, d, o.color || '#b5563c', { mat: 11 });
+      if (o.slats) { // pérgola de duelas: deja pasar el sol en franjas
+        g.box(-w / 2, h, 0, -w / 2 + 0.1, h + 0.16, d, o.color || '#2b2b2b', { mat: 11 }); g.box(w / 2 - 0.1, h, 0, w / 2, h + 0.16, d, o.color || '#2b2b2b', { mat: 11 });
+        for (var zs = 0.04; zs < d; zs += o.slats) g.box(-w / 2, h + 0.08, zs, w / 2, h + 0.16, zs + 0.05, o.color || '#2b2b2b', { mat: 11 });
+      } else g.box(-w / 2, h, 0, w / 2, h + 0.12, d, o.color || '#b5563c', { mat: 11 });
     },
     // clóset de madera de piso a techo: puertas corredizas, repisas y cajonera. Espalda en z=0. o = {w, color}
     closetM: function (g, gt, o) {
@@ -411,7 +414,7 @@
   // Con plan.wallIn el muro se pinta distinto por dentro que por fuera: color/mat por fuera, wallIn (o cin) por dentro.
   function buildWall(g, gt, w, plan) {
     var FR = w.frame || plan.frame || COL.frame, t = w.t || 0.12, h = w.h || 2.5, ax = w.ax, c = w.c, out = w.out || 1, IN = indoorRects(plan);
-    var cOut = w.color || COL.wall, cIn = plan.wallIn || null, mOut = w.mat || 4, E0 = w.from - t / 2, E1 = w.to + t / 2;
+    var cOut = w.color || plan.wallOut || COL.wall, cIn = plan.wallIn || null, mOut = w.mat || plan.wallMat || 4, E0 = w.from - t / 2, E1 = w.to + t / 2;
     function inside(u, a) {
       var x = ax === 'x' ? u : c + a, z = ax === 'x' ? c + a : u;
       return (plan.floors || []).some(function (f) { return x > f[0] && x < f[2] && z > f[1] && z < f[3]; });
@@ -469,11 +472,12 @@
         }
         if (op.blind) { // persiana tipo zebra por dentro; blind = fracción que está bajada
           var um = (op.from + op.to) / 2, sd = indoor(um, 1) ? 1 : (indoor(um, -1) ? -1 : -out);
-          var b0 = sd * (t / 2 + 0.02), b1 = sd * (t / 2 + 0.045), drop = head - (head - sill) * op.blind, y;
-          bx(g, op.from - 0.06, head, sd * t / 2, op.to + 0.06, head + 0.09, sd * (t / 2 + 0.09), '#232427');
-          for (y = head - 0.075; y > drop - 0.07; y -= 0.15) bx(g, op.from - 0.03, Math.max(drop, y), b0, op.to + 0.03, y + 0.075, b1, '#2a2b2e', { mat: 7 });
-          bx(gt, op.from - 0.03, drop, (b0 + b1) / 2 - 0.002, op.to + 0.03, head, (b0 + b1) / 2 + 0.002, '#4a4b4e', { a: 0.3 });
-          bx(g, op.from - 0.03, drop - 0.03, b0, op.to + 0.03, drop, b1, '#232427');
+          var b0 = sd * (t / 2 + 0.02), b1 = sd * (t / 2 + 0.045), drop = head - (head - sill) * op.blind, y, bc = op.blindColor || '#2a2b2e';
+          bx(g, op.from - 0.06, head, sd * t / 2, op.to + 0.06, head + 0.09, sd * (t / 2 + 0.09), op.blindColor ? '#f2f1ee' : '#232427');
+          if (op.roller) bx(g, op.from - 0.03, drop, b0, op.to + 0.03, head, b1, bc, { mat: 7 });           // persiana enrollable lisa
+          else for (y = head - 0.075; y > drop - 0.07; y -= 0.15) bx(g, op.from - 0.03, Math.max(drop, y), b0, op.to + 0.03, y + 0.075, b1, bc, { mat: 7 });
+          if (!op.roller) bx(gt, op.from - 0.03, drop, (b0 + b1) / 2 - 0.002, op.to + 0.03, head, (b0 + b1) / 2 + 0.002, '#4a4b4e', { a: 0.3 });
+          bx(g, op.from - 0.03, drop - 0.03, b0, op.to + 0.03, drop, b1, op.blindColor ? '#d9d7d2' : '#232427');
         }
       } else if (k === 'door') {
         var hu = op.hinge === 'to' ? op.to : op.from, wd = op.to - op.from, dir = op.hinge === 'to' ? -1 : 1;
@@ -647,7 +651,8 @@
     ' if(m>0.5&&m<1.5){float ts=uFx.x;vec2 g=vP.xz/ts;vec2 f=fract(g);vec2 id=floor(g);',                       // porcelanato
     '  float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y))*ts;float fp=dist*0.0016/max(nv,0.12);float j=smoothstep(0.001,0.004+fp,e);float jk=clamp(0.0045/fp,0.0,1.0);float r=h(id);',
     '  vec2 w=(r>0.5?f.xy:f.yx)+id*3.7;float ve=fbm(vec2(w.x*1.6+fbm(w*2.6)*1.7,w.y*5.5));',
-    '  c*=0.95+0.035*r+0.085*(ve-0.5)*(0.4+0.6*far);c*=mix(1.0,mix(0.72,1.0,j),jk);rf=0.4+0.6*j;sheen=0.05*fr;}',
+    '  c*=0.95+0.035*r+0.085*(ve-0.5)*(0.4+0.6*far);c*=mix(1.0,mix(0.72,1.0,j),jk);rf=0.4+0.6*j;sheen=0.05*fr;',
+    '  if(uFx.w>0.0){vec2 q=vec2(dot(vP.xz,vec2(0.55,0.42)),dot(vP.xz,vec2(-0.9,1.2)))+r*5.0;float mv=fbm(q*vec2(0.8,2.2)+fbm(q*0.7)*1.6);float dv=abs(mv-0.5);float vl=1.0-smoothstep(0.0,0.008+dist*0.0015,dv);float v2=1.0-smoothstep(0.0,0.006,abs(fbm(q*3.1+3.0)-0.5));c*=1.0-uFx.w*(0.14*vl+0.06*v2+0.025*(1.0-smoothstep(0.0,0.08,dv)))*(0.4+0.6*far);}}',
     ' else if(m>1.5&&m<2.5){float nr=1.0-clamp(dist/16.0,0.0,1.0);c*=0.78+0.22*vn(vP.xz*0.55)+0.16*vn(vP.xz*5.0)+0.16*nr*vn(vP.xz*38.0)+0.10*nr*h(floor(vP.xz*170.0));c.r*=0.92+0.16*vn(vP.zx*1.7);}',   // pasto
     ' else if(m>2.5&&m<3.5){vec2 g=vP.xz/1.5;vec2 f=fract(g);float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y));',  // concreto
     '  c*=mix(0.88,1.0,smoothstep(0.0,0.012,e));c*=0.93+0.08*vn(vP.xz*3.0)+0.05*far*vn(vP.xz*40.0);}',
@@ -664,7 +669,7 @@
     '  vec2 f=vec2(fract(vP.x/pw)*pw,fract(zz/pl)*pl);float e=min(min(f.x,pw-f.x),min(f.y,pl-f.y));',
     '  float gr=fbm(vec2(zz*1.4+r*20.0,vP.x*42.0)+fbm(vec2(zz*0.8,vP.x*5.0)+r*9.0)*2.2);',
     '  c*=mix(1.0,(0.72+0.34*r+0.42*(gr-0.5))*mix(0.55,1.0,smoothstep(0.0,0.006,e)),0.3+0.7*far);sheen=0.06*fr;}',
-    ' else if(m>13.5&&m<14.5){c*=0.93+0.09*(vn(qv*38.0)-0.5)*far+0.07*(vn(qv*150.0)-0.5)*far+0.05*vn(qv*2.2);}', // estuco
+    ' else if(m>13.5&&m<14.5){c*=0.95+0.055*(vn(qv*38.0)-0.5)*far+0.035*(vn(qv*150.0)-0.5)*far+0.04*vn(qv*2.2);}', // estuco
     ' else if(m>14.5&&m<15.5){float ph=0.105;float row=floor(vP.z/ph);float xx=vP.x+mod(row,2.0)*ph;',          // adoquín
     '  vec2 f=vec2(fract(xx/0.21)*0.21,fract(vP.z/ph)*ph);float e=min(min(f.x,0.21-f.x),min(f.y,ph-f.y));',
     '  c*=mix(1.0,(0.84+0.26*h(vec2(floor(xx/0.21),row)))*mix(0.66,1.0,smoothstep(0.0,0.007,e)),far);c*=0.94+0.1*vn(vP.xz*0.9);}',
@@ -672,6 +677,9 @@
     ' else if(m>16.5&&m<17.5){vec2 g=vec2(qv.x/0.3,qv.y/0.6);vec2 f=fract(g);float e=min(min(f.x,1.0-f.x)*0.3,min(f.y,1.0-f.y)*0.6);',   // azulejo de muro
     '  c*=0.95+0.07*h(floor(g))+0.05*(fbm(qv*5.0)-0.5);c*=mix(1.0,mix(0.74,1.0,smoothstep(0.0,0.006,e)),0.3+0.7*far);sheen=0.12*fr;}',
     ' else if(m>17.5&&m<18.5){float ve=fbm(qv*3.0+fbm(qv*1.3)*3.0);c*=0.93+0.1*(ve-0.5)-0.1*smoothstep(0.46,0.5,ve)*(1.0-smoothstep(0.5,0.54,ve));sheen=0.2*fr;}', // mármol
+    ' else if(m>18.5&&m<19.5){float rh=0.4;float row=floor(qv.y/rh);float bx=(qv.x+mod(row,2.0)*0.3)/0.6;',   // cantera en placas
+    '  vec2 f=vec2(fract(bx)*0.6,fract(qv.y/rh)*rh);float e=min(min(f.x,0.6-f.x),min(f.y,rh-f.y));float r=h(vec2(floor(bx),row));',
+    '  c*=mix(1.0,(0.9+0.16*r+0.07*(fbm(qv*7.0)-0.5))*mix(0.7,1.0,smoothstep(0.0,0.008,e)),0.3+0.7*far);}',
     ' vec4 A0=texture2D(uAo,(vP.xz-uAoB.xy)*uAoB.zw);vec3 a0=A0.rgb;vec4 A1=texture2D(uAo,(vP.xz+n.xz*0.22-uAoB.xy)*uAoB.zw);float ao=1.0;',
     ' if(n.y>0.5){ao=1.0-0.44*a0.r-0.52*a0.g*step(vP.y,0.03);}',
     ' else if(n.y<-0.5){ao=1.0-0.34*a0.r;}',
@@ -681,7 +689,7 @@
     ' float side=0.5+0.5*dot(n,vec3(-0.55,0.0,0.83));',
     ' float ind=mix(A1.b,A0.b,hz)*uRoof*(1.0-up);float wl=mix(A1.a,A0.a,hz);',
     ' vec3 al=pow(c,vec3(2.2));',
-    ' vec3 ambO=mix(vec3(0.27,0.30,0.38),vec3(0.44,0.48,0.57),hemi)*(0.82+0.18*side);',                         // cielo
+    ' vec3 ambO=mix(vec3(0.30,0.31,0.35),vec3(0.45,0.48,0.54),hemi)*(0.82+0.18*side);',                         // cielo
     ' vec3 ambI=vec3(1.02,0.965,0.88)*(0.50+0.78*wl)*(0.86+0.14*hemi)*(0.93+0.07*side);',                        // interior: manda la luz de las ventanas
     ' vec3 col=al*(mix(ambO,ambI,ind)*ao*ao+vec3(1.02,0.92,0.76)*nl*sh*mix(1.0,1.5,ind));',
     ' col+=spec*sh*vec3(1.2,1.1,0.95)+sheen*(0.3+0.7*sh);',
@@ -825,7 +833,7 @@
         gl.uniformMatrix4fv(u1.uVP, false, vp); gl.uniformMatrix4fv(u1.uLVP, false, LVP);
         gl.uniform3f(u1.uL, L[0], L[1], L[2]); gl.uniform3f(u1.uE, -eye[0], eye[1], eye[2]); gl.uniform3f(u1.uSky, sky[0], sky[1], sky[2]);
         gl.uniform4f(u1.uAoB, aoB[0], aoB[1], aoB[2], aoB[3]); gl.uniform1f(u1.uRoof, roof); gl.uniform1f(u1.uTx, 1 / SM); gl.uniform1f(u1.uShOn, shOk ? 1 : 0);
-        gl.uniform4f(u1.uFx, plan.tile || 0.33, doRf ? gloss : 0, pass, 0); gl.uniform2f(u1.uRes, 1 / canvas.width, 1 / canvas.height);
+        gl.uniform4f(u1.uFx, plan.tile || 0.33, doRf ? gloss : 0, pass, plan.marble || 0); gl.uniform2f(u1.uRes, 1 / canvas.width, 1 / canvas.height);
         gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, shTex); gl.uniform1i(u1.uSh, 0);
         gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, aoTex); gl.uniform1i(u1.uAo, 1);
         gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, !pass && doRf ? rfTex : aoTex); gl.uniform1i(u1.uRf, 2);
