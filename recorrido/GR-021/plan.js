@@ -40,7 +40,12 @@ var plan={
   ],
   boxes:[
     /* panel de madera junto a la ventana y base oscura de la ventana */
-    [5.25,.9,-.09,5.85,2.3,-.075,MADP,{mat:6}],[3.2,0,-.09,5.2,.9,-.075,CAF,{mat:12}],
+    /* marco café oscuro que enmarca la ventana, con panel de madera a un lado */
+    [3.0,0,-.16,3.2,2.5,-.09,CAF,{mat:14}],[3.2,0,-.16,5.2,.9,-.09,CAF,{mat:14}],[3.2,2.15,-.16,5.2,2.5,-.09,CAF,{mat:14}],[5.2,0,-.16,6.0,2.5,-.09,CAF,{mat:14}],
+    [5.3,.95,-.18,5.9,2.4,-.16,MADP,{mat:6}],
+    /* pórtico café de la entrada: la puerta queda metida y el volumen sube sobre la azotea */
+    [.25,0,-.32,.6,2.8,-.09,CAF,{mat:14}],[1.6,0,-.32,1.95,2.8,-.09,CAF,{mat:14}],[.6,2.2,-.32,1.6,2.8,-.09,CAF,{mat:14}],
+    [.25,2.8,-.32,1.95,3.5,1.2,CAF,{mat:34}],
     /* barda del patio y casas vecinas */
     [-.09,0,9,0,2.3,11.6,'#d9d6cf',{mat:3}],[6.5,0,9,6.59,2.3,11.6,'#d9d6cf',{mat:3}],[-.09,0,11.5,6.59,2.3,11.6,'#d9d6cf',{mat:3}],
     [-6.6,0,0,-.09,3.6,9,'#e9e8e4',{mat:11}],[6.59,0,0,12,3.6,9,'#e9e8e4',{mat:11}]

@@ -83,7 +83,7 @@ var stops=[
   {n:'Fachada',d:'Zaguán negro y puerta azul de entrada, a pie de calle.',lvl:0,t:[4,1.4,0],yaw:-.5,pitch:.08,dist:11,fov:.72,f:[6,11]},
   {n:'Sala',d:'Sala al frente, con piso de concreto listo para el acabado que prefieras.',lvl:0,t:[5.7,1.5,.5],yaw:.8,pitch:.2,dist:.01,fov:1.25,f:[4]},
   {n:'Recámara 1',d:'Recámara al fondo con ventana de repisa profunda.',lvl:0,t:[2.9,1.5,8.2],yaw:-.45,pitch:.22,dist:.01,fov:1.25,f:[2,8]},
-  {n:'Baño',d:'Baño de planta baja junto a la cocina.',lvl:0,t:[1.8,1.6,6.75],yaw:-2.6,pitch:.45,dist:.01,fov:1.45,f:[3,9]},
+  {n:'Baño',d:'Baño de planta baja junto a la cocina.',lvl:0,t:[1.95,1.6,6.6],yaw:-2.75,pitch:.35,dist:.01,fov:1.45,f:[3,9]},
   {n:'Recámara 2',d:'Recámara con puerta verde y salida al pasillo.',lvl:0,t:[7.5,1.5,8.25],yaw:.15,pitch:.22,dist:.01,fov:1.25,f:[5,10]},
   {n:'Patio',d:'Zona de patio al fondo del terreno.',lvl:0,t:[4,1.0,13.2],yaw:3.14,pitch:1.0,dist:8.5,fov:.8,f:[]},
   {n:'Segundo nivel',d:'Dos recámaras más en obra negra, con muros de tabique, para terminar a tu gusto.',lvl:1,t:[4,.2,8],yaw:-.6,pitch:.9,dist:19,fov:.62,f:[],v:{dist:25}},

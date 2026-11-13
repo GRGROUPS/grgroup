@@ -6,6 +6,16 @@
 // loseta beige grande, cocina con muebles de madera naranja y cubierta de granito, escalera junto a la sala,
 // medio baño con lavabo de piedra
 var T='#d4c7b0', EXT='#ece6da', MAD='#a8643a', OSC='#1d1d1f', VID='#2b3540';
+/* barandal de herrería: pasamanos, zócalo y barrotes (m=16 acero; +20 se oculta al quitar el techo) */
+function barandal(x0,x1,z0,z1,y,m){var b=[],h=1.0,t=.025,i,n;
+  b.push([x0,y+h-.04,z0-t,x1,y+h,z0+t,OSC,{mat:m}],[x0,y+.08,z0-t,x1,y+.11,z0+t,OSC,{mat:m}]);
+  [x0,x1].forEach(function(x){b.push([x-t,y+h-.04,z0,x+t,y+h,z1,OSC,{mat:m}],[x-t,y,z0,x+t,y+h,z0+t,OSC,{mat:m}]);
+    for(i=1,n=Math.round((z1-z0)/.12);i<n;i++){var z=z0+i*(z1-z0)/n;b.push([x-.01,y,z-.01,x+.01,y+h,z+.01,OSC,{mat:m}]);}});
+  for(i=1,n=Math.round((x1-x0)/.12);i<n;i++){var x=x0+i*(x1-x0)/n;b.push([x-.01,y,z0-.01,x+.01,y+h,z0+.01,OSC,{mat:m}]);}
+  return b;}
+/* moldura gris alrededor de puertas y ventanas de la fachada */
+function moldura(x0,x1,y0,y1,c){var w=.09,z0=-.13,z1=-.09;return [[x0-w,y0,z0,x0,y1+w,z1,c,{mat:14}],[x1,y0,z0,x1+w,y1+w,z1,c,{mat:14}],[x0,y1,z0,x1,y1+w,z1,c,{mat:14}]].concat(y0>.05?[[x0-w,y0-w,z0,x1+w,y0,z1-.02*0,c,{mat:14}]]:[]);}
+var MOL='#b3aea4';
 function base(gnd){return {sky:'#e9eef1',center:[2.25,0,4.4],frame:'#d8d2c6',tile:.4,gloss:.5,wallOut:EXT,wallMat:14,wallIn:'#f1eee6',zoclo:'#cdbfaa',ground:gnd};}
 var baja=base([
   [-10,-0.09,-16,18,24,'#8fae6b',2],
@@ -39,10 +49,11 @@ baja.walls=[
 baja.boxes=[
   [-.075,2.8,-.075,4.575,8.4,8.775,EXT,{mat:34}],
   [.6,3.2,-.09,3.9,4.6,-.075,VID,{mat:10}],
-  [-.05,2.8,-.92,4.55,3.85,-.87,OSC],[-.05,2.8,-.92,0,3.85,0,OSC],[4.5,2.8,-.92,4.55,3.85,0,OSC],
+  /* balcón del 2º nivel: losa y barandal de herrería */
+  [.4,2.66,-.85,4.0,2.84,-.09,'#d6d0c5',{mat:23}],
 
   [-6.6,0,0,-.09,8.4,8.7,'#e9e8e4',{mat:11}]
-];
+].concat(barandal(.45,3.95,-.83,-.09,2.84,36),moldura(.6,1.5,0,2.2,MOL),moldura(2.4,3.9,.9,2.1,MOL));
 baja.items=[
   /* sala-comedor */
   ['tv',.08,1.5,90,{w:1.4}],['tapete',1.9,1.5,90,{s:1,w:1.9,d:1.5,color:'#8a7f74',color2:'#79706a'}],['mesaCentro',1.9,1.5,90,{s:1}],
@@ -57,7 +68,7 @@ baja.items=[
   ['plafon',2.25,1.8,0],['plafon',1.4,4.7,0],['plafon',2.1,7.0,0]
 ];
 var med=base([[-10,-0.09,-16,18,24,'#d9dcde',0]]);
-med.floors=[[0,0,4.5,3.6,T],[0,3.6,3.2,7.4,T],[4.1,3.6,4.5,6.6,T],[3.2,6.6,4.5,8.7,T],[0,7.4,3.2,8.7,T],[-0,-0.9,4.5,0,'#c9c5bc',3]];
+med.floors=[[0,0,4.5,3.6,T],[0,3.6,3.2,7.4,T],[4.1,3.6,4.5,6.6,T],[3.2,6.6,4.5,8.7,T],[0,7.4,3.2,8.7,T],[.4,-.85,4.0,0,'#c9c5bc',3]];
 med.ceilings=[[0,0,4.5,3.6],[0,3.6,3.2,8.7],[4.1,3.6,4.5,6.6],[3.2,6.6,4.5,8.7]];
 med.walls=[
   {ax:'x',c:0,from:0,to:4.5,t:.18,h:2.7,out:-1,open:[{from:.8,to:3.7,sill:.05,head:2.3,kind:'window'}]},
@@ -65,7 +76,6 @@ med.walls=[
   {ax:'z',c:4.5,from:0,to:8.7,t:.18,h:2.7,out:1,open:[{from:1.0,to:2.2,sill:.9,head:2.1,kind:'window',grille:true}]},
   {ax:'x',c:8.7,from:0,to:4.5,t:.18,h:2.7,open:[{from:.4,to:1.1,sill:1.0,head:2.1,kind:'window'},{from:3.3,to:4.0,sill:1.3,head:2.1,kind:'window',mid:false}]},
   /* balcón con barandal negro */
-  {ax:'x',c:-.9,from:-.9,to:4.5,t:.05,h:1.05,color:OSC},{ax:'z',c:-.9,from:-.9,to:0,t:.05,h:1.05,color:OSC},{ax:'z',c:4.5,from:-.9,to:0,t:.05,h:1.05,color:OSC},
   /* recámaras y baño */
   {ax:'x',c:3.6,from:0,to:2.8,open:[{from:.7,to:1.5,head:2.1,kind:'door',hinge:'from',ang:0,color:MAD,mat:6}]},
   {ax:'z',c:2.8,from:3.6,to:7.4,open:[{from:4.2,to:5.0,head:2.1,kind:'door',hinge:'from',ang:0,color:MAD,mat:6},{from:6.65,to:7.35,head:2.1,kind:'door',hinge:'from',ang:0,color:MAD,mat:6}]},
@@ -73,7 +83,7 @@ med.walls=[
   {ax:'x',c:7.4,from:2.8,to:4.5,open:[{from:3.0,to:3.8,head:2.1,kind:'door',hinge:'from',ang:0,color:'#eeece6',mat:6}]},
   {ax:'z',c:2.8,from:7.4,to:8.7}
 ];
-med.boxes=[[-6.6,0,0,-.09,3.4,8.7,'#e9e8e4',{mat:11}]];
+med.boxes=[[-6.6,0,0,-.09,3.4,8.7,'#e9e8e4',{mat:11}]].concat(barandal(.45,3.95,-.83,-.09,0,16));
 med.items=[
   ['escalera',3.65,6.6,180,{w:.9,n:13,huella:.23,alto:2.8,mat:1,color:'#d8c9b0',barandal:-1}],
   /* recámara 1 con TV, clóset y balcón */
@@ -112,7 +122,7 @@ var stops=[
   {n:'Vista general',d:'Casa en esquina de tres niveles: sala, cocina y medio baño abajo; recámaras y balcón en el 2º nivel; recámara principal y roof garden arriba.',lvl:0,t:[2.25,.2,4.4],yaw:-.6,pitch:.9,dist:16,fov:.62,f:[],v:{dist:22}},
   {n:'Fachada',d:'Fachada con puerta de madera, ventanas con reja y balcón con barandal negro; jardín al frente y un cajón de estacionamiento.',lvl:0,t:[2.25,3.3,0],yaw:-.5,pitch:.1,dist:15,fov:.72,f:[1]},
   {n:'Sala-comedor',d:'Sala y comedor, con la escalera junto al sofá.',lvl:0,t:[1.0,1.5,.55],yaw:-.1,pitch:.2,dist:.01,fov:1.3,f:[2]},
-  {n:'Cocina',d:'Cocina con arco hacia la sala, muebles de madera y cubierta de granito.',lvl:0,t:[2.3,1.5,3.8],yaw:-1.0,pitch:.3,dist:.01,fov:1.35,f:[3]},
+  {n:'Cocina',d:'Cocina con arco hacia la sala, muebles de madera y cubierta de granito.',lvl:0,t:[2.0,1.55,3.55],yaw:-.55,pitch:.35,dist:.01,fov:1.35,f:[3]},
   {n:'Medio baño',d:'Medio baño con lavabo de piedra.',lvl:0,t:[1.2,1.6,6.0],yaw:-1.1,pitch:.4,dist:.01,fov:1.45,f:[6]},
   {n:'Nivel 2',d:'Tres recámaras, baño y balcón al frente.',lvl:1,t:[2.25,.2,4.4],yaw:-.6,pitch:.9,dist:16,fov:.62,f:[],v:{dist:22}},
   {n:'Recámara 1 y balcón',d:'Recámara con TV y clóset de espejo; sale al balcón con barandal negro.',lvl:1,t:[4.1,1.5,2.7],yaw:-1.35,pitch:.22,dist:.01,fov:1.3,f:[4,5]},

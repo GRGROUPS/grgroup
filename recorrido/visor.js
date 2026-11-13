@@ -698,14 +698,16 @@
     ' vec3 V=normalize(uE-vP);float nv=max(dot(V,n),0.0);float fr=pow(1.0-nv,4.0);float sheen=0.0;float spec=0.0;float rf=0.0;',
     ' float far=1.0-smoothstep(9.0,28.0,dist);float hz=step(0.5,abs(n.y));',
     ' vec2 qv=hz>0.5?vP.xz:vec2(vP.x+vP.z,vP.y);',
-    ' if(m>0.5&&m<1.5){float ts=uFx.x;vec2 g=vP.xz/ts;vec2 f=fract(g);vec2 id=floor(g);',                       // porcelanato
+    ' if(m<0.5&&n.y>0.5&&vP.y<-0.035){vec2 q=vP.xz;c*=0.9+0.07*vn(q*1.3)+0.1*far*h(floor(q*95.0))+0.05*vn(q*13.0);}',   // asfalto y suelo
+    ' else if(m>0.5&&m<1.5){float ts=uFx.x;vec2 g=vP.xz/ts;vec2 f=fract(g);vec2 id=floor(g);',                       // porcelanato
     '  float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y))*ts;float fp=dist*0.0016/max(nv,0.12);float j=smoothstep(0.001,0.004+fp,e);float jk=clamp(0.0045/fp,0.0,1.0);float r=h(id);',
     '  vec2 w=(r>0.5?f.xy:f.yx)+id*3.7;float ve=fbm(vec2(w.x*1.6+fbm(w*2.6)*1.7,w.y*5.5));',
     '  c*=0.95+0.035*r+0.085*(ve-0.5)*(0.4+0.6*far);c*=mix(1.0,mix(0.72,1.0,j),jk);rf=0.4+0.6*j;sheen=0.05*fr;',
     '  if(uFx.w>0.0){vec2 q=vec2(dot(vP.xz,vec2(0.55,0.42)),dot(vP.xz,vec2(-0.9,1.2)))+r*5.0;float mv=fbm(q*vec2(0.8,2.2)+fbm(q*0.7)*1.6);float dv=abs(mv-0.5);float vl=1.0-smoothstep(0.0,0.008+dist*0.0015,dv);float v2=1.0-smoothstep(0.0,0.006,abs(fbm(q*3.1+3.0)-0.5));c*=1.0-uFx.w*(0.14*vl+0.06*v2+0.025*(1.0-smoothstep(0.0,0.08,dv)))*(0.4+0.6*far);}}',
     ' else if(m>1.5&&m<2.5){float nr=1.0-clamp(dist/16.0,0.0,1.0);c*=0.78+0.22*vn(vP.xz*0.55)+0.16*vn(vP.xz*5.0)+0.16*nr*vn(vP.xz*38.0)+0.10*nr*h(floor(vP.xz*170.0));c.r*=0.92+0.16*vn(vP.zx*1.7);}',   // pasto
-    ' else if(m>2.5&&m<3.5){vec2 g=vP.xz/1.5;vec2 f=fract(g);float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y));',  // concreto
-    '  c*=mix(0.88,1.0,smoothstep(0.0,0.012,e));c*=0.93+0.08*vn(vP.xz*3.0)+0.05*far*vn(vP.xz*40.0);}',
+    ' else if(m>2.5&&m<3.5){vec2 g=vP.xz/1.5;vec2 f=fract(g);float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y))*1.5;float fp=dist*0.0012/max(nv,0.15);',  // concreto: juntas, manchas y poro
+    '  c*=mix(1.0,mix(0.84,1.0,smoothstep(0.003,0.008+fp,e)),hz);float st=fbm(qv*0.45+3.1);',
+    '  c*=0.9+0.15*st+0.05*vn(qv*3.0)+0.05*far*(vn(qv*40.0)-0.5)+0.035*far*(h(floor(qv*260.0))-0.5);sheen=0.025*fr;}',
     ' else if(m>3.5&&m<5.5){c*=0.975+0.03*vn(qv*14.0)+0.02*far*vn(qv*120.0);}',                                 // pintura de muro y plafón
     ' else if(m>5.5&&m<6.5){vec2 q=hz>0.5?vP.xz:vec2(vP.y,vP.x+vP.z);',                                         // madera: veta a lo largo
     '  float wv=fbm(vec2(q.x*1.2,q.y*34.0)+fbm(q*vec2(0.6,3.5))*2.4);float st=vn(vec2(q.x*5.0,q.y*240.0));',
@@ -748,8 +750,11 @@
     '  vec3 r=texture2D(uRf,uv).rgb*0.3+texture2D(uRf,uv+vec2(0.0,2.5)*uRes).rgb*0.2+texture2D(uRf,uv-vec2(0.0,2.5)*uRes).rgb*0.2',
     '   +texture2D(uRf,uv+vec2(1.5,5.5)*uRes).rgb*0.15+texture2D(uRf,uv-vec2(1.5,5.5)*uRes).rgb*0.15;',
     '  col=mix(col,r,clamp((0.03+0.62*fr)*rf*uFx.y,0.0,0.7));}',
+    ' float al2=vC.a;if(al2<0.9){vec3 Rg=reflect(-V,n);float sk=smoothstep(-0.25,0.65,Rg.y);float fx=smoothstep(3.5,9.0,dist);',   // vidrio: de lejos refleja el cielo y se ve oscuro como en las fotos
+    '  vec3 rc=mix(vec3(0.15,0.17,0.19),mix(uSky,vec3(0.56,0.66,0.78),0.45),sk);col=mix(col,rc,(0.25+0.5*fx)*(0.55+0.45*fr));',
+    '  col+=vec3(1.0,0.96,0.88)*pow(max(dot(Rg,uL),0.0),60.0)*0.6*sh;al2=min(0.93,al2+0.3*fr+0.55*fx);}',
     ' col=mix(col,uSky,smoothstep(24.0,60.0,dist));',
-    ' float al2=vC.a;if(al2<0.9)al2=min(0.8,al2+0.4*fr);',
+    ' if(uFx.z<0.5){vec2 sc=gl_FragCoord.xy*uRes-0.5;col*=1.0-0.2*dot(sc,sc);}',                               // viñeta suave de lente
     ' gl_FragColor=vec4(col,al2);}'].join('\n');
   var VS2 = 'attribute vec3 aP;attribute float aM;uniform mat4 uLVP;uniform float uRoof;' +
     'void main(){if(((aM>9.5&&aM<11.5)||aM>19.5||(aM>4.5&&aM<5.5))&&uRoof<0.5){gl_Position=vec4(2.0,2.0,2.0,1.0);}else{gl_Position=uLVP*vec4(aP,1.0);}}';
@@ -765,7 +770,7 @@
     'void main(){float t=(vQ.y-uK.x)*uK.y;vec3 c=mix(uH,uZ,smoothstep(0.0,0.75,t));' +
     ' if(t>0.015){float az=uC.x-atan(vQ.x*uC.y);vec2 p=vec2(sin(az),cos(az))/(t+0.16)*0.62+vec2(3.7,1.9);' +
     '  float k=smoothstep(0.50,0.74,fbm(p))*smoothstep(0.015,0.2,t);c=mix(c,vec3(1.0,1.0,0.99),k*0.82);}' +
-    ' gl_FragColor=vec4(c,1.0);}';
+    ' c*=1.0-0.05*dot(vQ,vQ);gl_FragColor=vec4(c,1.0);}';
 
   var MIRROR = new Float32Array([-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]); // el plano se dibuja como se ve desde la calle
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
