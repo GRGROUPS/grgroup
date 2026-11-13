@@ -2,6 +2,7 @@
    Cada casa define window.TOUR = {levels:[{n, plan, rooms}], stops:[...]} en recorrido/GR-xxx/plan.js
    y la página (generada por tools/build.py) define window.TOUR_META = {code, name, precio, url, fotos}. */
 (function(){
+var IPLAY='<svg class="ic icf" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>', IPAUSE='<svg class="ic icf" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>', ICAM='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
 var T=window.TOUR, M=window.TOUR_META, levels=T.levels, stops=T.stops, F=M.fotos;
 var $=function(i){return document.getElementById(i)}, cur=0, lvl=-1, labs=[], auto=false, timer=0;
 // velocidad del recorrido automático: cambia la pausa en cada espacio y lo que tarda la cámara en moverse
@@ -9,7 +10,7 @@ var VEL=[.5,.75,1,1.5,2], vi=2; try{var vs=+localStorage.getItem('grVel'); if(VE
 function setVel(d){vi=Math.max(0,Math.min(VEL.length-1,vi+d)); var v=VEL[vi]; $('vtxt').textContent=(v===.5?'½':v===.75?'¾':v===1.5?'1½':v)+'×';
   $('vmenos').disabled=vi===0; $('vmas').disabled=vi===VEL.length-1; try{localStorage.setItem('grVel',v)}catch(e){}
   if(auto) queue()}
-function stopAuto(){if(!auto) return; auto=false; clearTimeout(timer); $('auto').setAttribute('aria-pressed','false'); $('auto').textContent='▶ Empezar recorrido'}
+function stopAuto(){if(!auto) return; auto=false; clearTimeout(timer); $('auto').setAttribute('aria-pressed','false'); $('auto').innerHTML=IPLAY+' Empezar recorrido'}
 function queue(){clearTimeout(timer); timer=setTimeout(function(){if(!auto) return; if(cur===stops.length-1){stopAuto(); show(0)} else show(cur+1)},3600/VEL[vi])}
 function setLabels(){
   $('labels').textContent=''; labs=[];
@@ -57,7 +58,7 @@ function show(i,instant){
     b.onclick=function(){verFoto(s.n,fl,j);$('dlg').showModal()};
     th.appendChild(b);
   });
-  $('fn').textContent='📷 Foto real'+(fl.length>1?' · '+fl.length:'');
+  $('fn').innerHTML=ICAM+' Foto real'+(fl.length>1?' · '+fl.length:'');
   $('foto').hidden=!fl.length;
   $('capD').classList.remove('full');
   if(cur>0) $('hint').classList.add('off');
@@ -67,7 +68,7 @@ $('furn').onclick=function(){var on=this.getAttribute('aria-pressed')!=='true';t
 $('vmenos').onclick=function(){setVel(-1)}; $('vmas').onclick=function(){setVel(1)}; setVel(0);
 $('auto').onclick=function(){
   if(auto){stopAuto();return}
-  auto=true; this.setAttribute('aria-pressed','true'); this.textContent='❚❚ Detener'; $('hint').classList.add('off');
+  auto=true; this.setAttribute('aria-pressed','true'); this.innerHTML=IPAUSE+' Detener'; $('hint').classList.add('off');
   show(cur===stops.length-1?0:cur+1);
 };
 function verFoto(nom,fl,j){ j=(j+fl.length)%fl.length;

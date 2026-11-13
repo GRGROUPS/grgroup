@@ -6,6 +6,7 @@ body{font-family:Jost,Arial,sans-serif;color:var(--ink);background:#e9eef1;overf
 canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
 canvas:active{cursor:grabbing}
 button{font:inherit;color:inherit;cursor:pointer}
+.ic{width:1.05em;height:1.05em;display:inline-block;vertical-align:-.17em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.ic.icf{fill:currentColor;stroke:none}
 :focus-visible{outline:3px solid var(--navy);outline-offset:2px}
 
 .top{position:fixed;left:0;right:0;top:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 0;pointer-events:none}

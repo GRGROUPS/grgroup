@@ -42,6 +42,9 @@ def num(n):
     return re.sub(r"\.0+$", "", s)
 
 
+CHK_SVG = '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg> '
+
+
 def load():
     src = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
     data = json.loads(re.search(r"var DATA\s*=\s*(\[.*?\]);\n", src, re.S).group(1))
@@ -67,7 +70,7 @@ def nota(h):
 
 
 def pago(h):
-    return "Consúltanos" if re.search("confirmar", h.get("credito") or "", re.I) else h.get("credito") or ""
+    return "Se confirma al agendar" if re.search("confirmar", h.get("credito") or "", re.I) else h.get("credito") or ""
 
 
 def wa_url(wa, text):
@@ -100,7 +103,7 @@ header img{height:40px;width:auto;display:block}header a.all{font-size:13px;lett
 h1{font-family:"Cormorant Garamond",Georgia,serif;font-size:36px;line-height:1.08;margin:0 0 8px;font-weight:600}
 h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:27px;margin:26px 0 10px;font-weight:600}
 .pr{font-size:27px;font-weight:600;margin:0}.pr small{font-size:15px;color:#6f6a62;font-weight:500;margin-left:6px}
-.zn{color:#6f6a62;margin:6px 0 14px}
+.zn{color:#6f6a62;margin:6px 0 14px}.ic{width:1.05em;height:1.05em;display:inline-block;vertical-align:-.17em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:0 16px 6px}
 .gal img{height:66vw;max-height:440px;width:auto;margin-right:8px;scroll-snap-align:center;border-radius:4px;background:#f6f2ea;flex:none}
 .hint{font-size:13px;color:#6f6a62;margin:4px 0 0}
@@ -187,7 +190,7 @@ def page(h, todas, wa):
 <p class="eb">{esc(tipo)} en {op} · {esc(code)}</p>
 <h1>{esc(name)}</h1>
 <p class="pr">{price_txt(h)}{f"<small>{esc(n)}</small>" if n else ""}</p>
-<p class="zn">📍 {esc(h["zona"])}</p>
+<p class="zn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> {esc(h["zona"])}</p>
 <div class="gal">{imgs}</div>
 {f'<p class="hint">Desliza para ver las {len(fotos)} fotos.</p>' if len(fotos) > 1 else ''}
 {f'<a class="btn t3" href="../../recorrido/{code}/">Recorrer la casa en 3D</a>' if tiene_recorrido(code) else ''}
@@ -226,13 +229,13 @@ def recorrido_page(h, wa):
     wa_link = wa_url(wa, f"Hola, vi el recorrido 3D de la casa {code} – {name} ({money(h['precio'])}). ¿Cuándo la puedo visitar?")
     meta = {"code": code, "name": name, "precio": precio, "url": url, "fotos": f"../../fotos/{code}/"}
     cr = set(h.get("creditos") or []); ctx = (h.get("credito") or "").lower()
-    if {"infonavit", "fovissste"} <= cr: cred = "✓ Infonavit y Fovissste"
-    elif "fovissste" in cr: cred = "✓ Fovissste"
-    elif "infonavit" in cr: cred = "✓ Infonavit"
+    if {"infonavit", "fovissste"} <= cr: cred = "Infonavit y Fovissste"
+    elif "fovissste" in cr: cred = "Fovissste"
+    elif "infonavit" in cr: cred = "Infonavit"
     elif "contado" in ctx: cred = "Solo de contado"
-    elif "crédito" in ctx: cred = "✓ Acepta créditos"
+    elif "crédito" in ctx: cred = "Acepta créditos"
     else: cred = ""
-    cred_html = f'<p class="cr">{esc(cred)}</p>' if cred and h["op"] == "Venta" else ""
+    cred_html = (f'<p class="cr">{"" if "contado" in cred else CHK_SVG}{esc(cred)}</p>') if cred and h["op"] == "Venta" else ""
     return f"""<!doctype html>
 <html lang="es-MX">
 <head>
@@ -282,7 +285,7 @@ def recorrido_page(h, wa):
     <a class="wa" href="{esc(wa_link)}">Agendar visita</a>
   </div>
   <div class="dock">
-    <div class="cap"><div aria-live="polite"><strong id="capT"></strong><em class="badge" id="capB" hidden></em><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false">▶ Empezar recorrido</button></div>
+    <div class="cap"><div aria-live="polite"><strong id="capT"></strong><em class="badge" id="capB" hidden></em><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false"><svg class="ic icf" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg> Empezar recorrido</button></div>
     <div class="stops" id="stops" role="group" aria-label="Espacios de la casa"></div>
     <p class="nota"><span class="lg">Representación ilustrativa hecha a partir de las fotos y planos. La distribución, las medidas y los muebles son aproximados.</span><span class="sm">Recorrido ilustrativo: medidas y muebles aproximados.</span></p>
   </div>

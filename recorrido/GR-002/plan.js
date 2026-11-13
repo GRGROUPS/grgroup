@@ -50,8 +50,8 @@ var plan={
 };
 var stops=[
   {n:'Vista general',d:'Casa de una planta con 2 recámaras, 1 baño y patio techado al frente.',t:[2.5,.2,6.4],yaw:-.6,pitch:.9,dist:25,fov:.62,f:[],v:{dist:33}},
-  {n:'Fachada',d:'Frente con portón y patio techado.',t:[2.5,1.3,0],yaw:-.5,pitch:.1,dist:11,fov:.72,f:[7,1],v:{dist:14}},
-  {n:'Patio techado',d:'Patio techado al frente, útil como cochera o terraza, con escalera a la azotea.',t:[.45,1.55,.5],yaw:.62,pitch:.15,dist:.01,fov:1.2,f:[8,4,3]},
+  {n:'Fachada',d:'Frente con portón y patio techado.',t:[2.5,1.3,0],yaw:-.5,pitch:.1,dist:11,fov:.72,f:[7],v:{dist:14}},
+  {n:'Patio techado',d:'Patio techado al frente, útil como cochera o terraza, con escalera a la azotea.',t:[.45,1.55,.5],yaw:.62,pitch:.15,dist:.01,fov:1.2,f:[8,9]},
   {n:'Comedor',d:'Comedor al entrar, con paso a las recámaras.',t:[.4,1.55,4.95],yaw:.7,pitch:.25,dist:.01,fov:1.2,f:[10,11]},
   {n:'Cocina',d:'Cocina con barra y tarja.',t:[3.45,1.55,4.82],yaw:.72,pitch:.42,dist:.01,fov:1.25,f:[12,13]},
   {n:'Baño',d:'Baño completo.',t:[2.55,1.6,7.36],yaw:1.57,pitch:.42,dist:.01,fov:1.0,f:[17]},
