@@ -70,7 +70,7 @@ var stops=[
 var rooms=[['Sala',3.0,1.5],['Comedor',5.4,1.5],['Cocina',8.4,2.0],['Recámara 1',1.5,4.8],['Recámara 2',4.4,4.8],['Baño',6.6,5.2],['Servicio',8.4,5.4]];
 /* ---------- Edificio: 5 pisos, 2 departamentos por piso, ventanas a la calle ----------
    PISO y LADO marcan el departamento disponible (se resalta en la fachada y el recorrido entra a ese piso). */
-var PISO=4, LADO=0; // LADO 0 = izquierda viendo desde la calle, 1 = derecha
+var PISOS=[3,4], LADO=0, PISO=PISOS[0]; // pisos con depa disponible; LADO 0 = izquierda viendo desde la calle, 1 = derecha
 var FH=2.9, NP=5, BW=21, BD=11, CX0=9.4, CX1=11.6;
 var EST='#efece5', GRIS='#8f8c87', VID='#33424f', MAD='#b98d60', NAR='#f08a2c', LUZ='#ffd9a0';
 var eb=[], y, p, u, k;
@@ -82,7 +82,7 @@ for(p=0;p<NP;p++){ y=p*FH;
   /* cubo de escalera con cristal al frente */
   eb.push([CX0+.1,y+.5,.55,CX1-.1,y+FH-.15,.6,VID,{mat:16}]);
   for(u=0;u<2;u++){
-    var x0=u?CX1:0, m=function(a,b){return u?[BW-b,BW-a]:[a,b];}, hot=(p===PISO-1&&u===LADO);
+    var x0=u?CX1:0, m=function(a,b){return u?[BW-b,BW-a]:[a,b];}, hot=(PISOS.indexOf(p+1)>=0&&u===LADO);
     /* ventanas de cada depa a la calle: recámaras, baño y servicio */
     [[1.0,2.4,.95],[3.7,5.2,.95],[6.2,6.8,1.6],[7.6,8.7,1.1]].forEach(function(w){
       var a=m(w[0],w[1]);
@@ -127,17 +127,17 @@ var edif={
   floors:[[CX0,0,CX1,BD,'#d9d6cf',3]],
   ceilings:[], walls:[], boxes:eb, items:[]
 };
-var ux=LADO?(CX1+(BW-CX1)/2):(CX0/2), uy=(PISO-1)*FH;
+var ux=LADO?(CX1+(BW-CX1)/2):(CX0/2), uy=(PISO-1)*FH, NOM=PISOS.length>1?'pisos '+PISOS.join(' y '):'piso '+PISO;
 var pre=[
   {n:'El edificio',d:'Edificio de 5 pisos con 2 departamentos por piso y ventanas a la calle; alberca, gimnasio y áreas verdes atrás.',lvl:0,t:[BW/2,7,4],yaw:-.5,pitch:.16,dist:31,fov:.75,f:[6],v:{dist:38}},
-  {n:'Tu departamento: piso '+PISO,d:'Queda una sola unidad: la del piso '+PISO+', marcada en naranja. Entremos.',lvl:0,t:[ux,uy+1.4,0],yaw:LADO?.25:-.25,pitch:.04,dist:13,fov:.7,f:[],v:{dist:17}}
+  {n:'Disponibles: '+NOM,d:'Quedan los departamentos de los '+NOM+', marcados en naranja; los dos son el mismo modelo. Entremos.',lvl:0,t:[ux,uy+FH*(PISOS.length>1?1:.5),0],yaw:LADO?.25:-.25,pitch:.04,dist:15,fov:.7,f:[],v:{dist:20}}
 ];
 /* el depa está en un piso alto: el ventanal de la sala da al vacío, con barandal, y el jardín queda abajo */
 var hy=-uy-.1;
 plan.ground=[[-30,hy,-30,40,36,'#8fae6b',2],[-30,hy+.03,-30,40,-6,'#6d6f72',0]];
 plan.boxes=plan.boxes.concat([[1.2,0,.6,1.24,1.0,2.4,'#2b2b2d'],[1.2,.98,.6,1.3,1.03,2.4,'#2b2b2d'],[-.2,-.25,-.2,9.6,0,6.7,'#d9d6cf',{mat:3}]]);
 stops.forEach(function(s){ s.lvl=1; });
-stops[0].d='Departamento de 56.25 m² en el piso '+PISO+': 2 recámaras, 1 baño y área de servicio.';
-stops[1].d='Sala con ventanal y barandal; desde el piso '+PISO+' se ve el conjunto.';
-window.TOUR={levels:[{n:'Edificio',plan:edif,rooms:[]},{n:'Departamento · piso '+PISO,plan:plan,rooms:rooms}],stops:pre.concat(stops)};
+stops[0].d='Departamento de 56.25 m² (disponible en los '+NOM+'): 2 recámaras, 1 baño y área de servicio.';
+stops[1].d='Sala con ventanal y barandal; en piso alto, con vista al conjunto.';
+window.TOUR={levels:[{n:'Edificio',plan:edif,rooms:[]},{n:'Departamento',plan:plan,rooms:rooms}],stops:pre.concat(stops)};
 })();
