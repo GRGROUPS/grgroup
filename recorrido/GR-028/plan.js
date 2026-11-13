@@ -48,7 +48,7 @@ var baja={
     ['silla',4.4,4.2,180,{s:1}],['planta',3.2,.5,0,{s:1}],
     /* escalera en U */
     ['escalera',.55,3.55,90,{w:.8,n:7,huella:.25,alto:1.35,mat:1,color:'#d9d7d1'}],
-    ['escalera',.55,4.65,-90,{w:.8,n:7,huella:.25,alto:1.35,y0:1.35,mat:1,color:'#d9d7d1'}],
+    ['escalera',2.3,4.65,-90,{w:.8,n:7,huella:.25,alto:1.35,y0:1.35,mat:1,color:'#d9d7d1'}],
     /* cocina: isla, cubierta y refri */
     ['barra',2.5,7.25,90,{len:2.3,copete:false,estufa:0,tarja:.7,color:CAB,cubierta:GRAN}],
     ['barra',.08,7.3,90,{len:2.1,color:CAB,cubierta:GRAN,copete:false}],
