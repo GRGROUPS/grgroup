@@ -74,32 +74,45 @@ var PISOS=[3,4], LADO=0, PISO=PISOS[0]; // pisos con depa disponible; LADO 0 = i
 var FH=2.9, NP=5, BW=21, BD=11, CX0=9.4, CX1=11.6;
 /* diseño tomado del video de Gran Valle: fachada blanca con juntas marcadas, módulos blancos que sobresalen con
    ventanas de marco grueso, módulos hundidos color arena, remate plano; pérgola de madera, bugambilias, agaves y muro de piedra */
-var BL='#eceae6', JN='#cfcbc5', AR='#b8a089', VID='#2e3238', MAR='#3a3a3c', MAD='#7a5536', NAR='#f08a2c', LUZ='#ffd9a0';
+var BL='#d8d7d3', BL2='#cbcac6', JN='#bdbcb8', AR='#b39d86', AR2='#c9b6a0', VID='#2e3238', MAR='#3a3a3c', MAD='#7a5536', NAR='#f08a2c', LUZ='#ffd9a0';
 var eb=[], y, p, u, k, H=NP*FH;
-function bay(x0,x1,z0,col,mat){ eb.push([x0,0,z0,x1,H+.9,BD-z0,col,{mat:mat}]); }
-/* masa: módulos blancos al frente (z=-.45) y hundidos color arena (z=0); el cubo de escalera, blanco y hundido */
-for(u=0;u<2;u++){ var o=u?CX1:0, m=function(a,b){return u?[BW-b,BW-a]:[a,b];};
-  var w1=m(0,3.3), w2=m(3.3,6.3), w3=m(6.3,CX0);
-  bay(w1[0],w1[1],-.45,BL,14); bay(w2[0],w2[1],0,AR,14); bay(w3[0],w3[1],-.45,BL,14); }
-eb.push([CX0,0,.35,CX1,H+1.6,BD-.35,BL,{mat:14}]);
-/* juntas horizontales (cada medio piso) y verticales en los módulos blancos */
-for(k=1;k<NP*2;k++){ y=k*FH/2; [[0,3.3],[6.3,CX0],[CX1,BW-6.3],[BW-3.3,BW]].forEach(function(r){ eb.push([r[0],y-.015,-.47,r[1],y+.015,-.44,JN]); }); }
-[1.65,7.85,BW-1.65,BW-7.85].forEach(function(x){ eb.push([x-.015,0,-.47,x+.015,H+.9,-.44,JN]); });
-/* ventanas: marco grueso que sobresale en los módulos blancos; ventana simple en los hundidos */
-function ventana(x0,x1,y0,y1,z,marco,hot){
-  if(marco) eb.push([x0-.16,y0-.16,z-.28,x1+.16,y0,z,BL,{mat:14}],[x0-.16,y1,z-.28,x1+.16,y1+.16,z,BL,{mat:14}],[x0-.16,y0,z-.28,x0,y1,z,BL,{mat:14}],[x1,y0,z-.28,x1+.16,y1,z,BL,{mat:14}]);
+/* columnas grises que sobresalen, con la esquina en ángulo (se arma en escalones) y una ranura profunda a un lado
+   donde va la ventana; entre ellas, el módulo color arena hundido con ventana y cejita; el cubo de escalera al centro */
+function columna(xa,xb,ladoRanura){ // ladoRanura: +1 la ranura queda del lado xb, -1 del lado xa
+  var r=1.15, sa=ladoRanura>0?xa:xa+r, sb=ladoRanura>0?xb-r:xb;
+  eb.push([sa,0,-.75,sb,H+.9,BD,BL,{mat:14}]);
+  /* esquina en ángulo: escalones de la cara frontal hacia el lado contrario a la ranura */
+  var e=ladoRanura>0?sa:sb, d=ladoRanura>0?1:-1;
+  eb.push([Math.min(e,e-d*.25),0,-.55,Math.max(e,e-d*.25),H+.9,BD,BL2,{mat:14}]);
+  /* fondo de la ranura (más atrás) */
+  var ra=ladoRanura>0?xb-r:xa, rb=ladoRanura>0?xb:xa+r;
+  eb.push([ra,0,-.05,rb,H+.9,BD,BL2,{mat:14}]);
+  return [ra,rb];
+}
+var ran=[];
+for(u=0;u<2;u++){ var m=function(a,b){return u?[BW-b,BW-a]:[a,b];};
+  var c1=m(0,3.3), c2=m(6.3,CX0), ar=m(3.3,6.3);
+  ran.push(columna(c1[0],c1[1],u?-1:1), columna(c2[0],c2[1],u?1:-1));
+  eb.push([ar[0],0,0,ar[1],H+.9,BD,AR,{mat:14}]);
+}
+eb.push([CX0,0,.35,CX1,H+1.6,BD-.35,'#e6e5e1',{mat:14}]);
+/* juntas horizontales en las columnas */
+for(k=1;k<NP*2;k++){ y=k*FH/2; [[0,2.15],[7.45,CX0],[CX1,BW-7.45],[BW-2.15,BW]].forEach(function(r){ eb.push([r[0],y-.015,-.77,r[1],y+.015,-.74,JN]); }); }
+function vidrio(x0,x1,y0,y1,z,hot){
   eb.push([x0,y0,z-.03,x1,y1,z+.01,MAR],[x0+.05,y0+.05,z-.05,x1-.05,y1-.05,z-.02,hot?LUZ:VID,{mat:hot?9:16}],[x0+(x1-x0)/2-.02,y0+.05,z-.07,x0+(x1-x0)/2+.02,y1-.05,z-.04,MAR]);
 }
 for(p=0;p<NP;p++){ y=p*FH;
-  for(u=0;u<2;u++){ var m2=function(a,b){return u?[BW-b,BW-a]:[a,b];}, hot=(PISOS.indexOf(p+1)>=0&&u===LADO), q;
-    q=m2(1.05,2.25); ventana(q[0],q[1],y+.95,y+2.15,-.45,1,hot);
-    q=m2(4.15,5.45); ventana(q[0],q[1],y+.95,y+2.15,0,0,hot);
-    q=m2(7.35,8.35); ventana(q[0],q[1],y+1.15,y+2.15,-.45,1,hot);
+  for(u=0;u<2;u++){ var m2=function(a,b){return u?[BW-b,BW-a]:[a,b];}, hot=(PISOS.indexOf(p+1)>=0&&u===LADO), q, i;
+    /* ventanas metidas en la ranura de cada columna */
+    for(i=0;i<2;i++){ var R=ran[u*2+i]; vidrio(R[0]+.08,R[1]-.08,y+.95,y+2.15,-.05,hot);
+      eb.push([R[0],y+.8,-.75,R[1],y+.95,-.05,BL2,{mat:14}]); }
+    /* módulo arena: ventana con cejita que sobresale */
+    q=m2(4.0,5.6); vidrio(q[0],q[1],y+.95,y+2.15,0,hot);
+    q=m2(3.3,6.3); eb.push([q[0],y+2.35,-.35,q[1],y+2.47,0,AR2,{mat:14}]);
     if(hot){ var f=m2(-.12,CX0+.05);
-      eb.push([f[0],y+.12,-.86,f[1],y+.24,-.76,NAR,{mat:9}],[f[0],y+FH-.06,-.86,f[1],y+FH+.06,-.76,NAR,{mat:9}],
-              [f[0],y+.12,-.86,f[0]+.12,y+FH+.06,-.76,NAR,{mat:9}],[f[1]-.12,y+.12,-.86,f[1],y+FH+.06,-.76,NAR,{mat:9}]); }
+      eb.push([f[0],y+.12,-1.0,f[1],y+.24,-.9,NAR,{mat:9}],[f[0],y+FH-.06,-1.0,f[1],y+FH+.06,-.9,NAR,{mat:9}],
+              [f[0],y+.12,-1.0,f[0]+.12,y+FH+.06,-.9,NAR,{mat:9}],[f[1]-.12,y+.12,-1.0,f[1],y+FH+.06,-.9,NAR,{mat:9}]); }
   }
-  /* ventanita del cubo de escalera */
   eb.push([BW/2-.35,y+1.4,.31,BW/2+.35,y+2.1,.36,VID,{mat:16}]);
 }
 /* acceso al cubo de escalera */
@@ -112,7 +125,7 @@ for(p=0;p<NP;p++){ y=p*FH; [[2,3.1],[6.5,7.6]].forEach(function(w){
 (function(x0,z0){ var t=.16, W=3.4, D=3.4, h=2.5;
   [[0,0],[W-t,0],[0,D-t],[W-t,D-t]].forEach(function(c){ eb.push([x0+c[0],0,z0+c[1],x0+c[0]+t,h,z0+c[1]+t,MAD,{mat:6}]); });
   eb.push([x0-.15,h,z0-.15,x0+W+.15,h+.18,z0+D+.15,MAD,{mat:6}],[x0-.35,h+.18,z0-.35,x0+W+.35,h+.3,z0+D+.35,'#5b4a3c',{mat:6}],
-          [x0+.4,h+.3,z0+.4,x0+W-.4,h+.62,z0+D-.4,'#4c4038',{mat:6}],[x0+.5,0,z0+1.3,x0+W-.5,.45,z0+2.1,'#8a6a4a',{mat:6}]);
+          [x0+.4,h+.3,z0+.4,x0+W-.4,h+.62,z0+D-.4,'#4c4038',{mat:6}],[x0+.3,0,z0-.6,x0+W-.3,1.05,z0+.1,'#8a6a4a',{mat:6}],[x0+.2,1.05,z0-.7,x0+W-.2,1.12,z0+.2,'#6b4f3a',{mat:6}]);
 })(1.2,-6.0);
 /* bugambilias, agaves, muro de piedra y postes de luz */
 [[.8,-2.2],[5.0,-1.9],[13.5,-2.1],[19.8,-2.0]].forEach(function(b){ eb.push([b[0]-.5,0,b[1]-.4,b[0]+.5,1.1,b[1]+.4,'#4f7a3a',{mat:2}],[b[0]-.45,.75,b[1]-.45,b[0]+.4,1.35,b[1]+.35,'#e98a6a',{mat:7}],[b[0]-.2,1.1,b[1]-.3,b[0]+.3,1.5,b[1]+.2,'#d9707f',{mat:7}]); });
@@ -133,7 +146,7 @@ var edif={
     [-20,-0.09,-30,42,40,'#8fae6b',2],
     [-20,-0.06,-14,42,-6.5,'#6d6f72',0],
     [-20,-0.03,-6.5,42,-4.8,'#cfccc5',3],
-    [-1,-0.03,-1.6,BW+1,0,'#cfccc5',3],[CX0,-0.025,-4.8,CX1,-1.6,'#bdb8ad',3],
+    [-6,-0.035,-8.4,BW+6,0,'#6f6d6a',12],[-1,-0.03,-1.2,BW+1,0,'#cfccc5',3],[1.0,-0.03,-6.4,4.8,-2.4,'#cfccc5',3],[CX0,-0.025,-4.8,CX1,-1.6,'#bdb8ad',3],
     [0,-0.03,BD,BW,27,'#9cb97a',2],[1,-0.025,BD,3,15,'#cfccc5',3]
   ],
   floors:[[CX0,0,CX1,BD,'#d9d6cf',3]],
