@@ -166,7 +166,7 @@ def page(h, todas, wa):
         "@context": "https://schema.org", "@type": "RealEstateListing", "name": name, "url": url,
         "description": desc, "image": [BASE + f for f in fotos[:6]],
         "offers": {"@type": "Offer", "price": h["precio"], "priceCurrency": "MXN", "availability": "https://schema.org/InStock"},
-        "provider": {"@type": "RealEstateAgent", "name": "GR GROUP", "telephone": "+" + wa, "url": BASE},
+        "provider": {"@type": "RealEstateAgent", "name": "GR GROUP", "telephone": "+" + wa, "email": "inaki.guerra@grgroups.mx", "address": {"@type": "PostalAddress", "streetAddress": "Central Park", "addressLocality": "Querétaro", "addressRegion": "Qro.", "addressCountry": "MX"}, "url": BASE},
     }
     n = nota(h)
     return f"""<!doctype html>
