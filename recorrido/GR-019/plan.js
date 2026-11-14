@@ -27,11 +27,13 @@ var plan={
     // exteriores
     // bloque de la cocina al frente
     {ax:'x',c:0,from:0,to:3.2,t:.15,h:2.75,out:-1,open:[{from:.55,to:1.95,sill:.95,head:2.15,kind:'window',grille:true}]},
-    {ax:'z',c:3.2,from:0,to:1.6,t:.15,h:2.75},
-    // remetido: puerta blanca cerrada pegada al bloque y ventanal alto con herrería
+    // costado del bloque, viendo a la derecha: puerta blanca de entrada al vestíbulo
+    {ax:'z',c:3.2,from:0,to:1.6,t:.15,h:2.75,open:[{from:.66,to:1.46,head:2.15,kind:'door',hinge:'to',ang:0,color:'#e9e8e3',mat:0}]},
+    // vestíbulo | cocina
+    {ax:'z',c:2.4,from:0,to:1.6},
+    // remetido: ventanal alto con herrería en la esquina, junto a la puerta
     {ax:'x',c:1.6,from:3.2,to:6.4,t:.15,h:2.7,out:-1,open:[
-      {from:3.32,to:4.12,head:2.15,kind:'door',hinge:'from',ang:0,color:'#e9e8e3',mat:0},
-      {from:4.3,to:5.5,sill:.3,head:2.3,kind:'window',grille:true}]},
+      {from:3.42,to:4.62,sill:.3,head:2.3,kind:'window',grille:true}]},
     {ax:'z',c:6.4,from:1.6,to:8.6,t:.15,h:2.7},
     {ax:'x',c:8.6,from:0,to:6.4,t:.15,h:2.7,out:1,open:[
       {from:.85,to:2.05,sill:.95,head:2.1,kind:'window'},
@@ -60,11 +62,11 @@ var plan={
     // remate de la azotea del bloque del frente
     [-.08,2.75,-.12,3.28,2.83,1.6,'#e9e7e2',{mat:14}],
     // lámparas: blanca al frente y negra en el costado del bloque, junto a la puerta
-    [2.7,2.32,-.14,2.92,2.52,-.075,'#f4f4f1',{mat:9}],[3.275,2.15,.55,3.36,2.38,.72,'#1d1d1f',{mat:16}],
+    [2.7,2.32,-.14,2.92,2.52,-.075,'#f4f4f1',{mat:9}],[3.275,2.15,.22,3.36,2.38,.39,'#1d1d1f',{mat:16}],
     // nicho de la puerta y moldura del ventanal
-    [4.12,0,1.32,4.22,2.3,1.525,'#f2f1ee',{mat:14}],[3.2,2.15,1.32,4.22,2.3,1.525,'#f2f1ee',{mat:14}],
-    [4.2,.2,1.46,5.6,.3,1.525,'#f4f3ef',{mat:14}],[4.2,2.3,1.46,5.6,2.4,1.525,'#f4f3ef',{mat:14}],
-    [4.2,.3,1.46,4.3,2.3,1.525,'#f4f3ef',{mat:14}],[5.5,.3,1.46,5.6,2.3,1.525,'#f4f3ef',{mat:14}],
+    [3.275,0,.54,3.47,2.3,.66,'#f2f1ee',{mat:14}],[3.275,2.15,.54,3.47,2.3,1.525,'#f2f1ee',{mat:14}],
+    [3.32,.2,1.46,4.72,.3,1.525,'#f4f3ef',{mat:14}],[3.32,2.3,1.46,4.72,2.4,1.525,'#f4f3ef',{mat:14}],
+    [3.32,.3,1.46,3.42,2.3,1.525,'#f4f3ef',{mat:14}],[4.62,.3,1.46,4.72,2.3,1.525,'#f4f3ef',{mat:14}],
     // firme de concreto elevado frente a la entrada
     [3.2,0,.15,6.45,.1,1.52,'#c9c6bf',{mat:3}],
     // poste de luz en la banqueta
@@ -83,7 +85,7 @@ var plan={
     ['lavadero',.75,10.33,180],['boiler',5.9,8.68,0],
     ['plafon',4.4,3.5,0],['plafon',1.2,1.7,0],['plafon',1.3,4.5,0],['plafon',5.05,7.0,0],['plafon',1.45,7.0,0],['plafon',3.32,7.0,0],
     // sugeridos
-    ['refri',3.12,.55,-90,{s:1}],
+    ['refri',2.32,.55,-90,{s:1}],
     ['tapete',4.72,3.3,-90,{s:1,w:2.3,d:1.5}],['sofa',5.86,3.3,-90,{s:1,w:2.0}],['mesaCentro',4.75,3.3,-90,{s:1}],['planta',6.02,1.98,0,{s:1}],
     ['mesa',2.86,3.88,0,{s:1,w:.75,d:.75}],['silla',3.48,3.88,-90,{s:1}],['silla',2.86,3.28,0,{s:1}],
     ['cama',5.28,7.2,-90,{s:1,w:1.4,manta:'#b9703f'}],['buro',6.1,6.22,-90,{s:1}],['buro',6.1,8.18,-90,{s:1,lampara:false}],
@@ -93,7 +95,7 @@ var plan={
 
 var stops=[
   {n:'Vista general',d:'Casa de una planta con 2 recámaras, 1 baño y cocina equipada.',t:[3.2,.2,5.0],yaw:-.6,pitch:.9,dist:18.5,fov:.62,f:[],v:{dist:25}},
-  {n:'Fachada',d:'Fachada blanca en esquina: ventana con herrería en el bloque del frente, puerta remetida y ventanal alto con herrería.',t:[3.6,1.3,1.1],yaw:-.85,pitch:.1,dist:9,fov:.72,f:[1,2]},
+  {n:'Fachada',d:'Fachada blanca en esquina: ventana con herrería en el bloque del frente, puerta en el costado del bloque, viendo a la entrada, y ventanal alto con herrería en la esquina.',t:[3.6,1.3,1.1],yaw:-.85,pitch:.1,dist:9,fov:.72,f:[1,2]},
   {n:'Sala-comedor',d:'Ventanal de piso a techo hacia el frente.',t:[3.3,1.5,5.25],yaw:2.5,pitch:.24,dist:.01,fov:1.08,f:[6,5]},
   {n:'Cocina',d:'Cocina equipada con parrilla y gabinetes blancos.',t:[2.28,1.55,3.22],yaw:-2.5,pitch:.3,dist:.01,fov:1.15,f:[3]},
   {n:'Baño',d:'Baño completo con cancel en la regadera.',t:[2.27,1.6,5.27],yaw:-2.3,pitch:.5,dist:.01,fov:1.35,f:[4],v:{yaw:-2.6}},
@@ -101,7 +103,7 @@ var stops=[
   {n:'Recámara 2',d:'Recámara con clóset.',t:[2.62,1.55,8.25],yaw:-2.5,pitch:.24,dist:.01,fov:1.15,f:[8]},
   {n:'Patio',d:'Patio de servicio al fondo.',t:[6.0,1.5,9.6],yaw:-1.7,pitch:.3,dist:.01,fov:1.3,f:[]}
 ];
-var rooms=[['Cocina',1.2,1.7],['Sala-comedor',4.5,3.5],['Baño',1.2,4.4],['Recámara 1',5.1,7.1],['Recámara 2',1.45,7.1],['Patio',3.2,9.5]];
+var rooms=[['Cocina',1.2,1.7],['Vestíbulo',2.8,.8],['Sala-comedor',4.5,3.5],['Baño',1.2,4.4],['Recámara 1',5.1,7.1],['Recámara 2',1.45,7.1],['Patio',3.2,9.5]];
 
 window.TOUR={levels:[{n:'Casa',plan:plan,rooms:rooms}],stops:stops};
 })();
