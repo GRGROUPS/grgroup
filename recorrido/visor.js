@@ -462,7 +462,15 @@
       }
       g.box(-hw + 0.05, 1.2, 0, hw - 0.05, 1.95, 0.014, '#c9d6d9', { mat: 9 });
     },
-    boiler: function (g, gt, o) { g.cyl(0, 0.2, 0.9, 1.75, 0.19, 0.19, '#f1f1ee', { seg: 16 }); g.cyl(0, 0.2, 1.75, 1.8, 0.19, 0.05, '#dddcd6', { seg: 16 }); }
+    boiler: function (g, gt, o) { g.cyl(0, 0.2, 0.9, 1.75, 0.19, 0.19, '#f1f1ee', { seg: 16 }); g.cyl(0, 0.2, 1.75, 1.8, 0.19, 0.05, '#dddcd6', { seg: 16 }); },
+    tinaco: function (g, gt, o) { // tinaco en la azotea; o.y0 = altura de la azotea, o.r = radio, o.h = alto
+      var y = o.y0 || 2.7, r = o.r || 0.45, h = o.h || 0.75, c = o.color || '#202020', S = { seg: 24, mat: o.mat == null ? 11 : o.mat };   // se oculta al quitar el techo
+      g.cyl(0, 0, y, y + 0.06, r * 0.92, r * 0.92, '#8a8780', { seg: 24, mat: S.mat });
+      g.cyl(0, 0, y + 0.06, y + h, r, r, c, S);
+      g.cyl(0, 0, y + h, y + h + r * 0.35, r, r * 0.72, c, S);
+      g.cyl(0, 0, y + h + r * 0.35, y + h + r * 0.55, r * 0.72, r * 0.28, c, S);
+      g.cyl(0, 0, y + h + r * 0.55, y + h + r * 0.62, r * 0.28, r * 0.28, c, S);
+    }
   };
 
   // Zonas techadas de la casa: pisos que tienen plafón encima (más plan.indoor). Las terrazas quedan fuera.
