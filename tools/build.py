@@ -21,7 +21,7 @@ import sys
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE = "https://grgroups.github.io/grgroup/"
+BASE = "https://grgroups.mx/"
 
 
 # versión de los archivos del recorrido 3D: cambia cuando cambian, para que el navegador no use una copia vieja
