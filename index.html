@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -143,7 +143,7 @@ a { color: inherit; }
 
 /* ---------- casas ---------- */
 .ph { text-align: left; padding: 48px 0 6px; }
-.ph h1 { font-size: 56px; letter-spacing: -1px; margin: 0; line-height: 1.07; }
+.ph h1, .ph h2 { font-size: 56px; letter-spacing: -1px; margin: 0; line-height: 1.07; }
 .ph p { font-size: 21px; color: var(--mut); margin: 6px 0 0; }
 .panel { background: var(--bg); border-radius: 24px; padding: 18px 18px 8px; margin: 22px 0 14px; }
 .seg { display: -webkit-flex; display: flex; background: #e8e8ed; border-radius: 980px; padding: 3px; height: 50px; }
@@ -380,8 +380,8 @@ textarea.exp { width: 100%; height: 160px; font-size: 14px; border: 1px solid #c
 .hint { font-size: 12.5px; color: var(--mut); margin: -6px 0 12px; line-height: 1.35; }
 .csec { font-size: 13px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; color: var(--mut); margin: 14px 6px 8px; }
 .eyebrow { font-size: 14px; }
-.ph h1 { font-size: 62px; letter-spacing: 0; font-weight: 600; font-family: "Cormorant Garamond", Georgia, serif; }
-@media (max-width: 599px) { .tile h2 { font-size: 44px; } .hero h2 { font-size: 54px; } .ph h1 { font-size: 46px; } .sheet h2 { font-size: 32px; } .tile .tg { font-size: 24px; } }
+.ph h1, .ph h2 { font-size: 62px; letter-spacing: 0; font-weight: 600; font-family: "Cormorant Garamond", Georgia, serif; }
+@media (max-width: 599px) { .tile h2 { font-size: 44px; } .hero h2 { font-size: 54px; } .ph h1, .ph h2 { font-size: 46px; } .sheet h2 { font-size: 32px; } .tile .tg { font-size: 24px; } }
 
 /* ================= LUJO: paleta sobria, líneas finas, fotos grandes ================= */
 :root { --ink: #17140f; --mut: #6f6a62; --bg: #f6f2ea; --dark: #0e0d0b; --lk: #8a6a2f; --lkd: #d8bc82; --line: #ddd5c6; --gold: #b8965a; }
@@ -635,7 +635,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
 
 <!-- ================= CASAS ================= -->
 <div id="v-casas" style="display:none"><div class="wrap">
-  <div class="ph"><h1>Casas.</h1><p>Encuentra la que va contigo.</p></div>
+  <div class="ph"><h2>Casas.</h2><p>Encuentra la que va contigo.</p></div>
   <div class="panel">
     <div class="row"><div class="field" style="-webkit-flex-basis:100%;flex-basis:100%"><label for="q">Buscar (zona, nombre, característica)</label><input id="q" type="search" placeholder="Ej. Juriquilla, alberca, 3 recámaras" autocomplete="off" autocorrect="off" autocapitalize="off"></div></div>
     <button class="ftog" id="ftog" type="button">Filtros</button>
@@ -656,7 +656,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
 
 <!-- ================= CALCULADORA ================= -->
 <div id="v-calc" style="display:none"><div class="wrap">
-  <div class="ph"><h1>Calcula.</h1><p>Tu mensualidad con las tasas y reglas oficiales de Infonavit.</p></div>
+  <div class="ph"><h2>Calcula.</h2><p>Tu mensualidad con las tasas y reglas oficiales de Infonavit.</p></div>
   <div class="calc2">
     <div class="cl"><div class="panel" style="margin-top:22px">
       <div class="row"><div class="field" style="-webkit-flex-basis:100%;flex-basis:100%"><label for="k_casa">Casa</label><select id="k_casa"></select></div></div>
@@ -706,7 +706,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
 
 <!-- ================= COMPARAR ================= -->
 <div id="v-comparar" style="display:none"><div class="wrap">
-  <div class="ph"><h1>Compara.</h1><p>Elige hasta tres casas y míralas lado a lado.</p></div>
+  <div class="ph"><h2>Compara.</h2><p>Elige hasta tres casas y míralas lado a lado.</p></div>
   <div class="row" style="margin-top:20px">
     <div class="field"><label for="c1">Casa 1</label><select id="c1"></select></div>
     <div class="field"><label for="c2">Casa 2</label><select id="c2"></select></div>
@@ -717,7 +717,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
 
 <!-- ================= REGISTRO ================= -->
 <div id="v-registro" style="display:none"><div class="wrap" style="max-width:820px">
-  <div class="ph"><h1>Agenda tu visita.</h1><p>Déjanos tu nombre y tu WhatsApp. Te confirmamos el día y la hora.</p></div>
+  <div class="ph"><h2>Agenda tu visita.</h2><p>Déjanos tu nombre y tu WhatsApp. Te confirmamos el día y la hora.</p></div>
 
   <div class="form" id="rform">
     <div id="rerr" class="err"></div>
@@ -803,7 +803,7 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
 
 <!-- ================= REGISTROS (solo asesor) ================= -->
 <div id="v-regs" style="display:none"><div class="wrap" style="max-width:820px">
-  <div class="ph"><h1>Registros.</h1><p>Solo se guardan en este iPad (en este navegador). Cópialos o pásalos a tu Excel para no perderlos.</p></div>
+  <div class="ph"><h2>Registros.</h2><p>Solo se guardan en este iPad (en este navegador). Cópialos o pásalos a tu Excel para no perderlos.</p></div>
   <div style="margin:14px 0"><button class="pill nv" id="rcopy" type="button" style="margin:0">Copiar todos como texto</button></div>
   <textarea class="exp" id="rexp" readonly></textarea>
   <div id="rlist" style="margin-top:12px"></div>
@@ -813,6 +813,10 @@ body.home .gnav:not(.solid) .mbtn i { background: #fff; }
   <div class="fn">
     <p style="margin:0 0 6px"><sup>◊</sup> Precios en pesos mexicanos, sujetos a cambio sin previo aviso. La forma de pago aceptada depende de cada casa y el crédito está sujeto a aprobación. Donde dice “Desde”, es el precio de la versión más económica y puede variar según el modelo. La calculadora es solo una estimación: tu monto y tu tasa los confirma Infonavit.</p>
     <p style="margin:0">* La mensualidad que aparece en cada casa es solo un ejemplo (10% de enganche, 20 años y tasa de 11% anual); tu tasa y tu pago los fija la institución que te dé el crédito. Las fotos y la información son de referencia. La ubicación exacta se da al agendar la visita. Algunas casas se comercializan en colaboración con otros asesores y desarrolladores.</p>
+  </div>
+  <div class="seo" style="margin:0 0 18px;color:#6e6e73;font-size:13px;line-height:1.5">
+    <p style="margin:0 0 6px"><b style="color:var(--ink)">GR GROUP · Casas en venta en Querétaro.</b> Somos asesores inmobiliarios con oficinas en Central Park, Querétaro. Te ayudamos a encontrar casa en Querétaro, Corregidora y El Marqués: Juriquilla, San Isidro Juriquilla, Viñedos, Puertas de San Miguel, El Mirador, Provenza, Santa María Magdalena, Paseos del Bosque y más. Casas que aceptan Infonavit, Fovissste y crédito bancario, con visitas por WhatsApp.</p>
+    <p style="margin:0"><!--CASAS-->Casas en venta: <a href="casa/GR-001/" style="display:inline;color:inherit">Rancho San Pedro</a> · <a href="casa/GR-002/" style="display:inline;color:inherit">Misión de San Juan</a> · <a href="casa/GR-004/" style="display:inline;color:inherit">Colibrí 10</a> · <a href="casa/GR-007/" style="display:inline;color:inherit">Bolaños</a> · <a href="casa/GR-008/" style="display:inline;color:inherit">Santa María Magdalena</a> · <a href="casa/GR-009/" style="display:inline;color:inherit">Viñedos</a> · <a href="casa/GR-010/" style="display:inline;color:inherit">Las Teresas</a> · <a href="casa/GR-013/" style="display:inline;color:inherit">Punta Esmeralda</a> · <a href="casa/GR-015/" style="display:inline;color:inherit">El Mirador</a> · <a href="casa/GR-016/" style="display:inline;color:inherit">Provenza</a> · <a href="casa/GR-017/" style="display:inline;color:inherit">Paseos del Bosque</a> · <a href="casa/GR-018/" style="display:inline;color:inherit">Hacienda Carlota</a> · <a href="casa/GR-019/" style="display:inline;color:inherit">Viñedos (una planta)</a> · <a href="casa/GR-020/" style="display:inline;color:inherit">Lomas de San Pedro</a> · <a href="casa/GR-021/" style="display:inline;color:inherit">Paseo de San Miguel</a> · <a href="casa/GR-022/" style="display:inline;color:inherit">Mykonos II</a> · <a href="casa/GR-023/" style="display:inline;color:inherit">Cardenal</a> · <a href="casa/GR-025/" style="display:inline;color:inherit">Fray Junípero Serra</a> · <a href="casa/GR-026/" style="display:inline;color:inherit">Los Robles Juriquilla</a> · <a href="casa/GR-027/" style="display:inline;color:inherit">Ciprés</a> · <a href="casa/GR-028/" style="display:inline;color:inherit">Los Robles Juriquilla</a><!--/CASAS--></p>
   </div>
   <div class="cols">
     <div class="col"><img src="logo.png" alt="GR GROUP"></div>
@@ -1128,11 +1132,11 @@ function pcard(h) {
   else if (h.status === "Vendida") { off = " off"; stt = '<div class="st">VENDIDA</div>'; }
   if (h.fotos && h.fotos.length > 1) { nf = '<div class="nf">' + ic("camera") + " " + h.fotos.length + "</div>"; }
   if (tiene3D(h.code)) { nf += '<div class="r3b">Recorrido 3D</div>'; }
-  return '<div class="pcard' + off + '"><div class="pimg" style="' + bg(cover(h)) + '" onclick="openDetail(\'' + h.code + '\')">' + stt + nf + "</div>" +
+  return '<div class="pcard' + off + '"><a class="pimg" href="casa/' + h.code + '/" style="display:block;' + bg(cover(h)) + '" onclick="openDetail(\'' + h.code + '\');return false" aria-label="' + esc(h.name) + '">' + stt + nf + "</a>" +
     '<button class="heart' + (fv ? " on" : "") + '" type="button" data-c="' + h.code + '" onclick="toggleFav(\'' + h.code + '\')" aria-label="Guardar">' + heartIc(fv) + "</button>" +
     '<div class="pb"><div class="pbad">' + e + '</div><div class="pn">' + esc(h.corto || h.name) + '</div><div class="pz">' + ic("pin") + ' ' + esc(h.zona) + "</div>" +
     '<div class="pchips">' + chipsTxt(h) + '</div><div class="pp">' + priceLine(h) + (notaP(h) ? ' <small style="font-size:13px;color:#6e6e73;font-weight:500">· ' + esc(notaP(h).toLowerCase()) + "</small>" : "") + "</div>" + (mensEj(h) ? '<div class="pmens">' + mensLine(h) + "*</div>" : "") +
-    '<div class="pa"><button class="lnk sm" type="button" onclick="openDetail(\'' + h.code + '\')">Míralo en detalle</button>' +
+    '<div class="pa"><a class="lnk sm" href="casa/' + h.code + '/" onclick="openDetail(\'' + h.code + '\');return false" style="display:inline-block;text-decoration:none">Míralo en detalle</a>' +
     '<button class="pill sm" type="button" onclick="pedirVisita(\'' + h.code + '\')">Agendar visita</button></div></div></div>';
 }
 function render() {

@@ -170,7 +170,7 @@ def page(h, todas, wa):
     }
     n = nota(h)
     return f"""<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="es-MX"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}">
@@ -326,6 +326,9 @@ def main():
     ip = os.path.join(ROOT, "index.html")
     src = open(ip, encoding="utf-8").read()
     nuevo = re.sub(r"var R3D = \[[^\]]*\];", "var R3D = " + json.dumps(r3d) + ";", src, count=1)
+    # enlaces estáticos a cada ficha en el pie de index.html (para que Google las encuentre)
+    links = " · ".join(f'<a href="casa/{h["code"]}/" style="display:inline;color:inherit">{esc(h.get("corto") or h["name"])}</a>' for h in casas)
+    nuevo = re.sub(r"<!--CASAS-->.*?<!--/CASAS-->", lambda m: "<!--CASAS-->Casas en venta: " + links + "<!--/CASAS-->", nuevo, count=1, flags=re.S)
     if nuevo != src:
         open(ip, "w", encoding="utf-8").write(nuevo)
     hoy = datetime.date.today().isoformat()
