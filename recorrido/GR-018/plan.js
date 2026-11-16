@@ -3,7 +3,7 @@
 (function(){
 // colores tomados de las fotos: porcelanato crema, estuco arena, piedra café en la torre, cantera clara en el volumen del balcón,
 // cocina de nogal con gabinetes altos blancos, clósets y tocadores de encino claro, duela de porcelanato en la terraza
-var T='#d8d2c5', TAN='#c8ad85', STONE='#6f5a55', LSTONE='#d6cfbf', WOOD='#94755a', CLAR='#d6c2a1', GRAN='#d3ccbd', DARK='#6e442a', DECK='#8b6148', FR='#26282b', NEG='#1f2123',
+var T='#d8d2c5', TAN='#c2b092', STONE='#6f5a55', LSTONE='#d6cfbf', WOOD='#94755a', CLAR='#d6c2a1', GRAN='#d3ccbd', DARK='#6e442a', DECK='#8b6148', FR='#26282b', NEG='#1f2123',
     IN='#eee8da', ACC='#c9b08a', BEI='#dccbac', BLA='#f2f1ed';
 var W=11, D=14;
 function ext(o){o.t=.15; o.h=2.7; if(!o.color) o.color=TAN; if(!o.mat) o.mat=o.color===STONE?12:(o.color===LSTONE?19:14); return o}

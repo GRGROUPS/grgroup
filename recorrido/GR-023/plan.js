@@ -3,7 +3,7 @@
 (function(){
 // fotos: fachada de estuco gris claro, porcelanato blanco tipo mármol con vetas, lambrín y escalera de encino,
 // puertas chocolate con marco negro, tocador de encino con lavabo blanco y llave negra
-var T='#ecebe7', WOODC='#cfae84', FACH='#cfcdc7', DARK='#4a3428', OAK='#c9a275';
+var T='#ecebe7', WOODC='#cfae84', FACH='#b8b6b0', DARK='#4a3428', OAK='#c9a275';
 var slats=[], k; for(k=0;k<14;k++) slats.push([1.07,0,3.3+k*.068,1.12,2.6,3.34+k*.068,OAK,{mat:6}]);
 var baja={
   sky:'#e9eef1', center:[2.4,0,4.5], frame:'#2a2b2e', tile:.6, gloss:.8, marble:1, indoor:[[0,3.2,1.05,5.7]], wallOut:FACH, wallMat:14, wallIn:'#f4f3f0', zoclo:'#dcdad5',

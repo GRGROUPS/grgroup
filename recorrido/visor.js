@@ -730,7 +730,7 @@
     '  if(uFx.w>0.0){vec2 q=vec2(dot(vP.xz,vec2(0.55,0.42)),dot(vP.xz,vec2(-0.9,1.2)))+r*5.0;float mv=fbm(q*vec2(0.8,2.2)+fbm(q*0.7)*1.6);float dv=abs(mv-0.5);float vl=1.0-smoothstep(0.0,0.008+dist*0.0015,dv);float v2=1.0-smoothstep(0.0,0.006,abs(fbm(q*3.1+3.0)-0.5));c*=1.0-uFx.w*(0.14*vl+0.06*v2+0.025*(1.0-smoothstep(0.0,0.08,dv)))*(0.4+0.6*far);}}',
     ' else if(m>1.5&&m<2.5){float nr=1.0-clamp(dist/16.0,0.0,1.0);vec2 q=vP.xz;',   // pasto: manchas, zonas secas y hojas
     '  float pa=fbm(q*0.32+5.0);float dr=smoothstep(0.52,0.78,fbm(q*0.21+11.0));',
-    '  float gl0=dot(c,vec3(0.3,0.59,0.11));c=mix(vec3(gl0),c,0.62)*vec3(0.84,0.92,0.74);c=mix(c,c*vec3(1.10,1.02,0.78),dr*0.45);c*=0.76+0.28*pa+0.12*vn(q*4.2);',
+    '  float gl0=dot(c,vec3(0.3,0.59,0.11));c=mix(vec3(gl0),c,0.50)*vec3(0.86,0.90,0.72);c=mix(c,c*vec3(1.12,1.04,0.80),dr*0.55);c*=0.70+0.26*pa+0.12*vn(q*4.2);',
     '  float bl=h(floor(q*vec2(150.0,52.0)+vec2(0.0,floor(q.x*150.0)*0.37)));c*=1.0-nr*0.30*(bl-0.5)-nr*0.12*(vn(q*31.0)-0.5);',
     '  c*=0.92+0.08*nv;}',
     ' else if(m>2.5&&m<3.5){vec2 g=vP.xz/1.5;vec2 f=fract(g);float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y))*1.5;float fp=dist*0.0012/max(nv,0.15);',  // concreto: juntas, manchas y poro
@@ -768,10 +768,10 @@
     ' ao=mix(ao,1.0,up);float sh=shadow();if(n.y<0.5)sh*=1.0-smoothstep(2.2,2.4,vP.y)*uRoof*a0.b*(1.0-up);float nl=max(dot(n,uL),0.0);float hemi=0.5+0.5*n.y;',
     ' float side=0.5+0.5*dot(n,vec3(-0.55,0.0,0.83));',
     ' float ind=mix(A1.b,A0.b,hz)*uRoof*(1.0-up);float wl=mix(A1.a,A0.a,hz);',
-    ' vec3 al=pow(c,vec3(2.2));',
+    ' float lc=dot(c,vec3(0.3,0.59,0.11));c=mix(vec3(lc),c,0.78)*0.93;vec3 al=pow(c,vec3(2.2));',   // colores más sobrios, como pintura real
     ' vec3 ambO=mix(vec3(0.22,0.24,0.29),vec3(0.38,0.44,0.55),hemi)*(0.80+0.20*side);',                         // cielo
     ' vec3 ambI=vec3(1.02,0.965,0.88)*(0.40+0.92*wl)*(0.84+0.16*hemi)*(0.93+0.07*side);',                        // interior: manda la luz de las ventanas
-    ' vec3 col=al*(mix(ambO,ambI,ind)*ao*ao+vec3(1.22,1.08,0.88)*nl*sh*mix(1.0,1.3,ind));',
+    ' vec3 col=al*(mix(ambO,ambI,ind)*ao*ao+vec3(1.18,1.10,0.98)*nl*sh*mix(1.0,1.3,ind));',
     ' col+=spec*sh*vec3(1.2,1.1,0.95)+sheen*(0.3+0.7*sh);',
     ' col*=mix(0.92,0.74,ind);col=clamp((col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14),0.0,1.0);col=pow(col,vec3(0.4545));float lu=dot(col,vec3(0.3,0.59,0.11));col=mix(vec3(lu),col,0.96);',                                               // mapeo de tonos y gamma
     ' if(uFx.z<0.5&&uFx.y>0.0&&rf>0.0&&n.y>0.5&&abs(vP.y)<0.02){vec2 uv=gl_FragCoord.xy*uRes;',                 // reflejo en el piso

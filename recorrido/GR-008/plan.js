@@ -4,7 +4,7 @@
 (function(){
 // fotos: fachada de muro desconchado verde y blanco con zaguán negro y puerta azul, pisos de concreto gris, muros de
 // repello blanco desgastado, ventana con repisa profunda y marco oscuro, puerta verde, azotea con muros de tabique rojo
-var CON='#7f7d79', BRK='#b4603f', DOOR1='#1d1c1b', DOOR2='#3b6fb5', DOOR3='#4f8a7c';
+var CON='#7f7d79', BRK='#9c6650', DOOR1='#1d1c1b', DOOR2='#3b6fb5', DOOR3='#4f8a7c';
 var baja={
   sky:'#e9eef1', center:[4,0,8], frame:'#242424', tile:0, gloss:.1, wallOut:'#cfe0d3', wallMat:14, wallIn:'#e3dccf', zoclo:'#d6cfc2',
   ground:[
