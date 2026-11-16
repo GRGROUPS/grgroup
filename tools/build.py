@@ -204,7 +204,7 @@ def page(h, todas, wa):
 {f'<h2>Otras casas en {op} en Querétaro</h2><div class="sim">{sim}</div>' if sim else ''}
 </main>
 <footer><div class="w"><p>Precio en pesos mexicanos, sujeto a cambio sin previo aviso. El crédito está sujeto a aprobación. Las fotos y la información son de referencia. La ubicación exacta se da al agendar la visita. Algunas casas se comercializan en colaboración con otros asesores y desarrolladores.</p>
-<p>GR GROUP · Tu hogar ahora · Iñaki Guerra · Querétaro · <a href="../../">Inicio</a></p></div></footer>
+<p>GR GROUP · Tu hogar ahora · Iñaki Guerra · <a href="tel:+524921121116">492 112 1116</a> · <a href="mailto:inaki.guerra@grgroups.mx">inaki.guerra@grgroups.mx</a> · Oficinas en Central Park, Querétaro · <a href="../../">Inicio</a></p></div></footer>
 <div class="bar"><a class="btn wa" href="{esc(wa_link)}">WhatsApp por esta casa</a><a class="btn dk" href="../../#visita-{code}">Agendar visita</a></div>
 </body></html>
 """

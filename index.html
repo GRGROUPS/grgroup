@@ -847,6 +847,68 @@ body.home #v-home { padding-top: 0 !important; }
   .hxh { font-size: 42px; font-stretch: 104%; margin-bottom: 14px; }
   .hxs { margin-bottom: 20px; } .hx .ctas { margin-bottom: 22px; }
 }
+
+/* --- fotos bajo demanda --- */
+.lzv { background-image: var(--bgi); }
+
+/* --- portada: mensualidad y oferta de crédito --- */
+.hxm { font-size: 22px; font-weight: 700; color: var(--marino); margin: -8px 0 12px; font-variant-numeric: tabular-nums; }
+.hxm .mxn { font-size: .7em; }
+.hxs { font-size: 18px; color: var(--mut); }
+.hx .ctas .pill.wag { display: inline-flex; align-items: center; gap: 8px; }
+.hxn .lnk { font-size: inherit; padding: 0; margin: 0; }
+.pill .ic { width: 1.15em; height: 1.15em; }
+.pill.wag:hover { background-color: #0f7a41; }
+
+/* --- explora por zona (ahora arriba) --- */
+.zsec2 { padding-top: 56px; }
+.zsec2 h2 { font-size: 37px; color: var(--marino); margin: 0; }
+.zs { padding-bottom: 8px; }
+.zmapsec { padding-bottom: 56px; }
+
+/* --- ¿ya pagas renta? --- */
+.rnt { background: var(--cantera); padding: 72px 20px; }
+.rntin { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+.rnt h2 { font-size: 42px; line-height: 1.04; color: var(--marino); margin: 0 0 16px; }
+.rnts { font-size: 19px; line-height: 1.5; color: var(--ink); margin: 0; max-width: 30em; }
+.rntc { background: #fff; border-radius: 14px; padding: 26px 26px 18px; }
+.rntc .field { margin: 0 0 14px; }
+.rntc .field input { font-size: 22px; font-weight: 700; color: var(--marino); height: 56px; }
+.rntp { margin: 0 0 12px; font-size: 16px; color: var(--ink); }
+.rntk { margin: 0 0 12px; padding: 12px 14px; border-left: 4px solid var(--naranja); background: var(--cantera); border-radius: 0 8px 8px 0; font-size: 16px; }
+.rntk b { color: var(--marino); }
+.rntl { list-style: none; margin: 0 0 14px; padding: 0; }
+.rntl li { border-top: 1px solid var(--line); }
+.rntl li:last-child { border-bottom: 1px solid var(--line); }
+.rntl a { display: grid; grid-template-columns: 1fr auto; gap: 0 12px; padding: 10px 0; text-decoration: none; color: var(--ink); }
+.rntl b { color: var(--marino); } .rntl span { grid-column: 1; color: var(--mut); font-size: 14px; } .rntl em { grid-column: 2; grid-row: 1 / 3; align-self: center; font-style: normal; font-weight: 700; color: var(--marino); white-space: nowrap; }
+.rntl a:hover b { text-decoration: underline; text-underline-offset: 3px; }
+.rntc .ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 4px 0 8px; }
+.rntc .ctas .pill { margin: 0; display: inline-flex; align-items: center; gap: 8px; } .rntc .ctas .lnk { margin: 0; padding: 10px 0; }
+.rntn { font-size: 12.5px; line-height: 1.4; color: var(--mut); margin: 10px 0 0; }
+@media (max-width: 899px) { .rnt { padding: 52px 16px; } .rntin { grid-template-columns: 1fr; gap: 24px; } .rnt h2 { font-size: 32px; } .rntc { padding: 20px 18px 14px; } }
+
+/* --- en computadora, cuadrícula en vez de carrusel --- */
+@media (min-width: 900px) {
+  .scroll.gridd { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px 22px; white-space: normal; overflow: visible; max-width: 1200px; margin: 0 auto; padding: 24px 20px 30px; }
+  .scroll.gridd .pcard { width: auto; margin: 0; display: block; }
+  .cscroll { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 22px 18px; white-space: normal; overflow: visible; max-width: 1200px; margin: 0 auto; padding: 22px 20px 26px; }
+  .cscroll .ccard { width: auto; margin: 0; display: block; }
+}
+#r3dSec .scroll.gridd { max-width: none; padding-left: max(20px, calc((100% - 1160px) / 2)); padding-right: max(20px, calc((100% - 1160px) / 2)); }
+.sech .sub b { color: var(--marino); }
+.pay .tg { max-width: 38em; }
+.pay .ctas .pill.wag { margin: 0; }
+.tile.dark .pill.wag, .prem .pill.wag, .dk .pill.wag { background: var(--wa); color: #fff; border: 0; }
+.tile.dark .pill.wag:hover { background-color: #0f7a41; }
+
+@media (max-width: 599px) {
+  .arco { aspect-ratio: 16 / 10; }
+  .hxm { font-size: 18px; margin: -4px 0 10px; }
+  .hxs { font-size: 16px; margin-bottom: 16px; }
+  .hx .ctas { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 18px; }
+  .hx .ctas .pill { justify-content: center; text-align: center; padding: 14px 18px; }
+}
 /* --- movimiento: solo el arco al cargar; nada de aparecer al hacer scroll --- */
 .js-rv .rv:not(.in) { opacity: 1; }
 .rv.in, .pcard.off.rv.in { animation: none; }
@@ -893,18 +955,39 @@ body.home #v-home { padding-top: 0 !important; }
     </div>
   </div>
 
+  <div class="wrap zsec2"><h2>Explora por zona.</h2>
+    <div class="stat3" id="stats"></div></div>
+  <div class="zs" id="zonas"></div>
+  <div class="zmapsec" style="display:none"><button class="pill ol" id="zmapBtn" type="button">Ver mapa de zonas</button>
+    <div id="zmapBox" style="display:none"><div class="zm" id="zm"><div class="zmt" id="zmt"></div><div class="zmk" id="zmk"></div>
+      <div class="zmc"><button type="button" id="zmin" aria-label="Acercar">+</button><button type="button" id="zmout" aria-label="Alejar">−</button></div>
+      <div class="zma">© colaboradores de OpenStreetMap · Zonas aproximadas; la ubicación exacta se da al agendar.</div></div>
+      <p class="zmmsg" id="zmmsg"></p></div></div>
+
   <div class="prem" id="premSec" style="display:none"><div class="pin">
     <div class="eyebrow">Para empezar</div><h2>Las más accesibles.</h2>
     <div class="pmrow" id="premList"></div>
   </div></div>
 
+  <section class="rnt" id="rentaSec"><div class="rntin">
+    <div class="rntt">
+      <h2>Si ya pagas renta, ya puedes pagar algo tuyo.</h2>
+      <p class="rnts">Con una mensualidad parecida a tu renta empiezas a construir tu patrimonio: cada pago es para tu casa, no para el dueño de donde vives.</p>
+    </div>
+    <div class="rntc">
+      <div class="field"><label for="rentaIn">¿Cuánto pagas de renta al mes?</label><input id="rentaIn" type="tel" inputmode="numeric" placeholder="$8,000" autocomplete="off"></div>
+      <div id="rentaRes" aria-live="polite"></div>
+      <p class="rntn">*Mensualidad estimada con 10% de enganche, 20 años y tasa de 11% anual. Tu pago real lo fija la institución que te dé el crédito y depende de tu precalificación.</p>
+    </div>
+  </div></section>
+
   <div id="story1"></div>
   <div class="tiles2" id="story2"></div>
 
   <div class="sec" style="padding-bottom:0">
-    <div class="sech"><div><h2>Las más nuevas.</h2><p class="sub">Desliza para verlas.</p></div>
+    <div class="sech"><div><h2>Las más nuevas.</h2><p class="sub">Las últimas casas que entraron al catálogo.</p></div>
       <button class="lnk" id="goCmp" type="button" style="display:none">Compara todas</button></div>
-    <div class="scroll" id="fam"></div>
+    <div class="scroll gridd" id="fam"></div>
     <div class="more" id="famMore"></div>
   </div>
 
@@ -916,33 +999,24 @@ body.home #v-home { padding-top: 0 !important; }
       <ul class="r3how"><li><b>Gira la maqueta</b>Ve la planta completa desde arriba y cada nivel por separado.</li><li><b>Entra a cada espacio</b>Toca la sala, la cocina o una recámara y la cámara te lleva adentro.</li><li><b>Compara con la foto</b>En cada parada aparece la foto real de ese espacio.</li></ul>
       <p class="r3n" id="r3dN"></p>
     </div></div>
-    <div class="scroll" id="r3dList"></div>
+    <div class="scroll gridd" id="r3dList"></div>
   </div>
 
   <div class="sec" id="cerSec" style="display:none;padding-bottom:0">
-    <div class="sech"><div><h2>Ya tienen dueño.</h2><p class="sub">Casas que ya se vendieron, apartaron o rentaron. Cuéntanos qué buscas y te avisamos de las nuevas.</p></div>
+    <div class="sech"><div><h2>Ya tienen dueño.</h2><p class="sub" id="cerSub">Casas que ya se vendieron, apartaron o rentaron. Cuéntanos qué buscas y te avisamos de las nuevas.</p></div>
       <button class="lnk" id="cerReg" type="button">Quiero algo parecido</button></div>
     <div class="scroll cscroll" id="cerList"></div>
   </div>
 
   <div class="tile dark pay"><div class="tx">
     <div class="eyebrow">Tu forma de pago</div>
-    <h2>Tu crédito, tu casa.</h2>
-    <div class="tg">Te mostramos las casas que sí aceptan cómo vas a pagar.</div>
+    <h2>¿Cuánto te presta tu crédito?</h2>
+    <div class="tg">Te lo calculamos gratis por WhatsApp. Dinos si tienes Infonavit, Fovissste o crédito bancario y tu salario aproximado, y te decimos qué casas te alcanzan.</div>
     <div class="opts"><span>Infonavit</span><span>Fovissste</span><span>Crédito bancario</span><span>Recurso propio</span></div>
-    <div class="ctas"><button class="lnk" id="payInf" type="button">Ver casas que aceptan Infonavit</button><button class="lnk" id="payCalc" type="button">Calcula tu mensualidad</button><button class="pill" id="payReg" type="button">Agendar visita</button></div>
+    <div class="ctas"><a class="pill wag" id="payWa" target="_blank" href="#">Calcular mi crédito gratis</a><button class="lnk" id="payCalc" type="button">Calcularlo yo en la calculadora</button><button class="lnk" id="payInf" type="button">Ver casas que aceptan Infonavit</button><button class="lnk" id="payReg" type="button">Agendar visita</button></div>
   </div></div>
 
-  <div class="wrap"><div class="sec" style="padding-top:36px"><h2 style="text-align:center">Explora por zona.</h2>
-    <div class="stat3" id="stats"></div></div></div>
-  <div class="zs" id="zonas" style="padding-top:8px"></div>
-  <div class="zmapsec" style="display:none"><button class="pill ol" id="zmapBtn" type="button">Ver mapa de zonas</button>
-    <div id="zmapBox" style="display:none"><div class="zm" id="zm"><div class="zmt" id="zmt"></div><div class="zmk" id="zmk"></div>
-      <div class="zmc"><button type="button" id="zmin" aria-label="Acercar">+</button><button type="button" id="zmout" aria-label="Alejar">−</button></div>
-      <div class="zma">© colaboradores de OpenStreetMap · Zonas aproximadas; la ubicación exacta se da al agendar.</div></div>
-      <p class="zmmsg" id="zmmsg"></p></div></div>
-
-  <div class="tiles2" style="margin-top:36px">
+  <div class="tiles2" >
     <div class="tile"><div class="tx"><div class="eyebrow">Paso a paso</div><h2>Agenda tu visita.</h2><div class="tg">Elige tu casa, dinos qué días puedes y te confirmamos por WhatsApp.</div>
       <div class="ctas"><button class="pill" id="ctaReg" type="button">Agendar visita</button></div></div></div>
     <div class="tile dark"><div class="tx"><div class="eyebrow">¿Tienes una casa?</div><h2>Véndela o réntala con nosotros.</h2><div class="tg">Cuéntanos de tu propiedad y te contactamos.</div>
@@ -1138,7 +1212,7 @@ body.home #v-home { padding-top: 0 !important; }
   <div class="cols">
     <div class="col"><img src="logo.png" alt="GR GROUP"></div>
     <div class="col"><b>Casas</b><a id="f-venta">En venta</a><a id="f-renta">En renta</a><a id="f-inf">Aceptan Infonavit</a><a id="f-cmp">Comparar</a><a id="f-calc">Calculadora</a></div>
-    <div class="col"><b>Contacto</b><a id="waFoot" target="_blank">WhatsApp</a><a id="f-reg">Agendar visita</a><a id="f-vender">Vende o renta tu casa</a><a href="mailto:inaki.guerra@grgroups.mx">inaki.guerra@grgroups.mx</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Central+Park+Quer%C3%A9taro" target="_blank" rel="noopener">Oficinas en Central Park, Querétaro</a></div>
+    <div class="col"><b>Contacto</b><a href="tel:+524921121116">492 112 1116</a><a id="waFoot" target="_blank">WhatsApp</a><a id="f-reg">Agendar visita</a><a id="f-vender">Vende o renta tu casa</a><a href="mailto:inaki.guerra@grgroups.mx">inaki.guerra@grgroups.mx</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Central+Park+Quer%C3%A9taro" target="_blank" rel="noopener">Oficinas en Central Park, Querétaro</a></div>
     <div class="col"><b>GR GROUP</b><a id="verPriv2">Aviso de privacidad</a></div>
   </div>
   <div id="foot"></div>
@@ -1215,11 +1289,35 @@ function money(n) { return "$" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!
 function num(n) { return String(n).replace(/\.0+$/, ""); }
 function inArr(a, v) { var i; for (i = 0; i < a.length; i++) { if (a[i] === v) { return true; } } return false; }
 function byCode(code) { var i; for (i = 0; i < DATA.length; i++) { if (DATA[i].code === code) { return DATA[i]; } } return null; }
-function waUrl(text) { return "https://wa.me/" + WA + (text ? "?text=" + encodeURIComponent(text) : ""); }
+var SRC = (function () {
+  var m = /[?&](?:utm_source|src)=([^&#]+)/i.exec(location.search), r = document.referrer || "", v = "", N = { facebook: "Facebook", fb: "Facebook", instagram: "Instagram", ig: "Instagram", tiktok: "TikTok", google: "Google", marketplace: "Marketplace", inmuebles24: "Inmuebles24", lamudi: "Lamudi", vivanuncios: "Vivanuncios", whatsapp: "WhatsApp" };
+  try { v = sessionStorage.getItem("grg_src") || ""; } catch (e) {}
+  if (m) { v = decodeURIComponent(m[1]).toLowerCase(); v = N[v] || v; }
+  else if (!v && /facebook\.com|fb\.com/i.test(r)) { v = "Facebook"; } else if (!v && /instagram\./i.test(r)) { v = "Instagram"; } else if (!v && /tiktok\./i.test(r)) { v = "TikTok"; } else if (!v && /google\./i.test(r)) { v = "Google"; }
+  try { if (v) { sessionStorage.setItem("grg_src", v); } } catch (e) {}
+  return v;
+})();
+function waUrl(text) { if (text) { text += "\n\n(Lo vi en grgroups.mx" + (SRC ? ", llegué desde " + SRC : "") + ")"; } return "https://wa.me/" + WA + (text ? "?text=" + encodeURIComponent(text) : ""); }
+function waCred() { return waUrl("Hola, quiero saber cuánto me presta mi crédito para comprar casa. Tengo: (Infonavit / Fovissste / bancario) y gano aproximadamente: $"); }
 function cover(h) { return foto(h, h.portada || 1); }
 function pagoTxt(h) { return /confirmar/i.test(h.credito) ? "Se confirma al agendar" : h.credito; }
 function foto(h, n) { return (h.fotos && h.fotos.length) ? h.fotos[Math.min(n || 1, h.fotos.length) - 1] : ""; }
-function bg(u) { return u ? "background-image:url('" + u + "')" : ""; }
+function bg(u) { return u ? "--bgi:url('" + u + "')" : ""; }
+/* fotos bajo demanda: cada foto de fondo se baja solo cuando está por aparecer en pantalla */
+var LZ = (function () {
+  var io = null, pend = false;
+  if ("IntersectionObserver" in window) {
+    io = new IntersectionObserver(function (en) { var i; for (i = 0; i < en.length; i++) { if (en[i].isIntersecting) { en[i].target.classList.add("lzv"); io.unobserve(en[i].target); } } }, { rootMargin: "600px 400px" });
+  }
+  function scan() {
+    pend = false;
+    var els = document.querySelectorAll('[style*="--bgi"]:not(.lzq)'), i;
+    for (i = 0; i < els.length; i++) { els[i].classList.add("lzq"); if (io) { io.observe(els[i]); } else { els[i].classList.add("lzv"); } }
+  }
+  function later() { if (!pend) { pend = true; (window.requestAnimationFrame || setTimeout)(scan); } }
+  if ("MutationObserver" in window) { new MutationObserver(later).observe(document.documentElement, { childList: true, subtree: true }); }
+  return { scan: scan };
+})();
 function esDesde(h) { return /desde/i.test(h.precioNota || ""); }
 var MENS = { eng: 0.10, anios: 20, tasa: 11 };
 function mensEj(h) { return (h.op === "Venta" && h.precio > 0 && h.creditos && h.creditos.length) ? pmt(h.precio * (1 - MENS.eng), MENS.tasa, MENS.anios) : 0; }
@@ -1672,7 +1770,7 @@ function zonaLista() {
   });
 }
 function asesorHtml(h) {
-  return '<div class="asb"><h4>Tu asesor</h4><p class="who">Iñaki Guerra · GR GROUP · Querétaro</p>' +
+  return '<div class="asb"><h4>Tu asesor</h4><p class="who">Iñaki Guerra · GR GROUP · <a href="tel:+524921121116">492 112 1116</a></p>' +
     '<a class="pill wa2 sm" target="_blank" href="' + waUrl("Hola, me interesa la casa " + h.code + " – " + h.name + ". ¿Me pueden dar más información?") + '">WhatsApp</a>' +
     '<a class="pill nv sm" href="tel:+' + WA + '">Llamar</a>' +
     '<p style="margin:10px 0 8px;font-weight:600">O déjanos tus datos y te contactamos:</p>' +
@@ -1835,46 +1933,52 @@ function storyTile(s) {
   return '<div class="tile ' + (s.theme === "dark" ? "dark" : "") + (s.kind === "wide" ? " wide" : "") + '">' + t + '<div class="pic" style="' + bg(img) + '"></div></div>';
 }
 function renderHome() {
-  var i, h, n = 0, nInf = 0, min = 0, z, c, q, zs = "", s1 = "", s2 = "", fam = "", list = [], rent = [];
+  var i, h, n = 0, nInf = 0, min = 0, minM = 0, z, c, q, zs = "", s1 = "", s2 = "", fam = "", list = [], rent = [], used = {}, hh = null, nf = 0;
   fillMax("hmax", "hmaxL", hs.op);
   $("hcredF").style.display = hs.op === "Renta" ? "none" : "";
   for (i = 0; i < STORY.length; i++) {
     if (STORY[i].kind === "wide") { s1 += storyTile(STORY[i]); }
     else { s2 += storyTile(STORY[i]); }
+    used[STORY[i].code] = 1;
   }
   $("story1").innerHTML = s1; $("story2").innerHTML = s2;
   for (i = 0; i < DATA.length; i++) {
     h = DATA[i];
     if (h.status !== "Disponible") { continue; }
     n++;
-    if (h.op === "Venta") { list.push(h); if (!min || h.precio < min) { min = h.precio; } if (inArr(h.creditos, "infonavit")) { nInf++; } } else { rent.push(h); }
+    if (h.op === "Venta") {
+      list.push(h);
+      if (!min || h.precio < min) { min = h.precio; if (cover(h)) { hh = h; } }
+      if (mensEj(h) && (!minM || mensEj(h) < minM)) { minM = mensEj(h); }
+      if (inArr(h.creditos, "infonavit")) { nInf++; }
+    } else { rent.push(h); }
   }
+  /* portada: la casa más barata, para que la foto coincida con el "desde" */
+  if (hh) { used[hh.code] = 1; }
+  $("hero").innerHTML = '<section class="hx"><div class="hxt">' +
+    '<h1 class="hxk">Casas en venta en Querétaro</h1><h2 class="hxh">Casas desde<br>' + mxnH(min || 1050000) + '</h2>' +
+    (minM ? '<p class="hxm">Con crédito, desde ≈ ' + mxnH(minM) + ' al mes*</p>' : "") +
+    '<p class="hxs">Cada casa te dice qué acepta: Infonavit, Fovissste, crédito bancario o contado.</p>' +
+    '<div class="ctas"><button class="pill" type="button" onclick="goCasas({op:\'Venta\'})">Ver las ' + list.length + ' casas</button>' +
+    '<a class="pill wag" target="_blank" href="' + waCred() + '">' + ic("chat") + ' Calcular mi crédito gratis</a></div>' +
+    '<p class="hxn"><b>' + list.length + '</b> casas disponibles hoy en Querétaro y Corregidora. <button class="lnk" type="button" onclick="goCasas({cred:\'infonavit\'})">' + nInf + ' aceptan Infonavit</button></p></div>' +
+    (hh ? '<a class="hxa" href="casa/' + hh.code + '/" onclick="openDetail(\'' + hh.code + '\');return false"><div class="arco" style="' + bg(cover(hh)) + '"></div>' +
+      '<span class="hxc"><b>' + esc(hh.corto || hh.name) + '</b><span>' + esc(hh.zona) + '</span><span class="hxpr">' + priceLine(hh) + '</span></span></a>' : "") + '</section>';
+  renderPremium(list, used);
   list.sort(function (a, b) { return (b.agregada || "").localeCompare(a.agregada || "") || b.orden - a.orden; });
-  for (i = 0; i < list.length && i < 6; i++) { fam += pcard(list[i]); }
+  for (i = 0; i < list.length && nf < 6; i++) { if (!used[list[i].code]) { fam += pcard(list[i]); used[list[i].code] = 1; nf++; } }
   $("fam").innerHTML = fam;
   (function () {
-    var r = [], k, t = "";
-    for (k = 0; k < DATA.length; k++) { if (DATA[k].status === "Disponible" && tiene3D(DATA[k].code)) { r.push(DATA[k]); } }
+    var r = [], k, t = "", tot = 0;
+    for (k = 0; k < DATA.length; k++) { if (DATA[k].status === "Disponible" && tiene3D(DATA[k].code)) { tot++; if (!used[DATA[k].code]) { r.push(DATA[k]); } } }
     r.sort(function (a, b) { return a.precio - b.precio; });
-    for (k = 0; k < r.length; k++) { t += r3card(r[k]); }
+    for (k = 0; k < r.length && k < 6; k++) { t += r3card(r[k]); }
     $("r3dList").innerHTML = t;
-    $("r3dN").innerHTML = r.length + (r.length === 1 ? " casa ya tiene" : " casas ya tienen") + ' recorrido 3D. <button class="lnk" type="button" onclick="goCasas({op:\'Venta\', solo3d:true})">Verlas en el catálogo</button>';
-    $("r3dSec").style.display = r.length ? "" : "none";
+    $("r3dN").innerHTML = tot + (tot === 1 ? " casa ya tiene" : " casas ya tienen") + ' recorrido 3D. <button class="lnk" type="button" onclick="goCasas({op:\'Venta\', solo3d:true})">Verlas todas en el catálogo</button>';
+    $("r3dSec").style.display = tot ? "" : "none";
   })();
   $("famMore").innerHTML = '<button class="pill" type="button" onclick="goCasas({op:\'Venta\'})">Ver las ' + list.length + ' casas en venta</button>' +
     (rent.length ? ' <button class="pill ol" type="button" onclick="goCasas({op:\'Renta\'})">Ver ' + (rent.length === 1 ? "la casa" : "las " + rent.length + " casas") + ' en renta</button>' : "");
-  (function () {
-    var hc = (HERO_FOTO.match(/GR-\d+/) || [""])[0], hh = byCode(hc), cap = "";
-    if (hh && hh.status === "Disponible") { cap = '<span class="hxc"><b>' + esc(hh.corto || hh.name) + '</b><span>' + esc(hh.zona) + '</span><span class="hxpr">' + priceLine(hh) + '</span></span>'; }
-    $("hero").innerHTML = '<section class="hx"><div class="hxt">' +
-      '<h1 class="hxk">Casas en venta en Querétaro</h1><h2 class="hxh">Casas desde<br>' + mxnH(min || 1050000) + '</h2>' +
-      '<p class="hxs">Con crédito o de contado: cada casa te dice cuál acepta.</p>' +
-      '<div class="ctas"><button class="pill" type="button" onclick="goCasas({op:\'Venta\'})">Ver las ' + list.length + ' casas</button>' +
-      '<button class="lnk" type="button" onclick="goCasas({cred:\'infonavit\'})">Solo las que aceptan Infonavit</button></div>' +
-      '<p class="hxn"><b>' + list.length + '</b> casas disponibles hoy en Querétaro y Corregidora. <b>' + nInf + '</b> aceptan Infonavit.</p></div>' +
-      (hh ? '<a class="hxa" href="casa/' + hc + '/" onclick="openDetail(\'' + hc + '\');return false">' : '<div class="hxa">') + '<div class="arco" style="' + bg(HERO_FOTO) + '"></div>' + cap + (hh ? '</a>' : '</div>') + '</section>';
-  })();
-  renderPremium(list);
   renderCerradas();
   sinRenta(rent.length);
   $("nInf").innerHTML = nInf;
@@ -1886,19 +1990,55 @@ function renderHome() {
     if (c) { zs += '<button class="chip2" type="button" onclick="goCasas({q:\'' + ZONAS[z] + '\'})">' + ZONAS[z] + "<b>" + c + "</b></button>"; }
   }
   $("zonas").innerHTML = zs;
+  rentaCalc();
+}
+
+/* ---------- ¿ya pagas renta? ---------- */
+function rentaCalc() {
+  var r = parseNum($("rentaIn").value), ok = [], i, h, m, html = "", top = 0;
+  if (!r || r < 1000) {
+    $("rentaRes").innerHTML = '<p class="rntp">Escribe lo que pagas y te decimos cuántas casas del catálogo tienen una mensualidad parecida.</p>';
+    return;
+  }
+  for (i = 0; i < DATA.length; i++) { h = DATA[i]; m = mensEj(h); if (h.status === "Disponible" && m && m <= r * 1.05) { ok.push(h); } }
+  ok.sort(function (a, b) { return b.precio - a.precio; });
+  html = '<p class="rntk">En 5 años de renta pagas <b>' + mxnH(r * 60) + '</b> y la casa nunca es tuya.</p>';
+  if (ok.length) {
+    html += '<p class="rntp"><b>' + ok.length + (ok.length === 1 ? " casa" : " casas") + '</b> del catálogo ' + (ok.length === 1 ? "tiene" : "tienen") + ' una mensualidad estimada* igual o menor a tu renta:</p><ul class="rntl">';
+    for (i = 0; i < ok.length && i < 3; i++) {
+      h = ok[i]; if (h.precio > top) { top = h.precio; }
+      html += '<li><a href="casa/' + h.code + '/" onclick="openDetail(\'' + h.code + '\');return false"><b>' + esc(h.corto || h.name) + '</b><span>' + esc(h.zona) + '</span><em>≈ ' + mxnH(mensEj(h)) + ' al mes*</em></a></li>';
+    }
+    for (i = 0; i < ok.length; i++) { if (ok[i].precio > top) { top = ok[i].precio; } }
+    html += '</ul><div class="ctas"><a class="pill wag" target="_blank" href="' + waUrl("Hola, pago " + mxnT(r) + " de renta al mes y quiero saber cuánto me presta mi crédito para comprar casa.") + '">' + ic("chat") + ' Saber cuánto me prestan</a>' +
+      '<button class="lnk" type="button" onclick="goCasas({op:\'Venta\', max:' + Math.ceil(top / 100000) * 100000 + '})">Ver ' + (ok.length === 1 ? "esa casa" : "esas casas") + '</button></div>';
+  } else {
+    for (i = 0; i < DATA.length; i++) { h = DATA[i]; if (h.status === "Disponible" && mensEj(h)) { ok.push(h); } }
+    ok.sort(function (a, b) { return mensEj(a) - mensEj(b); });
+    if (ok.length) {
+      html += '<p class="rntp">Por <b>' + mxnH(mensEj(ok[0]) - r) + ' más al mes</b> que tu renta ya hay casas en el catálogo. Las más cercanas, con su mensualidad estimada*:</p><ul class="rntl">';
+      for (i = 0; i < ok.length && i < 3; i++) {
+        h = ok[i]; if (h.precio > top) { top = h.precio; }
+        html += '<li><a href="casa/' + h.code + '/" onclick="openDetail(\'' + h.code + '\');return false"><b>' + esc(h.corto || h.name) + '</b><span>' + esc(h.zona) + '</span><em>≈ ' + mxnH(mensEj(h)) + ' al mes*</em></a></li>';
+      }
+      html += '</ul>';
+    }
+    html += '<div class="ctas"><a class="pill wag" target="_blank" href="' + waUrl("Hola, pago " + mxnT(r) + " de renta al mes y quiero saber cuánto me presta mi crédito para comprar casa.") + '">' + ic("chat") + ' Saber cuánto me prestan</a>' +
+      (top ? '<button class="lnk" type="button" onclick="goCasas({op:\'Venta\', max:' + Math.ceil(top / 100000) * 100000 + '})">Ver esas casas</button>' : "") + '</div>';
+  }
+  $("rentaRes").innerHTML = html;
 }
 
 function sinRenta(n) {
   var ids = ["n-renta", "f-renta", "hTabs", "opRF"], i;
   for (i = 0; i < ids.length; i++) { if ($(ids[i])) { $(ids[i]).style.display = n ? "" : "none"; } }
 }
-function renderPremium(list) {
-  var i, h, html = "", used = {}, c = [], n = 0, asc;
-  for (i = 0; i < STORY.length; i++) { used[STORY[i].code] = 1; }
+function renderPremium(list, used) {
+  var i, h, html = "", c = [], n = 0, asc;
   for (i = 0; i < list.length; i++) { if (!used[list[i].code]) { c.push(list[i]); } }
   c.sort(function (x, y) { return x.precio - y.precio; });
   for (i = 0; i < c.length && n < 3; i++) {
-    h = c[i]; n++;
+    h = c[i]; n++; used[h.code] = 1;
     html += '<div class="pm" onclick="openDetail(\'' + h.code + '\')"><div class="pmi" style="' + bg(cover(h)) + '"></div><div class="pmb"><div class="pmn">' + esc(h.corto || h.name) + '</div><div class="pmz">' + esc(h.zona) + '</div><div class="pmp">' + priceLine(h) + "</div></div></div>";
   }
   $("premList").innerHTML = html;
@@ -1913,6 +2053,7 @@ function renderCerradas() {
       '<div class="cb"><div class="cn">' + esc(c.name) + '</div><div class="cz">' + ic("pin") + ' ' + esc(c.zona) + (c.op === "Renta" ? " · renta" : "") + "</div></div></div>";
   }
   $("cerList").innerHTML = html;
+  if (CERRADAS.length) { $("cerSub").innerHTML = "<b>" + CERRADAS.length + " casas</b> de nuestro catálogo ya se vendieron, apartaron o rentaron. Cuéntanos qué buscas y te avisamos de las nuevas."; }
   $("cerSec").style.display = CERRADAS.length ? "block" : "none";
 }
 
@@ -2317,6 +2458,9 @@ function init() {
   $("n-favs").onclick = function () { goCasas({ favs: true }); };
   $("f-calc").onclick = $("n-calc").onclick; $("payCalc").onclick = $("n-calc").onclick;
   $("bWa").href = waUrl("Hola, quiero información sobre las casas de GR GROUP.");
+  $("payWa").href = waCred();
+  setTimeout(LZ.scan, 0);
+  $("rentaIn").addEventListener("input", function () { var n = parseNum(this.value); this.value = n ? money(n) : ""; rentaCalc(); }, false);
   $("bVisita").onclick = function () { resetForm(); VISITA = true; updateReg(); show("registro"); };
   $("ftog").onclick = function () { var b = $("fbody"); b.className = b.className === "open" ? "" : "open"; render(); };
   updateFavCount();
