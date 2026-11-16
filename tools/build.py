@@ -59,9 +59,9 @@ def cover(h):
 
 def price_txt(h):
     if h["op"] == "Renta":
-        return money(h["precio"]) + " al mes"
+        return money(h["precio"]) + " MXN al mes"
     desde = "desde " if re.search("desde", h.get("precioNota") or "", re.I) else ""
-    return desde + money(h["precio"])
+    return desde + money(h["precio"]) + " MXN"
 
 
 def nota(h):

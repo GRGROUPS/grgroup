@@ -669,6 +669,9 @@ body.home #v-home { padding-top: 0 !important; }
 .heart { background: #fff; color: var(--marino); box-shadow: 0 2px 8px rgba(24,27,46,.18); }
 .heart.on { color: #D3263E; }
 .pcard.off { opacity: .6; }
+.mxn { font-size: .72em; font-weight: 600; letter-spacing: .02em; color: var(--mut); margin-left: .15em; }
+.prem .mxn, .tile.dark .mxn, #r3dSec .mxn { color: #C9C4D6; }
+.hxh .mxn { font-size: .32em; vertical-align: .2em; color: var(--mut); }
 .dsd { font-size: .62em; letter-spacing: 0; text-transform: none; font-weight: 600; color: var(--mut); }
 .prem .dsd, .tile.dark .dsd { color: #C9C4D6; }
 .count { font-size: 15px; color: var(--mut); margin: 6px 0 14px; }
@@ -1220,8 +1223,10 @@ function bg(u) { return u ? "background-image:url('" + u + "')" : ""; }
 function esDesde(h) { return /desde/i.test(h.precioNota || ""); }
 var MENS = { eng: 0.10, anios: 20, tasa: 11 };
 function mensEj(h) { return (h.op === "Venta" && h.precio > 0 && h.creditos && h.creditos.length) ? pmt(h.precio * (1 - MENS.eng), MENS.tasa, MENS.anios) : 0; }
-function mensLine(h) { var m = mensEj(h); return m ? "≈ " + money(m) + " al mes" : ""; }
-function priceLine(h) { return (h.op === "Renta" ? money(h.precio) + " al mes" : (esDesde(h) ? '<small class="dsd">desde</small> ' : "") + money(h.precio)) + "<sup>◊</sup>"; }
+function mensLine(h) { var m = mensEj(h); return m ? "≈ " + mxnT(m) + " al mes" : ""; }
+function mxnH(n) { return money(n) + '<span class="mxn"> MXN</span>'; }
+function mxnT(n) { return money(n) + " MXN"; }
+function priceLine(h) { return (h.op === "Renta" ? mxnH(h.precio) + " al mes" : (esDesde(h) ? '<small class="dsd">desde</small> ' : "") + mxnH(h.precio)) + "<sup>◊</sup>"; }
 
 function notaP(h) { return (h.precioNota && !/^precio desde$/i.test(h.precioNota)) ? h.precioNota : ""; }
 function esNueva(h) {
@@ -1862,7 +1867,7 @@ function renderHome() {
     var hc = (HERO_FOTO.match(/GR-\d+/) || [""])[0], hh = byCode(hc), cap = "";
     if (hh && hh.status === "Disponible") { cap = '<span class="hxc"><b>' + esc(hh.corto || hh.name) + '</b><span>' + esc(hh.zona) + '</span><span class="hxpr">' + priceLine(hh) + '</span></span>'; }
     $("hero").innerHTML = '<section class="hx"><div class="hxt">' +
-      '<h1 class="hxk">Casas en venta en Querétaro</h1><h2 class="hxh">Casas desde<br>' + (min ? money(min) : "$1,050,000") + '</h2>' +
+      '<h1 class="hxk">Casas en venta en Querétaro</h1><h2 class="hxh">Casas desde<br>' + mxnH(min || 1050000) + '</h2>' +
       '<p class="hxs">Con crédito o de contado: cada casa te dice cuál acepta.</p>' +
       '<div class="ctas"><button class="pill" type="button" onclick="goCasas({op:\'Venta\'})">Ver las ' + list.length + ' casas</button>' +
       '<button class="lnk" type="button" onclick="goCasas({cred:\'infonavit\'})">Solo las que aceptan Infonavit</button></div>' +
@@ -1874,7 +1879,7 @@ function renderHome() {
   sinRenta(rent.length);
   $("nInf").innerHTML = nInf;
   $("payInf").innerHTML = "Ver las " + nInf + " casas que aceptan Infonavit";
-  $("stats").innerHTML = '<div><b>' + n + '</b><span>casas disponibles hoy</span></div><div><b>' + nInf + '</b><span>aceptan Infonavit</span></div><div><b>' + (min ? money(min) : "—") + '</b><span>precio de venta desde</span></div>';
+  $("stats").innerHTML = '<div><b>' + n + '</b><span>casas disponibles hoy</span></div><div><b>' + nInf + '</b><span>aceptan Infonavit</span></div><div><b>' + (min ? mxnH(min) : "—") + '</b><span>precio de venta desde</span></div>';
   for (z = 0; z < ZONAS.length; z++) {
     c = 0; q = norm(ZONAS[z]);
     for (i = 0; i < DATA.length; i++) { if (DATA[i].status === "Disponible" && DATA[i].op === "Venta" && haystack(DATA[i]).indexOf(q) !== -1) { c++; } }
@@ -1918,7 +1923,7 @@ function renderCmp() {
   for (i = 0; i < DATA.length; i++) { if (DATA[i].status === "Disponible") { list.push(DATA[i]); } }
   list.sort(function (a, b) { return b.precio - a.precio; });
   if (!cmpInit) {
-    for (i = 0; i < list.length; i++) { opts += '<option value="' + list[i].code + '">' + esc((list[i].corto || list[i].name) + " · " + money(list[i].precio)) + "</option>"; }
+    for (i = 0; i < list.length; i++) { opts += '<option value="' + list[i].code + '">' + esc((list[i].corto || list[i].name) + " · " + mxnT(list[i].precio)) + "</option>"; }
     for (i = 0; i < 3; i++) { $(ids[i]).innerHTML = (i === 2 ? '<option value="">(ninguna)</option>' : "") + opts; $(ids[i]).onchange = renderCmp; }
     for (i = 0; i < 3; i++) { $(ids[i]).value = byCode(pre[i]) ? pre[i] : list[i] ? list[i].code : ""; }
     cmpInit = true;
@@ -1957,7 +1962,7 @@ function fillCasaSelect() {
   var html = '<option value="">Aún no sé / quiero ver opciones</option>', i, h;
   for (i = 0; i < DATA.length; i++) {
     h = DATA[i];
-    if (h.status === "Disponible") { html += '<option value="' + h.code + '">' + esc((h.corto || h.name) + " · " + money(h.precio) + (h.op === "Renta" ? " /mes" : "")) + "</option>"; }
+    if (h.status === "Disponible") { html += '<option value="' + h.code + '">' + esc((h.corto || h.name) + " · " + mxnT(h.precio) + (h.op === "Renta" ? " /mes" : "")) + "</option>"; }
   }
   $("r_casa").innerHTML = html;
 }
@@ -2180,7 +2185,7 @@ function initCalc() {
   calcInit = true;
   for (i = 0; i < DATA.length; i++) { if (DATA[i].op === "Venta" && DATA[i].status === "Disponible") { list.push(DATA[i]); } }
   list.sort(function (a, b) { return b.precio - a.precio; });
-  for (i = 0; i < list.length; i++) { html += '<option value="' + list[i].code + '">' + esc((list[i].corto || list[i].name) + " · " + money(list[i].precio)) + "</option>"; }
+  for (i = 0; i < list.length; i++) { html += '<option value="' + list[i].code + '">' + esc((list[i].corto || list[i].name) + " · " + mxnT(list[i].precio)) + "</option>"; }
   $("k_casa").innerHTML = html;
   $("k_casa").onchange = function () { var h = byCode(this.value); if (h) { $("k_precio").value = money(h.precio); } calc(); };
   ids = ["k_precio", "k_sal", "k_edad", "k_subc", "k_monto", "k_ahorro", "k_gpct", "k_eng", "k_tasa"];
@@ -2221,7 +2226,7 @@ function calc() {
     tasa = parseNum($("k_tasa").value); plazo = parseInt($("k_bplazo").value, 10) || 20;
     loan = precio * (1 - eng / 100); mens = pmt(loan, tasa, plazo); n = plazo * 12; intereses = mens * n - loan;
     gastos = precio * gp / 100; efectivo = precio * eng / 100 + gastos; dif = efectivo - ahorro;
-    html = '<div class="rcard"><div class="k">Mensualidad estimada</div><div class="mon">' + money(mens) + "<small> al mes</small></div>" +
+    html = '<div class="rcard"><div class="k">Mensualidad estimada</div><div class="mon">' + money(mens) + "<small> MXN al mes</small></div>" +
       '<div class="k">Tasa fija de ' + tasa + "% anual · " + plazo + " años · enganche de " + eng + "%</div>" +
       rw("Crédito", money(loan)) + rw("Enganche", money(precio * eng / 100)) + rw("Gastos de escrituración (estimado)", money(gastos)) + rw("Efectivo que necesitas", money(efectivo)) +
       rw("Intereses totales", money(intereses)) + rw("Total que pagarás por el crédito", money(mens * n)) +
@@ -2245,7 +2250,7 @@ function calc() {
   n = plazo * 12; intereses = loan > 0 ? (mens - CALC.SEG) * n - loan : 0;
   faltante = Math.max(0, precio - loan - subc);
   gastos = precio * gp / 100; efectivo = faltante + gastos; dif = efectivo - ahorro; pct = sal ? mens / sal * 100 : 0;
-  html = note + '<div class="rcard"><div class="k">Mensualidad estimada' + (est ? '<span class="tag">ESTIMADO</span>' : "") + '</div><div class="mon">' + money(mens) + "<small> al mes</small></div>" +
+  html = note + '<div class="rcard"><div class="k">Mensualidad estimada' + (est ? '<span class="tag">ESTIMADO</span>' : "") + '</div><div class="mon">' + money(mens) + "<small> MXN al mes</small></div>" +
     '<div class="k">Incluye $' + CALC.SEG + " de seguro de daños · tasa fija de " + tasa.toFixed(2) + "% anual · " + plazo + (plazo === 1 ? " año" : " años") + "</div>" +
     rw("Tasa según tu salario", tasa.toFixed(2) + "%") +
     rw("Crédito Infonavit" + (est ? " (estimado)" : ""), money(loan)) +
