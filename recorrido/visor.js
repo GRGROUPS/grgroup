@@ -728,7 +728,11 @@
     '  vec2 w=(r>0.5?f.xy:f.yx)+id*3.7;float ve=fbm(vec2(w.x*1.6+fbm(w*2.6)*1.7,w.y*5.5));',
     '  c*=0.95+0.035*r+0.085*(ve-0.5)*(0.4+0.6*far);c*=mix(1.0,mix(0.72,1.0,j),jk);rf=0.4+0.6*j;sheen=0.05*fr;',
     '  if(uFx.w>0.0){vec2 q=vec2(dot(vP.xz,vec2(0.55,0.42)),dot(vP.xz,vec2(-0.9,1.2)))+r*5.0;float mv=fbm(q*vec2(0.8,2.2)+fbm(q*0.7)*1.6);float dv=abs(mv-0.5);float vl=1.0-smoothstep(0.0,0.008+dist*0.0015,dv);float v2=1.0-smoothstep(0.0,0.006,abs(fbm(q*3.1+3.0)-0.5));c*=1.0-uFx.w*(0.14*vl+0.06*v2+0.025*(1.0-smoothstep(0.0,0.08,dv)))*(0.4+0.6*far);}}',
-    ' else if(m>1.5&&m<2.5){float nr=1.0-clamp(dist/16.0,0.0,1.0);c*=0.78+0.22*vn(vP.xz*0.55)+0.16*vn(vP.xz*5.0)+0.16*nr*vn(vP.xz*38.0)+0.10*nr*h(floor(vP.xz*170.0));c.r*=0.92+0.16*vn(vP.zx*1.7);}',   // pasto
+    ' else if(m>1.5&&m<2.5){float nr=1.0-clamp(dist/16.0,0.0,1.0);vec2 q=vP.xz;',   // pasto: manchas, zonas secas y hojas
+    '  float pa=fbm(q*0.32+5.0);float dr=smoothstep(0.52,0.78,fbm(q*0.21+11.0));',
+    '  float gl0=dot(c,vec3(0.3,0.59,0.11));c=mix(vec3(gl0),c,0.62)*vec3(0.84,0.92,0.74);c=mix(c,c*vec3(1.10,1.02,0.78),dr*0.45);c*=0.76+0.28*pa+0.12*vn(q*4.2);',
+    '  float bl=h(floor(q*vec2(150.0,52.0)+vec2(0.0,floor(q.x*150.0)*0.37)));c*=1.0-nr*0.30*(bl-0.5)-nr*0.12*(vn(q*31.0)-0.5);',
+    '  c*=0.92+0.08*nv;}',
     ' else if(m>2.5&&m<3.5){vec2 g=vP.xz/1.5;vec2 f=fract(g);float e=min(min(f.x,1.0-f.x),min(f.y,1.0-f.y))*1.5;float fp=dist*0.0012/max(nv,0.15);',  // concreto: juntas, manchas y poro
     '  c*=mix(1.0,mix(0.84,1.0,smoothstep(0.003,0.008+fp,e)),hz);float st=fbm(qv*0.45+3.1);',
     '  c*=0.9+0.15*st+0.05*vn(qv*3.0)+0.05*far*(vn(qv*40.0)-0.5)+0.035*far*(h(floor(qv*260.0))-0.5);sheen=0.025*fr;}',
@@ -765,19 +769,21 @@
     ' float side=0.5+0.5*dot(n,vec3(-0.55,0.0,0.83));',
     ' float ind=mix(A1.b,A0.b,hz)*uRoof*(1.0-up);float wl=mix(A1.a,A0.a,hz);',
     ' vec3 al=pow(c,vec3(2.2));',
-    ' vec3 ambO=mix(vec3(0.30,0.31,0.35),vec3(0.45,0.48,0.54),hemi)*(0.82+0.18*side);',                         // cielo
-    ' vec3 ambI=vec3(1.02,0.965,0.88)*(0.50+0.78*wl)*(0.86+0.14*hemi)*(0.93+0.07*side);',                        // interior: manda la luz de las ventanas
-    ' vec3 col=al*(mix(ambO,ambI,ind)*ao*ao+vec3(1.02,0.92,0.76)*nl*sh*mix(1.0,1.5,ind));',
+    ' vec3 ambO=mix(vec3(0.22,0.24,0.29),vec3(0.38,0.44,0.55),hemi)*(0.80+0.20*side);',                         // cielo
+    ' vec3 ambI=vec3(1.02,0.965,0.88)*(0.40+0.92*wl)*(0.84+0.16*hemi)*(0.93+0.07*side);',                        // interior: manda la luz de las ventanas
+    ' vec3 col=al*(mix(ambO,ambI,ind)*ao*ao+vec3(1.22,1.08,0.88)*nl*sh*mix(1.0,1.3,ind));',
     ' col+=spec*sh*vec3(1.2,1.1,0.95)+sheen*(0.3+0.7*sh);',
-    ' col=mix(col,0.55+0.45*(1.0-exp(-(col-0.55)/0.45)),step(0.55,col));col=pow(col,vec3(0.4545));col=mix(col,col*col*(3.0-2.0*col),0.18);float lu=dot(col,vec3(0.3,0.59,0.11));col=mix(vec3(lu),col,1.05);',                                               // mapeo de tonos y gamma
+    ' col*=mix(0.92,0.74,ind);col=clamp((col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14),0.0,1.0);col=pow(col,vec3(0.4545));float lu=dot(col,vec3(0.3,0.59,0.11));col=mix(vec3(lu),col,0.96);',                                               // mapeo de tonos y gamma
     ' if(uFx.z<0.5&&uFx.y>0.0&&rf>0.0&&n.y>0.5&&abs(vP.y)<0.02){vec2 uv=gl_FragCoord.xy*uRes;',                 // reflejo en el piso
     '  vec3 r=texture2D(uRf,uv).rgb*0.3+texture2D(uRf,uv+vec2(0.0,2.5)*uRes).rgb*0.2+texture2D(uRf,uv-vec2(0.0,2.5)*uRes).rgb*0.2',
     '   +texture2D(uRf,uv+vec2(1.5,5.5)*uRes).rgb*0.15+texture2D(uRf,uv-vec2(1.5,5.5)*uRes).rgb*0.15;',
     '  col=mix(col,r,clamp((0.03+0.62*fr)*rf*uFx.y,0.0,0.7));}',
     ' float al2=vC.a;if(al2<0.9){vec3 Rg=reflect(-V,n);float sk=smoothstep(-0.25,0.65,Rg.y);float fx=smoothstep(3.5,9.0,dist);',   // vidrio: de lejos refleja el cielo y se ve oscuro como en las fotos
     '  vec3 rc=mix(vec3(0.15,0.17,0.19),mix(uSky,vec3(0.56,0.66,0.78),0.45),sk);col=mix(col,rc,(0.25+0.5*fx)*(0.55+0.45*fr));',
-    '  col+=vec3(1.0,0.96,0.88)*pow(max(dot(Rg,uL),0.0),60.0)*0.6*sh;al2=min(0.93,al2+0.3*fr+0.55*fx);}',
-    ' col=mix(col,uSky,smoothstep(24.0,60.0,dist));',
+    '  col+=vec3(1.0,0.96,0.88)*pow(max(dot(Rg,uL),0.0),60.0)*0.6*sh;al2=min(0.93,al2+0.3*fr+0.55*fx);',
+    '  float ein=texture2D(uAo,(uE.xz-uAoB.xy)*uAoB.zw).b*uRoof*step(uE.y,2.6);float vy=clamp((vP.y-0.4)/2.0,0.0,1.0);float bo=min(texture2D(uAo,(vP.xz+n.xz*0.35-uAoB.xy)*uAoB.zw).b,texture2D(uAo,(vP.xz-n.xz*0.35-uAoB.xy)*uAoB.zw).b);ein*=(1.0-abs(n.y))*(1.0-smoothstep(0.3,0.7,bo));',
+    '  col=mix(col,mix(vec3(0.80,0.86,0.82),vec3(0.97,0.98,0.99),vy),ein*0.82);al2=mix(al2,0.9,ein);}',
+    ' col=mix(col,uSky,0.85*smoothstep(38.0,95.0,dist));col+=(h(gl_FragCoord.xy*0.731+vec2(dist))-0.5)*0.016;',
     ' if(uFx.z<0.5){vec2 sc=gl_FragCoord.xy*uRes-0.5;col*=1.0-0.2*dot(sc,sc);}',                               // viñeta suave de lente
     ' gl_FragColor=vec4(col,al2);}'].join('\n');
   var VS2 = 'attribute vec3 aP;attribute float aM;uniform mat4 uLVP;uniform float uRoof;' +
@@ -883,7 +889,8 @@
 
     // cámara: mira hacia dir(yaw,pitch) desde eye = target - dir*dist. dist≈0 → vista en primera persona.
     var cam = { tx: 0, ty: 1, tz: 0, yaw: 0, pitch: 0.9, dist: 14, fov: 0.7 }, anim = null, dirty = true, VPm = null, W = 1, H = 1, eye = [0, 0, 0];
-    var sky = hex(plan.sky || '#e9eef1'), zen = hex(plan.zenith || '#8fb8e3');
+    function skyOf(p) { var a = hex(p.sky || '#e9eef1'), b = hex('#c4d6e8'); return [a[0] * 0.35 + b[0] * 0.65, a[1] * 0.35 + b[1] * 0.65, a[2] * 0.35 + b[2] * 0.65]; }
+    var sky = skyOf(plan), zen = hex(plan.zenith || '#5f97d3');
 
     function dirOf(c) { var cp = Math.cos(c.pitch); return [Math.sin(c.yaw) * cp, -Math.sin(c.pitch), Math.cos(c.yaw) * cp]; }
     function resize() {
@@ -999,7 +1006,7 @@
     var api = {
       goTo: goTo,
       setFurniture: function (on) { furnOn = on; setGeo(on); },
-      setPlan: function (p) { plan = p; sky = hex(plan.sky || '#e9eef1'); zen = hex(plan.zenith || '#8fb8e3'); setGeo(furnOn); },
+      setPlan: function (p) { plan = p; sky = skyOf(plan); zen = hex(plan.zenith || '#5f97d3'); setGeo(furnOn); },
       eye: function () { return eye; },
       pitch: function () { return cam.pitch; },
       // proyecta un punto del plano a pixeles CSS; null si queda detrás de la cámara

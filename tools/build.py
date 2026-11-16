@@ -249,7 +249,7 @@ def recorrido_page(h, wa):
 <meta property="og:image" content="{BASE}casa/{code}/og.jpg">
 <link rel="icon" type="image/png" href="../../icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:400,500,600%7CCormorant+Garamond:500,600,700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
 <link rel="stylesheet" href="../tour.css?v={VER}">
 </head>
 <body>
@@ -282,7 +282,7 @@ def recorrido_page(h, wa):
   <div class="row">
     <div class="foto" id="foto" hidden><b>Así se ve en la foto real</b><div class="th" id="th"></div><i id="fn"></i></div>
     <span></span>
-    <a class="wa" href="{esc(wa_link)}">Agendar visita</a>
+    <a class="wa" href="{esc(wa_link)}">Agendar por WhatsApp</a>
   </div>
   <div class="dock">
     <div class="cap"><div aria-live="polite"><strong id="capT"></strong><em class="badge" id="capB" hidden></em><span id="capD"></span></div><div class="vel" id="vel" role="group" aria-label="Velocidad del recorrido"><button type="button" id="vmenos" aria-label="Más lento">−</button><span id="vtxt" aria-live="polite">1×</span><button type="button" id="vmas" aria-label="Más rápido">+</button></div><button class="auto" id="auto" type="button" aria-pressed="false"><svg class="ic icf" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg> Empezar recorrido</button></div>

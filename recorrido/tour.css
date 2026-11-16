@@ -103,3 +103,49 @@ dialog form{flex-wrap:wrap}
 canvas.sw{animation:sw .45s ease-out}
 @keyframes sw{from{opacity:.15}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){canvas.sw{animation:none}}
+
+/* ===== Diseño nov 2026: igual que grgroups.mx (Archivo, marino del logo, cantera, naranja de acento) ===== */
+:root{--ink:#23263A;--mut:#5F616E;--paper:#fff;--line:#E2CFC3;--or:#FD6617;--or2:#B4440B;--navy:#181B2E;--cantera:#F2E6DE;--wa:#128C4B}
+body{font-family:"Archivo",-apple-system,"Helvetica Neue",Arial,sans-serif;background:#c4d6e8}
+:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.id,.ficha,.dock,.foto,.side button{border:0;border-radius:12px;box-shadow:0 6px 22px rgba(24,27,46,.16)}
+.id{padding:10px 16px 10px 12px}
+.id h1,.cap strong{font-family:inherit;font-stretch:106%;font-weight:700;letter-spacing:-.01em;color:var(--navy)}
+.id h1{font-size:20px}
+.id p{color:var(--mut)}.id p i{font-style:normal}
+.id .cr{color:var(--wa)}
+.ficha{font-weight:600;color:var(--navy);padding:11px 16px}
+.ficha:hover{box-shadow:0 0 0 2px var(--navy)}
+.lab{background:var(--navy);border-radius:6px;font-size:13px;font-weight:600;padding:4px 9px;box-shadow:0 2px 8px rgba(24,27,46,.25)}
+.side button{width:46px;height:46px;color:var(--navy)}
+.side button:hover{box-shadow:0 0 0 2px var(--navy)}
+.side button[aria-pressed=true]{background:var(--navy);color:#fff}
+.dock{padding:12px 12px 10px}
+.cap strong{font-size:21px}
+.cap span{color:var(--mut)}
+.auto{border-radius:10px;padding:10px 16px;background:var(--navy);border-color:var(--navy);font-weight:700}
+.auto[aria-pressed=true]{background:#fff;color:var(--navy);box-shadow:inset 0 0 0 1.5px var(--navy)}
+.cap .vel{border:1.5px solid var(--line);border-radius:10px}
+.vel button,.cap .vel span{color:var(--navy)}
+.stops{gap:8px}
+.stops button{border:1.5px solid var(--line);border-radius:8px;font-weight:600;color:var(--navy);padding:8px 14px}
+.stops button:hover{border-color:var(--navy)}
+.stops button[aria-current=true]{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:inset 0 -3px 0 var(--or)}
+.badge{background:var(--or);color:var(--navy);border-radius:6px}
+.wa{background:var(--wa);border-radius:10px;font-weight:700;padding:13px 20px;box-shadow:0 6px 22px rgba(24,27,46,.2)}
+.wa:hover{background:#0f7a41}
+.foto{padding:8px}.foto b{color:var(--navy)}
+.foto .th button{border-radius:6px;background:var(--cantera)}
+.nota{color:var(--mut)}
+.toast,.hint{background:rgba(24,27,46,.88)}
+dialog::backdrop{background:rgba(24,27,46,.9)}
+dialog img{border-radius:10px}
+dialog button{border-radius:8px;color:var(--navy)}
+dialog button#dnext{background:var(--or);color:var(--navy)}
+.fail{background:var(--cantera);color:var(--ink)}.fail a{color:var(--or2)}
+@media (max-width:640px){
+  .id{padding:7px 10px;gap:9px}.id h1{font-size:16px}
+  .foto{padding:3px}.foto i{background:var(--navy);border-radius:0 0 6px 6px}
+  .stops button{padding:7px 12px}
+  .wa{padding:11px 14px}
+}
