@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /respaldo/
 Sitemap: https://grgroups.mx/sitemap.xml
