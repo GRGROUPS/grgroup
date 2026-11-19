@@ -147,68 +147,6 @@
   /* ---------- biblioteca de muebles ----------
      Cada mueble se modela en coordenadas locales: origen al centro, frente hacia +z, y hacia arriba. */
   var LIB = {
-    /* Camioneta compacta tipo CX-30: origen al centro, frente hacia +z, largo 4.4 m. o.color = pintura. */
-    camioneta: function (g, gt, o) {
-      var C = o.color || '#c9cdd0', GL = '#243140', DK = '#17181a', hw = 0.9, i;
-      g.foot(-hw, -2.2, hw, 2.2);
-      // prisma lateral: perfil [z,y] extruido en x
-      function prism(pr, xw, col, mat) {
-        var n = pr.length, cz = 0, cy = 0, k;
-        pr.forEach(function (q) { cz += q[0] / n; cy += q[1] / n; });
-        for (k = 1; k < n - 1; k++) {
-          g.tri(g.X([xw, pr[0][1], pr[0][0]]), g.X([xw, pr[k][1], pr[k][0]]), g.X([xw, pr[k + 1][1], pr[k + 1][0]]), g.XN([1, 0, 0]), g.XN([1, 0, 0]), g.XN([1, 0, 0]), hex(col), 1, mat);
-          g.tri(g.X([-xw, pr[0][1], pr[0][0]]), g.X([-xw, pr[k][1], pr[k][0]]), g.X([-xw, pr[k + 1][1], pr[k + 1][0]]), g.XN([-1, 0, 0]), g.XN([-1, 0, 0]), g.XN([-1, 0, 0]), hex(col), 1, mat);
-        }
-        for (k = 0; k < n; k++) {
-          var a = pr[k], b = pr[(k + 1) % n], dz = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dz, dy) || 1, nz = dy / l, ny = -dz / l;
-          if (nz * ((a[0] + b[0]) / 2 - cz) + ny * ((a[1] + b[1]) / 2 - cy) < 0) { nz = -nz; ny = -ny; }
-          var N = g.XN([0, ny, nz]), A = g.X([-xw, a[1], a[0]]), B = g.X([xw, a[1], a[0]]), Cc = g.X([xw, b[1], b[0]]), D = g.X([-xw, b[1], b[0]]);
-          g.tri(A, B, Cc, N, N, N, hex(col), 1, mat); g.tri(A, Cc, D, N, N, N, hex(col), 1, mat);
-        }
-      }
-      // cilindro horizontal (eje x)
-      function wheel(x0, x1, y, z, r, col, mat, seg) {
-        var k, N = seg || 18;
-        for (k = 0; k < N; k++) {
-          var a0 = 2 * Math.PI * k / N, a1 = 2 * Math.PI * (k + 1) / N, s0 = Math.sin(a0), c0 = Math.cos(a0), s1 = Math.sin(a1), c1 = Math.cos(a1);
-          var P0 = g.X([x0, y + r * s0, z + r * c0]), P1 = g.X([x0, y + r * s1, z + r * c1]), P2 = g.X([x1, y + r * s1, z + r * c1]), P3 = g.X([x1, y + r * s0, z + r * c0]);
-          var n0 = g.XN([0, s0, c0]), n1 = g.XN([0, s1, c1]), cc = hex(col);
-          g.tri(P0, P1, P2, n0, n1, n1, cc, 1, mat); g.tri(P0, P2, P3, n0, n1, n0, cc, 1, mat);
-          var sg = x1 > x0 ? 1 : -1, nx = g.XN([sg, 0, 0]), cn = g.X([x1, y, z]);
-          g.tri(cn, P3, P2, nx, nx, nx, cc, 1, mat);
-          var mx = g.XN([-sg, 0, 0]), c0p = g.X([x0, y, z]);
-          g.tri(c0p, P1, P0, mx, mx, mx, cc, 1, mat);
-        }
-      }
-      // carrocería baja y cofre
-      prism([[-2.2, 0.36], [-2.2, 0.98], [-1.95, 1.02], [0.9, 1.04], [1.9, 0.9], [2.2, 0.72], [2.2, 0.36]], hw, C, 16);
-      g.box(-hw + 0.04, 0.2, -2.15, hw - 0.04, 0.4, 2.15, DK);                                                // fondo oscuro
-      g.rbox(-hw, 0.62, -2.2, hw, 0.8, 2.2, C, { mat: 16, e: 0.2, nu: 20, nv: 4 });                           // cintura redondeada
-      // cabina: cristales y techo
-      prism([[-1.98, 1.02], [-1.55, 1.5], [0.2, 1.54], [0.98, 1.04]], hw - 0.12, GL, 16);
-      g.rbox(-hw + 0.14, 1.46, -1.7, hw - 0.14, 1.58, 0.28, C, { mat: 16, e: 0.12, nu: 16, nv: 4 });         // techo
-      [-1, 1].forEach(function (sd) {
-        g.box(sd * (hw - 0.12) - 0.02, 1.04, -0.18, sd * (hw - 0.12) + 0.02, 1.48, -0.1, C, { mat: 16 });    // poste B
-        g.box(sd * (hw - 0.12) - 0.02, 1.02, -2.0, sd * (hw - 0.12) + 0.02, 1.2, -1.6, C, { mat: 16 });      // poste trasero
-        g.box(sd * (hw + 0.02) - 0.03, 1.1, 0.78, sd * (hw + 0.02) + 0.03, 1.18, 1.0, C, { mat: 16 });       // espejo
-      });
-      // llantas y rines
-      [[-1, 1.35], [1, 1.35], [-1, -1.35], [1, -1.35]].forEach(function (w) {
-        var sx = w[0], z = w[1], xi = sx * 0.64, xo = sx * 0.9;
-        wheel(sx * 0.62, sx * 0.915, 0.34, z, 0.43, DK, 0, 20);                                              // hueco de la llanta
-        wheel(xi, xo + sx * 0.005, 0.34, z, 0.34, '#141414', 0, 20);                                          // llanta
-        wheel(xo - sx * 0.01, xo + sx * 0.012, 0.34, z, 0.22, '#c4c8cc', 16, 16);                             // rin
-        wheel(xo + sx * 0.005, xo + sx * 0.016, 0.34, z, 0.07, '#5a5e63', 16, 10);
-      });
-      // faros, parrilla y calaveras
-      g.box(-0.62, 0.62, 2.19, 0.62, 0.86, 2.215, '#16181b', { mat: 16 });                                    // parrilla
-      [-1, 1].forEach(function (sd) {
-        g.box(sd * 0.55 - 0.2, 0.74, 2.17, sd * 0.55 + 0.2, 0.9, 2.2, '#eef3f6', { mat: 9 });                // faros
-        g.box(sd * 0.6 - 0.2, 0.84, -2.215, sd * 0.6 + 0.2, 0.98, -2.19, '#b3171d', { mat: 9 });             // calaveras
-      });
-      g.box(-0.2, 0.48, 2.19, 0.2, 0.6, 2.21, '#eceae4');                                                      // placa
-      g.box(-0.2, 0.52, -2.21, 0.2, 0.64, -2.19, '#eceae4');
-    },
     sofa: function (g, gt, o) {
       var w = o.w || 2.0, c = o.color || '#7f8c99', c2 = o.color2 || '#93a0ad', hw = w / 2, n = w > 1.7 ? 3 : 2, i, F = { mat: 7 };
       g.foot(-hw, -0.45, hw, 0.45);
