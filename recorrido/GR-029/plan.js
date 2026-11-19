@@ -6,20 +6,21 @@
 // blanco tipo mármol con vetas, muros de estuco, escalera de loseta con barandal negro, regadera de esquina con azulejo gris
 var T='#ecebe7', FACH='#f1f0ec', DARK='#2a2b2e', STONE='#cfc7b6', ORA='#e0962f', LOS='#e6e4df', WOODC='#c9a275';
 var D=8.0;
+var rej=[], q; for(q=0;q<16;q++) rej.push([-2.36+q*.125,.1,-.14,-2.33+q*.125,2.06,-.11,'#16171a',{mat:3}]);
 var baja={
   sky:'#e9eef1', center:[2.4,0,4.0], frame:DARK, tile:.6, gloss:.8, marble:1, indoor:[[0,3.1,1.05,5.5]], wallOut:FACH, wallMat:14, wallIn:'#f4f3f0', zoclo:'#dcdad5',
   ground:[
     [-9,-0.09,-13,14,21,'#8fae6b',2],
     [-9,-0.06,-13,14,-6.2,'#7b7d80',0],
     [-9,-0.03,-6.2,14,-4.8,'#cfccc5',3],
-    [.3,-0.02,-4.8,4.5,-.2,'#c6c3bc',3]
+    [2.7,-0.02,-4.8,3.8,0,'#c6c3bc',3],[-2.5,-0.02,-4.8,-.1,0,'#c6c3bc',3],[3.8,-0.04,-4.8,4.8,0,'#79b44f',2]
   ],
   floors:[[0,0,4.8,3.1,T],[0,3.1,1.05,5.5,T],[1.05,3.1,4.8,5.5,T],[0,5.5,4.8,D,T]],
   ceilings:[[0,0,4.8,3.1],[1.05,3.1,3.7,5.5],[3.7,3.1,4.8,4.7],[3.7,4.7,4.8,5.5],[0,5.5,4.8,D]],
   walls:[
     {ax:'x',c:0,from:0,to:4.8,t:.15,h:2.7,color:FACH,open:[
-      {from:.5,to:2.0,sill:.5,head:2.2,kind:'window'},
-      {from:3.2,to:4.1,head:2.15,kind:'door',hinge:'to',ang:0,color:DARK,mat:6,marco:'#222326'}]},
+      {from:1.3,to:2.5,sill:.75,head:2.05,kind:'window'},
+      {from:2.85,to:3.65,head:2.1,kind:'door',hinge:'to',ang:0,color:DARK,mat:6,marco:'#222326'}]},
     {ax:'z',c:0,from:0,to:D,t:.15,h:2.7},
     {ax:'z',c:4.8,from:0,to:D,t:.15,h:2.7},
     {ax:'x',c:D,from:0,to:4.8,t:.15,h:2.7,open:[
@@ -35,10 +36,27 @@ var baja={
   boxes:[
     // planta alta, entrada de piedra y bloque naranja vistos desde la calle (se ocultan al ver la maqueta desde arriba)
     [-.075,2.7,-.075,4.875,5.5,D+.075,FACH,{mat:34}],
-    [2.9,0,-.2,4.4,2.7,-.075,STONE,{mat:12}],
-    [2.9,2.7,-.2,4.4,3.7,-.075,ORA,{mat:34}],
-    [.4,3.3,-.1,2.2,4.7,-.07,'#2b3036',{mat:10}],
-    [3.2,3.6,-.1,4.0,4.5,-.07,'#2b3036',{mat:10}],
+    // pilastra de piedra compartida con la casa vecina: sube hasta 3.3 m; bloque naranja con dos ventanas angostas
+    [3.7,0,-.2,4.8,2.7,-.075,STONE,{mat:12}],[3.7,2.7,-.2,4.8,3.3,-.075,STONE,{mat:32}],
+    [4.8,0,-.2,6.0,2.7,0,STONE,{mat:12}],[4.8,2.7,-.2,6.0,3.3,0,STONE,{mat:32}],
+    [3.7,3.3,-.2,4.8,5.0,-.075,ORA,{mat:34}],
+    [4.0,3.4,-.215,4.12,4.2,-.2,'#3d4a55',{mat:10}],[4.28,3.4,-.215,4.4,4.2,-.2,'#3d4a55',{mat:10}],
+    [4.0,1.8,-.215,4.4,2.15,-.2,'#3d4a55',{mat:10}],
+    // cobertizo gris sobre cada puerta
+    [2.7,2.32,-.5,3.8,2.4,-.075,'#8d8f92',{mat:3}],[5.55,2.32,-.5,6.0,2.4,0,'#8d8f92',{mat:3}],
+    // ventana grande de la recámara principal (2 x 2 cuadros, marco negro)
+    [1.17,3.3,-.1,2.42,4.6,-.07,'#3d4a55',{mat:10}],
+    [1.14,3.27,-.12,2.45,3.33,-.065,'#16171a',{mat:34}],[1.14,4.57,-.12,2.45,4.63,-.065,'#16171a',{mat:34}],
+    [1.14,3.27,-.12,1.2,4.63,-.065,'#16171a',{mat:34}],[2.39,3.27,-.12,2.45,4.63,-.065,'#16171a',{mat:34}],
+    [1.78,3.27,-.12,1.82,4.63,-.065,'#16171a',{mat:34}],[1.14,3.93,-.12,2.45,3.97,-.065,'#16171a',{mat:34}],
+    // casa vecina: puerta negra y ventana
+    [6.2,0,-.12,7.0,2.1,-.07,'#1f2023',{mat:6}],[7.5,.8,-.05,8.2,2.0,-.02,'#3d4a55',{mat:10}],
+    // medidor naranja en el jardín
+    [6.3,0,-1.7,7.1,.7,-1.1,'#e8a735',{mat:3}],
+    // portón negro de la cochera lateral con pilastras blancas
+    [-2.6,0,-.3,-2.4,2.4,-.1,FACH,{mat:14}],[-.4,0,-.3,-.2,2.4,-.1,FACH,{mat:14}],
+    [-2.4,.1,-.14,-.4,.16,-.1,'#16171a',{mat:3}],[-2.4,2.0,-.14,-.4,2.06,-.1,'#16171a',{mat:3}],
+    [-4.9,0,-.14,-2.6,1.9,-.02,FACH,{mat:14}],
     [-4.95,0,0,-.08,5.5,D,'#dddbd6',{mat:11}],[4.88,0,0,9.75,5.5,D,'#dddbd6',{mat:11}]
   ],
   items:[
@@ -52,6 +70,7 @@ var baja={
     ['mesa',1.6,6.7,0,{s:1,w:.95,d:.95,color:'#2a2623'}],['silla',1.6,6.05,0,{s:1,color:'#6b6e73'}],['silla',1.6,7.35,180,{s:1,color:'#6b6e73'}],['silla',.95,6.7,90,{s:1,color:'#6b6e73'}],['silla',2.25,6.7,-90,{s:1,color:'#6b6e73'}]
   ]
 };
+baja.boxes=baja.boxes.concat(rej);
 var alta={
   sky:'#e9eef1', center:[2.4,0,4.0], frame:DARK, tile:.6, gloss:.8, marble:1, wallOut:FACH, wallMat:14, wallIn:'#f4f3f0', zoclo:'#dcdad5',
   ground:[[-9,-0.09,-13,14,21,'#d9dcde',0]],
@@ -59,8 +78,8 @@ var alta={
   ceilings:[[0,0,4.8,3.3],[0,3.3,3.0,5.5],[3.0,3.3,4.8,5.5],[0,5.5,4.8,D]],
   walls:[
     {ax:'x',c:0,from:0,to:4.8,t:.15,h:2.7,open:[
-      {from:.5,to:2.3,sill:.9,head:2.1,kind:'window'},
-      {from:3.2,to:4.0,sill:1.2,head:2.1,kind:'window',mid:false}]},
+      {from:1.17,to:2.42,sill:.6,head:1.9,kind:'window'},
+      {from:4.0,to:4.4,sill:.7,head:1.5,kind:'window',mid:false}]},
     {ax:'z',c:0,from:0,to:D,t:.15,h:2.7},
     {ax:'z',c:4.8,from:0,to:D,t:.15,h:2.7},
     {ax:'x',c:D,from:0,to:4.8,t:.15,h:2.7,open:[
