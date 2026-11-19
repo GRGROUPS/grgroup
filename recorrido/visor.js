@@ -147,6 +147,318 @@
   /* ---------- biblioteca de muebles ----------
      Cada mueble se modela en coordenadas locales: origen al centro, frente hacia +z, y hacia arriba. */
   var LIB = {
+    /* Camioneta SUV compacta, diseño propio de GR GROUP. Origen al centro, frente hacia +z, conductor en +x.
+       Largo 4.33 m, ancho 1.83, alto 1.55, entre ejes 2.65, rin 20". Versión deportiva. o.color = pintura.
+       Carrocería: perfil lofteado por estaciones con curvas suaves (Hermite monótono), arcos con moldura, línea de hombro
+       marcada, cristales polarizados transparentes con interior, y detalles proyectados sobre la superficie.
+       Materiales de auto (negativos): -1 pintura con barniz, -2 cromo/aluminio, -3 negro brillante, -4 plástico texturizado, -5 hule. */
+    camioneta: function (g, gt, o) {
+      var PAINT = o.color || '#3a3f45', UNDER = '#0b0b0c', CLAD = '#1a1b1d', GLASS = '#080b0e', PIANO = '#0c0d0f', CHROME = '#d4d8dc', GAP = '#0f1011', LEATHER = o.piel || '#3a3532';
+      var MP = -1, MC = -2, MG = -3, MT = -4, MR = -5;
+      var ZF = 1.33, ZR = -1.37, WR = 0.37, L2 = 2.25, i, j, s, z;
+      g.foot(-0.96, -2.17, 0.96, 2.17);
+      function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+      function crs(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+      function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+      function nrm(a) { var l = Math.hypot(a[0], a[1], a[2]); return l > 1e-9 ? [a[0] / l, a[1] / l, a[2] / l] : [0, 1, 0]; }
+      /* acortado: el largo se comprime en voladizos y entre ejes, sin tocar los arcos (las llantas siguen redondas) */
+      var W0 = -2.3, WD = 0.002, WS = [], k0, acc0 = 0;
+      function sb(z) { return z < -1.87 ? 0.842 : z < -0.87 ? 1 : z < 0.83 ? 0.9706 : z < 1.83 ? 1 : 0.833; }
+      function sm(z) { var a = 0; for (var k = -6; k <= 6; k++) a += sb(z + k * 0.01); return a / 13; }
+      for (k0 = 0; k0 <= 2300; k0++) { WS.push(acc0); acc0 += sm(W0 + k0 * WD + WD / 2) * WD; }
+      function wz0(z) { var t = (z - W0) / WD, k = Math.max(0, Math.min(2299, Math.floor(t))); return WS[k] + (WS[k + 1] - WS[k]) * (t - k); }
+      var WOFF0 = (wz0(-2.25) + wz0(2.25)) / 2, WOFF = null;
+      function wz(z) { return wz0(z) - WOFF0; }
+      function WP(p) { return [p[0], p[1], WOFF == null ? wz(p[2]) : p[2] + WOFF]; }
+      function WN(n, z) { return WOFF == null ? nrm([n[0], n[1], n[2] / sm(z)]) : n; }
+      function T(p0, p1, p2, n0, n1, n2, col, mat, al) { (al ? gt : g).tri(g.X(WP(p0)), g.X(WP(p1)), g.X(WP(p2)), g.XN(WN(n0, p0[2])), g.XN(WN(n1, p1[2])), g.XN(WN(n2, p2[2])), hex(col), al || 1, mat); }
+      function BX(x0, y0, z0, x1, y1, z1, col, o) { g.box(x0, y0, wz(z0), x1, y1, wz(z1), col, o); }
+      function RB(x0, y0, z0, x1, y1, z1, col, o) { g.rbox(x0, y0, wz(z0), x1, y1, wz(z1), col, o); }
+      // interpolación Hermite monótona; una llave con 3er valor 1 queda como arista (pendientes de un solo lado)
+      function curve(K) {
+        var n = K.length, d = [], mL = [], mR = [], q;
+        for (q = 0; q < n - 1; q++) d.push((K[q + 1][1] - K[q][1]) / (K[q + 1][0] - K[q][0]));
+        for (q = 0; q < n; q++) {
+          var a = q > 0 ? d[q - 1] : d[0], b = q < n - 1 ? d[q] : d[n - 2], m = a * b <= 0 ? 0 : (a + b) / 2;
+          if (K[q][2]) { mL[q] = a; mR[q] = b; } else { mL[q] = m; mR[q] = m; }
+        }
+        for (q = 0; q < n - 1; q++) { if (d[q] === 0) { mR[q] = 0; mL[q + 1] = 0; continue; } var A = mR[q] / d[q], B = mL[q + 1] / d[q], S2 = A * A + B * B; if (S2 > 9) { var t = 3 / Math.sqrt(S2); mR[q] = t * A * d[q]; mL[q + 1] = t * B * d[q]; } }
+        return function (z) {
+          if (z <= K[0][0]) return K[0][1]; if (z >= K[n - 1][0]) return K[n - 1][1];
+          for (var q = 0; q < n - 1; q++) if (z <= K[q + 1][0]) { var h = K[q + 1][0] - K[q][0], t = (z - K[q][0]) / h, t2 = t * t, t3 = t2 * t;
+            return (2 * t3 - 3 * t2 + 1) * K[q][1] + (t3 - 2 * t2 + t) * h * mR[q] + (-2 * t3 + 3 * t2) * K[q + 1][1] + (t3 - t2) * h * mL[q + 1]; }
+        };
+      }
+      var K = {
+        yb: [[-2.25, .44], [-2.2, .34], [-2.1, .27], [-1.85, .22], [1.85, .22], [2.1, .27], [2.2, .32], [2.25, .38]],
+        wS: [[-2.25, .65], [-2.2, .79], [-2.1, .85], [-1.9, .87], [1.9, .87], [2.1, .84], [2.2, .78], [2.25, .65]],
+        yL: [[-2.25, .58], [-1.98, .58], [-1.88, .46], [1.88, .46], [1.98, .50], [2.25, .50]],
+        wM: [[-2.25, .70], [-2.22, .82], [-2.16, .88], [-2.05, .905], [-1.85, .915], [1.8, .915], [2.0, .90], [2.12, .865], [2.2, .80], [2.25, .66]],
+        yM: [[-2.25, .80], [-1.9, .86], [-1.2, .84], [0, .76], [1.2, .68], [1.8, .66], [2.25, .64]],
+        wSh: [[-2.25, .67], [-2.22, .79], [-2.16, .85], [-2.05, .878], [-1.85, .89], [1.8, .89], [2.0, .875], [2.12, .84], [2.2, .77], [2.25, .63]],
+        ySh: [[-2.25, .94], [-2.12, 1.02], [-1.75, 1.07], [0.95, .99], [1.7, .93], [2.05, .87], [2.18, .83], [2.25, .78]],
+        yB: [[-2.25, .97], [-2.14, 1.08], [-1.92, 1.165], [-1.5, 1.175], [0.95, 1.065], [1.2, 1.02], [1.7, .955], [2.05, .89], [2.18, .845], [2.25, .79]],
+        yR: [[-2.25, .98], [-2.14, 1.09], [-2.08, 1.15, 1], [-1.55, 1.43, 1], [-1.2, 1.49], [-0.55, 1.515], [-0.25, 1.505], [-0.12, 1.47, 1], [0.95, 1.07, 1], [1.2, 1.025], [1.7, .957], [2.05, .905], [2.18, .855], [2.25, .80]],
+        wR: [[-2.25, .55], [-2.12, .62], [-1.9, .63], [-1.5, .65], [0.0, .675], [0.95, .77], [1.2, .785], [1.85, .77], [2.12, .71], [2.25, .59]],
+        yC: [[-2.25, .99], [-2.14, 1.105], [-2.08, 1.165, 1], [-1.55, 1.455, 1], [-1.2, 1.52], [-0.55, 1.55], [-0.25, 1.54], [-0.12, 1.50, 1], [0.95, 1.085, 1], [1.2, 1.045], [1.7, .985], [2.05, .93], [2.18, .875], [2.25, .82]]
+      };
+      var C = {}; for (var kk in K) C[kk] = curve(K[kk]);
+      var TH = [-2.08, -1.55, -1.48, -1.12, -1.04, -0.40, -0.30, -0.12, 0.91, 0.95], Z = [];
+      for (z = -L2; z < L2 - 0.008; z += 0.03) if (!TH.some(function (t) { return Math.abs(t - z) < 0.01; })) Z.push(z);
+      Z = Z.concat(TH, [L2]).sort(function (a, b) { return a - b; });
+      // perfil base de 12 puntos; los tramos de costado y de techo se subdividen con Catmull-Rom
+      var SUBD = { 3: [3, 4], 4: [4, 5], 9: [9, 10] };
+      function cr(a, b, c, d, t) { var t2 = t * t, t3 = t2 * t; return [0, 1].map(function (k) { return 0.5 * (2 * b[k] + (-a[k] + c[k]) * t + (2 * a[k] - 5 * b[k] + 4 * c[k] - d[k]) * t2 + (-a[k] + 3 * b[k] - 3 * c[k] + d[k]) * t3); }); }
+      var RS = [];
+      var S = Z.map(function (z) {
+        var yb = C.yb(z), wS = C.wS(z), yL = C.yL(z), wM = C.wM(z), yM = C.yM(z), wSh = C.wSh(z), ySh = C.ySh(z), yB = C.yB(z), yR = C.yR(z), wR = C.wR(z), yC = C.yC(z), wB = wSh - 0.07;
+        var p = [[0, yb], [wS - 0.1, yb], [wS, yb + 0.06], [wS + 0.02, yL], [wM, yM], [wSh, ySh], [wB, yB], [wB - 0.006, yB + 0.02],
+          [(wB + wR) / 2 + 0.015, (yB + 0.02 + yR) / 2], [wR, yR], [wR - 0.1, yR + (yC - yR) * 0.82], [0, yC], [0, yC]];
+        // nervaduras del cofre: arista que va de 0.22 (parabrisas) a 0.42 (faros), un poco levantada
+        var hz = Math.max(0, Math.min(1, (z - 0.95) / 1.25)), xr = z > 0.95 ? 0.22 + 0.2 * hz : 0.3, y10 = p[10][1], yr = y10 + (yC - y10) * (1 - xr / p[10][0]) * 1.15;
+        if (z > 0.95 && z < 2.2) yr += 0.014 * Math.sin(Math.PI * Math.min(1, (z - 0.95) / 1.2));
+        p[11] = [xr, Math.min(yr, yC + 0.012)];
+        [ZF, ZR].forEach(function (zw) {
+          var dz = Math.abs(z - zw), RO = 0.49, RA = 0.435;
+          if (dz < RO) { var f = 1 - dz * dz / (RO * RO), yo = WR + Math.sqrt(RO * RO - dz * dz) * 0.95; p[2][0] += 0.022 * f; p[3][0] += 0.022 * f; if (yo > p[3][1]) p[3][1] = yo; }
+          if (dz < RA) { var yi = WR + Math.sqrt(RA * RA - dz * dz) * 0.95; if (yi > p[2][1]) { p[2][1] = yi; p[1] = [0.62, yi + 0.02]; p[0] = [0, yi + 0.02]; } }
+        });
+        for (var j = 4; j <= 6; j++) if (p[j][1] < p[j - 1][1] + 0.02) p[j][1] = p[j - 1][1] + 0.02;
+        var out = [], rs = [];
+        for (j = 0; j < 12; j++) {
+          out.push(p[j]); rs.push(j);
+          if (SUBD[j]) {
+            var lo = SUBD[j][0], hi = SUBD[j][1], pa = j - 1 < lo ? p[j] : p[j - 1], pd = j + 2 > hi ? p[j + 1] : p[j + 2];
+            var q1 = cr(pa, p[j], p[j + 1], pd, 1 / 3), q2 = cr(pa, p[j], p[j + 1], pd, 2 / 3);
+            if (j === 4) { q1[0] -= 0.008; q2[0] -= 0.008; }                                       // costado ligeramente cóncavo bajo el hombro
+            out.push(q1); rs.push(j); out.push(q2); rs.push(j);
+          }
+        }
+        out.push(p[12]); RS = rs;
+        return { z: z, p: out };
+      });
+      var NS = S.length, NP = S[0].p.length;
+
+      /* ---- piel: grupos de color/normales. 2 = costado bajo, 6 = hombro, cofre y techo (arista viva entre ambos) ---- */
+      var COLS = [UNDER, CLAD, PAINT, CHROME, GLASS, PIANO, PAINT, PAINT, PAINT], MATS = [0, MT, MP, MC, 0, MG, MP, MP, MP];
+      function grp(zm, j) {
+        if (j <= 1) return 0; if (j === 2) return 1; if (j === 3) return 2; if (j === 4) return 8;
+        var side = zm > -1.48 && zm < 0.91, glassTop = (zm > -0.12 && zm < 0.95) || (zm > -2.08 && zm < -1.55);
+        if (j === 5) return 6;
+        if (j === 6) return side ? 3 : 6;
+        if (j === 7 || j === 8) return !side ? 6 : ((zm > -0.40 && zm < -0.30) || (zm > -1.12 && zm < -1.04)) ? 5 : 4;
+        if (j === 10 || j === 11) return glassTop ? 4 : (j === 11 ? 7 : 6);
+        return 6;
+      }
+      function V(s, k) { var q = S[s].p[k]; return [q[0], q[1], S[s].z]; }
+      var F = [], acc = {}, vote = 0;
+      for (s = 0; s < NS - 1; s++) for (j = 0; j < NP - 1; j++) {
+        var a = V(s, j), b = V(s, j + 1), c = V(s + 1, j + 1), d = V(s + 1, j), n = crs(sub(c, a), sub(d, b)), ym = (S[s].p[0][1] + S[s].p[NP - 1][1]) / 2;
+        vote += Math.sign(dot(n, [(a[0] + b[0] + c[0] + d[0]) / 4, (a[1] + b[1] + c[1] + d[1]) / 4 - ym, 0.3 * (a[2] + c[2]) / 2]));
+        F.push({ s: s, j: j, n: n, gr: grp((S[s].z + S[s + 1].z) / 2, RS[j]) });
+      }
+      var sg = vote < 0 ? -1 : 1;
+      F.forEach(function (f) {
+        f.n = [f.n[0] * sg, f.n[1] * sg, f.n[2] * sg];
+        [[f.s, f.j], [f.s, f.j + 1], [f.s + 1, f.j + 1], [f.s + 1, f.j]].forEach(function (k) { var key = k[0] + '|' + k[1] + '|' + f.gr, A = acc[key] || (acc[key] = [0, 0, 0]); A[0] += f.n[0]; A[1] += f.n[1]; A[2] += f.n[2]; });
+      });
+      F.forEach(function (f) {
+        var ks = [[f.s, f.j], [f.s, f.j + 1], [f.s + 1, f.j + 1], [f.s + 1, f.j]], col = COLS[f.gr], mat = MATS[f.gr], al = f.gr === 4 ? 0.52 : 0;
+        [1, -1].forEach(function (m) {
+          var P = ks.map(function (k) { var v = V(k[0], k[1]); return [v[0] * m, v[1], v[2]]; });
+          var N = ks.map(function (k) { var A = nrm(acc[k[0] + '|' + k[1] + '|' + f.gr]); return [A[0] * m, A[1], A[2]]; });
+          T(P[0], P[1], P[2], N[0], N[1], N[2], col, mat, al); T(P[0], P[2], P[3], N[0], N[2], N[3], col, mat, al);
+        });
+      });
+      [[0, -1], [NS - 1, 1]].forEach(function (e) {
+        var p = S[e[0]].p, zc = S[e[0]].z, N = [0, 0, e[1]];
+        for (var k = 0; k < NP - 1; k++) {
+          var gr = RS[k] <= 1 ? 0 : RS[k] === 2 ? 1 : RS[k] >= 10 ? 6 : 2, A = [-p[k][0], p[k][1], zc], B = [p[k][0], p[k][1], zc], Cc = [p[k + 1][0], p[k + 1][1], zc], D = [-p[k + 1][0], p[k + 1][1], zc];
+          T(A, B, Cc, N, N, N, COLS[gr], MATS[gr]); T(A, Cc, D, N, N, N, COLS[gr], MATS[gr]);
+        }
+      });
+
+      /* ---- consultas de superficie y proyección de detalles ---- */
+      function wAt(st, y) { var best = -1, p = st.p; for (var k = 1; k < NP - 1; k++) { var a = p[k], b = p[k + 1], lo = Math.min(a[1], b[1]), hi = Math.max(a[1], b[1]); if (hi > lo && y >= lo && y <= hi) { var x = a[0] + (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]); if (x > best) best = x; } } return best; }
+      function hAt(st, x) { var p = st.p; for (var k = 0; k < NP - 1; k++) { if (RS[k] < 8) continue; var a = p[k], b = p[k + 1]; if (x <= a[0] && x >= b[0]) return a[1] + (b[1] - a[1]) * (a[0] - x) / Math.max(a[0] - b[0], 1e-6); } return p[NP - 1][1]; }
+      function seg(z) { for (var s = 0; s < NS - 1; s++) if (z <= S[s + 1].z) return [s, (z - S[s].z) / (S[s + 1].z - S[s].z)]; return [NS - 2, 1]; }
+      function yTop(z, x) { var q = seg(z); x = Math.abs(x); return hAt(S[q[0]], x) * (1 - q[1]) + hAt(S[q[0] + 1], x) * q[1]; }
+      function xSide(z, y) { var q = seg(z); return wAt(S[q[0]], y) * (1 - q[1]) + wAt(S[q[0] + 1], y) * q[1]; }
+      function zFront(x, y) { x = Math.abs(x); for (var s = NS - 1; s >= 0; s--) { var w = wAt(S[s], y); if (w >= x) { if (s === NS - 1) return S[s].z; var w2 = Math.max(wAt(S[s + 1], y), 0); return S[s].z + (S[s + 1].z - S[s].z) * Math.min(1, (w - x) / Math.max(w - w2, 1e-4)); } } return 0; }
+      function zRear(x, y) { x = Math.abs(x); for (var s = 0; s < NS; s++) { var w = wAt(S[s], y); if (w >= x) { if (s === 0) return S[s].z; var w2 = Math.max(wAt(S[s - 1], y), 0); return S[s].z + (S[s - 1].z - S[s].z) * Math.min(1, (w - x) / Math.max(w - w2, 1e-4)); } } return 0; }
+      function proj(face, u, v, off) {   // 'f'/'r': (x,y) · 'sR'/'sL': (z,y) · 't': (x,z) desde arriba
+        var e = 0.006, p, n;
+        if (face === 'f' || face === 'r') {
+          var fz = face === 'f' ? zFront : zRear, sg = face === 'f' ? 1 : -1;
+          n = nrm([-(fz(u + e, v) - fz(u - e, v)) / (2 * e) * sg, -(fz(u, v + e) - fz(u, v - e)) / (2 * e) * sg, sg]); p = [u, v, fz(u, v)];
+        } else if (face === 't') {
+          n = nrm([-(yTop(v, u + e) - yTop(v, u - e)) / (2 * e), 1, -(yTop(v + e, u) - yTop(v - e, u)) / (2 * e)]); p = [u, yTop(v, u), v];
+        } else {
+          var m = face === 'sR' ? 1 : -1;
+          n = nrm([m, -(xSide(u, v + e) - xSide(u, v - e)) / (2 * e), -(xSide(u + e, v) - xSide(u - e, v)) / (2 * e)]); p = [m * xSide(u, v), v, u];
+        }
+        return { p: [p[0] + n[0] * off, p[1] + n[1] * off, p[2] + n[2] * off], n: n };
+      }
+      function decal(face, Q, col, mat, off, nu, nv, al) {
+        nu = nu || 6; nv = nv || 2; var G = [], i, j;
+        for (j = 0; j <= nv; j++) { var row = []; for (i = 0; i <= nu; i++) { var u = i / nu, v = j / nv;
+          row.push(proj(face, (Q[0][0] * (1 - u) + Q[1][0] * u) * (1 - v) + (Q[3][0] * (1 - u) + Q[2][0] * u) * v, (Q[0][1] * (1 - u) + Q[1][1] * u) * (1 - v) + (Q[3][1] * (1 - u) + Q[2][1] * u) * v, off)); } G.push(row); }
+        for (j = 0; j < nv; j++) for (i = 0; i < nu; i++) { var a = G[j][i], b = G[j][i + 1], c = G[j + 1][i + 1], d = G[j + 1][i];
+          T(a.p, b.p, c.p, a.n, b.n, c.n, col, mat, al); T(a.p, c.p, d.p, a.n, c.n, d.n, col, mat, al); }
+      }
+      function pair(face, Q, col, mat, off, nu, nv) { decal(face, Q, col, mat, off, nu, nv); decal(face, Q.map(function (q) { return [-q[0], q[1]]; }), col, mat, off, nu, nv); }
+      function both(Q, col, mat, off, nu, nv) { decal('sR', Q, col, mat, off, nu, nv); decal('sL', Q, col, mat, off, nu, nv); }
+      function line(face, a, b, w, col, off, n) {   // línea delgada (juntas de lámina) entre dos puntos 2D
+        var dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1, px = -dy / l * w / 2, py = dx / l * w / 2;
+        decal(face, [[a[0] - px, a[1] - py], [b[0] - px, b[1] - py], [b[0] + px, b[1] + py], [a[0] + px, a[1] + py]], col, 0, off || 0.0015, n || Math.max(2, Math.round(l / 0.05)), 1);
+      }
+      function disc(face, cx, cy, r, col, mat, off, sg) { sg = sg || 18; var c = proj(face, cx, cy, off); for (var k = 0; k < sg; k++) { var a0 = 2 * Math.PI * k / sg, a1 = 2 * Math.PI * (k + 1) / sg, p0 = proj(face, cx + r * Math.cos(a0), cy + r * Math.sin(a0), off), p1 = proj(face, cx + r * Math.cos(a1), cy + r * Math.sin(a1), off); T(c.p, p0.p, p1.p, c.n, p0.n, p1.n, col, mat); } }
+      function hexa(P, col, mat, colF) {   // 8 esquinas: P[0..3] atrás, P[4..7] enfrente; colF = color de la cara de enfrente
+        var ctr = [0, 0, 0]; P.forEach(function (p) { ctr[0] += p[0] / 8; ctr[1] += p[1] / 8; ctr[2] += p[2] / 8; });
+        [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [3, 0, 4, 7]].forEach(function (f, fi) {
+          var a = P[f[0]], b = P[f[1]], c = P[f[2]], d = P[f[3]], n = nrm(crs(sub(c, a), sub(d, b))), fc = [(a[0] + c[0]) / 2, (a[1] + c[1]) / 2, (a[2] + c[2]) / 2];
+          if (dot(n, sub(fc, ctr)) < 0) n = [-n[0], -n[1], -n[2]];
+          var cl = fi === 1 && colF ? colF : col;
+          T(a, b, c, n, n, n, cl, mat); T(a, c, d, n, n, n, cl, mat);
+        });
+      }
+      function tube(a, b, w, h, col, mat, up) {   // barra de sección rectangular entre a y b
+        var d = nrm(sub(b, a)), u = nrm(crs(d, up || [0, 1, 0])), v = nrm(crs(u, d));
+        function q(p, su, sv) { return [p[0] + u[0] * su * w / 2 + v[0] * sv * h / 2, p[1] + u[1] * su * w / 2 + v[1] * sv * h / 2, p[2] + u[2] * su * w / 2 + v[2] * sv * h / 2]; }
+        hexa([q(a, -1, -1), q(a, 1, -1), q(a, 1, 1), q(a, -1, 1), q(b, -1, -1), q(b, 1, -1), q(b, 1, 1), q(b, -1, 1)], col, mat);
+      }
+      function lathe(m, xc, y, z, prof, col, mat, sg) {   // revolución sobre el eje x; prof = [[axial hacia afuera, radio]]
+        sg = sg || 30;
+        var pn = prof.map(function (q, i) { var a = prof[Math.max(i - 1, 0)], b = prof[Math.min(i + 1, prof.length - 1)]; return nrm([-(b[1] - a[1]), b[0] - a[0], 0]); });
+        function Pt(q, t) { return [m * (xc + q[0]), y + q[1] * Math.sin(t), z + q[1] * Math.cos(t)]; }
+        function Nt(n, t) { return [m * n[0], n[1] * Math.sin(t), n[1] * Math.cos(t)]; }
+        for (var k = 0; k < sg; k++) { var t0 = 2 * Math.PI * k / sg, t1 = 2 * Math.PI * (k + 1) / sg;
+          for (var i = 0; i < prof.length - 1; i++) { var q0 = prof[i], q1 = prof[i + 1], n0 = pn[i], n1 = pn[i + 1];
+            T(Pt(q0, t0), Pt(q1, t0), Pt(q1, t1), Nt(n0, t0), Nt(n1, t0), Nt(n1, t1), col, mat);
+            T(Pt(q0, t0), Pt(q1, t1), Pt(q0, t1), Nt(n0, t0), Nt(n1, t1), Nt(n0, t1), col, mat); } }
+      }
+
+      /* ---- frente agresivo ---- */
+      line('t', [-0.64, 2.17], [0.64, 2.17], 0.006, GAP);                                                                   // junta del cofre
+      [-1, 1].forEach(function (m) { line('t', [m * 0.64, 2.17], [m * 0.70, 1.9], 0.006, GAP); line('t', [m * 0.70, 1.9], [m * 0.735, 0.97], 0.006, GAP, 0.0015, 20); });
+      [-1, 1].forEach(function (m) {
+        var Q = [[m * 0.33, 0.735], [m * 0.875, 0.797], [m * 0.86, 0.838], [m * 0.42, 0.776]];
+        decal('f', Q, PIANO, MG, 0.006, 12, 2);                                                                              // faro afilado
+        decal('f', [[m * 0.43, 0.768], [m * 0.858, 0.826], [m * 0.856, 0.838], [m * 0.42, 0.78]], '#ffffff', 9, 0.012, 12, 1); // ceja LED
+        decal('f', [[m * 0.335, 0.737], [m * 0.43, 0.767], [m * 0.428, 0.776], [m * 0.333, 0.744]], '#ffffff', 9, 0.012, 3, 1);
+        decal('f', [[m * 0.40, 0.752], [m * 0.84, 0.802], [m * 0.84, 0.812], [m * 0.42, 0.765]], '#8d969d', MC, 0.009, 10, 1);   // reflector
+        [0.55, 0.66, 0.76].forEach(function (x) { var y = 0.752 + (x - 0.33) * 0.095; disc('f', m * x, y, 0.014, '#0b0e11', MG, 0.012); disc('f', m * x, y, 0.008, '#e3ebf0', MC, 0.014); });
+        decal('f', [[m * 0.60, 0.40], [m * 0.86, 0.40], [m * 0.84, 0.66], [m * 0.70, 0.62]], PIANO, MG, 0.007, 4, 4);            // toma lateral
+        decal('f', [[m * 0.64, 0.66], [m * 0.84, 0.715], [m * 0.84, 0.722], [m * 0.64, 0.667]], '#101112', 0, 0.006, 6, 1);      // arista del defensa
+        decal('f', [[m * 0.70, 0.43], [m * 0.82, 0.43], [m * 0.815, 0.445], [m * 0.705, 0.445]], '#f4f8fb', 9, 0.011, 3, 1);    // niebla LED
+      });
+      decal('f', [[-0.56, 0.42], [0.56, 0.42], [0.32, 0.705], [-0.32, 0.705]], '#07080a', MG, 0.006, 16, 4);                // parrilla trapezoidal
+      for (i = 0; i < 7; i++) { var gy = 0.437 + i * 0.038, gw = 0.56 - (gy - 0.42) * 0.24 / 0.285 - 0.03;
+        for (j = -12; j <= 12; j++) { var gx = j * 0.045 + (i % 2) * 0.0225; if (Math.abs(gx) + 0.018 < gw)
+          decal('f', [[gx, gy], [gx + 0.017, gy + 0.012], [gx, gy + 0.024], [gx - 0.017, gy + 0.012]], '#2b2f34', MG, 0.009, 1, 1); } }
+      decal('f', [[-0.565, 0.418], [0.565, 0.418], [0.33, 0.708], [-0.33, 0.708]], CHROME, MC, 0.004, 16, 1);
+      decal('f', [[-0.21, 0.47], [0.21, 0.47], [0.21, 0.55], [-0.21, 0.55]], '#e7e6e1', 0, 0.016, 6, 1);                    // placa
+      decal('f', [[-0.86, 0.335], [0.86, 0.335], [0.78, 0.37], [-0.78, 0.37]], '#a3a8ad', MC, 0.009, 16, 1);                // labio
+      BX(-0.62, 1.118, 0.88, -0.03, 1.13, 0.9, PIANO, { mat: MG }); BX(0.03, 1.118, 0.88, 0.58, 1.13, 0.9, PIANO, { mat: MG });   // limpiadores
+
+      /* ---- costados ---- */
+      both([[0.926, 0.47], [0.932, 0.47], [0.932, 1.035], [0.926, 1.035]], GAP, 0, 0.0015, 1, 10);                         // juntas de puertas
+      both([[-0.353, 0.44], [-0.347, 0.44], [-0.347, 1.13], [-0.353, 1.13]], GAP, 0, 0.0015, 1, 10);
+      both([[-0.963, 0.82], [-0.957, 0.82], [-1.077, 1.165], [-1.083, 1.165]], GAP, 0, 0.0015, 1, 8);
+      both([[0.93, 0.475], [-0.96, 0.475], [-0.96, 0.481], [0.93, 0.481]], GAP, 0, 0.0015, 30, 1);                         // filo inferior de puertas
+      both([[0.0, 1.0], [-0.2, 1.0], [-0.2, 1.032], [0.0, 1.032]], '#141516', MG, 0.003, 4, 1);                         // manijas: hueco y cromo
+      both([[-0.01, 1.006], [-0.19, 1.006], [-0.19, 1.026], [-0.01, 1.026]], CHROME, MC, 0.008, 4, 1);
+      both([[-0.68, 1.02], [-0.88, 1.02], [-0.88, 1.052], [-0.68, 1.052]], '#141516', MG, 0.003, 4, 1);
+      both([[-0.69, 1.026], [-0.87, 1.026], [-0.87, 1.046], [-0.69, 1.046]], CHROME, MC, 0.008, 4, 1);
+      both([[-0.86, 0.395], [0.82, 0.395], [0.82, 0.41], [-0.86, 0.41]], CHROME, MC, 0.005, 24, 1);                         // filo del estribo
+      // tapón de gasolina (lado derecho del conductor: -x)
+      [[[-1.44, 0.99], [-1.62, 0.99]], [[-1.62, 0.99], [-1.62, 1.1]], [[-1.62, 1.1], [-1.44, 1.1]], [[-1.44, 1.1], [-1.44, 0.99]]].forEach(function (L) {
+        var a = L[0], b = L[1], dz = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dz, dy), pz = -dy / l * 0.003, py = dz / l * 0.003;
+        decal('sL', [[a[0] - pz, a[1] - py], [b[0] - pz, b[1] - py], [b[0] + pz, b[1] + py], [a[0] + pz, a[1] + py]], GAP, 0, 0.0015, 3, 1); });
+      [-1, 1].forEach(function (m) {
+        // espejo: base negra, carcasa color carrocería, cuerpo negro y direccional LED
+        BX(m * 0.80, 1.05, 0.80, m * 0.88, 1.10, 0.90, PIANO, { mat: MG });
+        RB(m * 0.86, 1.06, 0.78, m * 1.05, 1.19, 0.93, PIANO, { mat: MG, e: 0.32, nu: 18, nv: 10 });
+        RB(m * 0.862, 1.10, 0.80, m * 1.052, 1.195, 0.935, PAINT, { mat: MP, e: 0.32, nu: 18, nv: 10 });
+        BX(m * 0.885, 1.072, 0.772, m * 1.03, 1.175, 0.782, '#4a5560', { mat: MC });
+        BX(m * 0.95, 1.098, 0.905, m * 1.045, 1.106, 0.935, '#ffb43c', { mat: 9 });
+      });
+      RB(-0.035, yTop(-1.3, 0) - 0.01, -1.4, 0.035, yTop(-1.3, 0) + 0.06, -1.2, PIANO, { mat: MG, e: 0.5, nu: 12, nv: 8 });   // antena aleta
+
+      /* ---- atrás ---- */
+      RB(-0.62, 1.425, -1.67, 0.62, 1.47, -1.5, PAINT, { mat: MP, e: 0.25, nu: 24, nv: 8 });                         // alerón
+      BX(-0.18, 1.43, -1.676, 0.18, 1.442, -1.666, '#e01c24', { mat: 9 });                                              // tercer stop
+      tube([0.0, 1.22, -2.01], [0.33, 1.37, -1.735], 0.02, 0.012, PIANO, MG, [0, 0.88, -0.48]);                              // limpiador
+      [-1, 1].forEach(function (m) { line('r', [m * 0.66, 0.60], [m * 0.70, 0.95], 0.006, GAP); });                          // juntas del portón
+      line('r', [-0.66, 0.60], [0.66, 0.60], 0.006, GAP, 0.0015, 20);
+      pair('r', [[0.30, 0.86], [0.86, 0.85], [0.88, 0.955], [0.31, 0.96]], '#4a070b', MG, 0.006, 12, 2);                    // calaveras: mica ahumada
+      pair('r', [[0.34, 0.915], [0.87, 0.907], [0.875, 0.925], [0.34, 0.932]], '#ff2f2f', 9, 0.011, 12, 1);                 // LED
+      pair('r', [[0.62, 0.875], [0.84, 0.868], [0.85, 0.94], [0.63, 0.945]], '#b5121a', 9, 0.009, 6, 2);
+      pair('r', [[0.40, 0.872], [0.55, 0.869], [0.55, 0.897], [0.40, 0.9]], '#c9ccd0', MC, 0.012, 3, 1);                    // reversa
+      decal('r', [[-0.31, 0.915], [0.31, 0.915], [0.31, 0.926], [-0.31, 0.926]], '#ff2f2f', 9, 0.01, 12, 1);               // barra de luz
+      decal('r', [[-0.27, 0.66], [0.27, 0.66], [0.27, 0.80], [-0.27, 0.80]], '#111214', MG, 0.004, 6, 2);                   // hueco de placa
+      decal('r', [[-0.23, 0.675], [0.23, 0.675], [0.23, 0.785], [-0.23, 0.785]], '#e7e6e1', 0, 0.008, 6, 1);                // placa
+      decal('r', [[-0.34, 0.815], [0.34, 0.815], [0.34, 0.83], [-0.34, 0.83]], CHROME, MC, 0.007, 10, 1);
+      decal('r', [[-0.5, 0.40], [0.5, 0.40], [0.52, 0.43], [-0.52, 0.43]], '#a3a8ad', MC, 0.008, 12, 1);                   // difusor plata
+      pair('r', [[0.6, 0.52], [0.77, 0.52], [0.77, 0.54], [0.6, 0.54]], '#6e0a0e', MG, 0.008, 3, 1);                        // reflejantes
+      [-1, 1].forEach(function (m) {
+        RB(m * 0.44, 0.36, -2.285, m * 0.6, 0.43, -2.17, CHROME, { mat: MC, e: 0.35, nu: 18, nv: 8 });
+        RB(m * 0.455, 0.371, -2.291, m * 0.585, 0.419, -2.2, '#060606', { e: 0.35, nu: 18, nv: 8 });
+      });
+
+      /* ---- interior (se ve a través de los cristales) ---- */
+      BX(-0.82, 0.30, -2.05, 0.82, 0.50, 1.0, '#151515');                                                                // piso
+      BX(-0.8, 0.5, -2.05, 0.8, 0.66, -1.25, '#1c1c1c');                                                                 // cajuela
+      [-1, 1].forEach(function (m) { BX(m * 0.78, 0.5, -1.75, m * 0.8, 1.04, 0.92, '#262422'); });                       // tapas de puertas
+      BX(-0.68, 1.43, -1.45, 0.68, 1.45, -0.15, '#b9b3a9');                                                             // cielo
+      RB(-0.80, 0.80, 0.55, 0.80, 1.08, 1.0, '#1c1b1a', { e: 0.25, nu: 20, nv: 6 });                                    // tablero
+      BX(-0.14, 1.03, 0.52, 0.14, 1.17, 0.54, '#07080a', { mat: MG });                                                   // pantalla
+      BX(-0.12, 0.48, -0.45, 0.12, 0.8, 0.6, '#1e1d1c');                                                                 // consola
+      var swc = [0.37, 1.02, 0.42], swn = nrm([0, 0.45, 1]);                                                               // volante
+      (function () { var u = nrm(crs(swn, [1, 0, 0])), v = [1, 0, 0], N = 20, R = 0.18;
+        for (var k = 0; k < N; k++) { var a0 = 2 * Math.PI * k / N, a1 = 2 * Math.PI * (k + 1) / N;
+          tube([swc[0] + R * (Math.cos(a0) * v[0] + Math.sin(a0) * u[0]), swc[1] + R * (Math.cos(a0) * v[1] + Math.sin(a0) * u[1]), swc[2] + R * (Math.cos(a0) * v[2] + Math.sin(a0) * u[2])],
+               [swc[0] + R * (Math.cos(a1) * v[0] + Math.sin(a1) * u[0]), swc[1] + R * (Math.cos(a1) * v[1] + Math.sin(a1) * u[1]), swc[2] + R * (Math.cos(a1) * v[2] + Math.sin(a1) * u[2])], 0.03, 0.03, '#141414', 0, swn); }
+        tube(swc, [swc[0], swc[1] - 0.12, swc[2] + 0.2], 0.06, 0.06, '#141414', 0); })();
+      [-1, 1].forEach(function (m) {                                                                                         // asientos delanteros
+        var x = m * 0.38;
+        RB(x - 0.26, 0.5, -0.12, x + 0.26, 0.66, 0.42, LEATHER, { mat: 7, e: 0.3, nu: 16, nv: 8 });
+        hexa([[x - 0.25, 0.62, -0.2], [x + 0.25, 0.62, -0.2], [x + 0.24, 1.2, -0.38], [x - 0.24, 1.2, -0.38],
+              [x - 0.25, 0.62, -0.06], [x + 0.25, 0.62, -0.06], [x + 0.24, 1.2, -0.26], [x - 0.24, 1.2, -0.26]], LEATHER, 7);
+        RB(x - 0.13, 1.2, -0.4, x + 0.13, 1.35, -0.28, LEATHER, { mat: 7, e: 0.4, nu: 12, nv: 8 });
+      });
+      RB(-0.7, 0.52, -1.12, 0.7, 0.68, -0.62, LEATHER, { mat: 7, e: 0.3, nu: 20, nv: 8 });                             // asiento trasero
+      hexa([[-0.7, 0.64, -1.22], [0.7, 0.64, -1.22], [0.7, 1.15, -1.36], [-0.7, 1.15, -1.36], [-0.7, 0.64, -1.08], [0.7, 0.64, -1.08], [0.7, 1.15, -1.24], [-0.7, 1.15, -1.24]], LEATHER, 7);
+      [-0.45, 0, 0.45].forEach(function (x) { RB(x - 0.12, 1.15, -1.38, x + 0.12, 1.27, -1.27, LEATHER, { mat: 7, e: 0.4, nu: 12, nv: 8 }); });
+
+      /* ---- llantas 235/55 R19 y rines de 5 rayos dobles maquinados ---- */
+      [ZF, ZR].forEach(function (zw) { BX(-0.66, 0.28, zw - 0.44, 0.66, 0.86, zw + 0.44, UNDER); });                     // forros de los arcos
+      [[1, ZF], [-1, ZF], [1, ZR], [-1, ZR]].forEach(function (w) {
+        var m = w[0], zw = w[1], xc = 0.80, y = WR; WOFF = wz(zw) - zw;
+        lathe(m, xc, y, zw, [[-0.106, 0.258], [-0.114, 0.295], [-0.117, 0.33], [-0.11, 0.357], [-0.094, 0.37], [-0.05, 0.37], [-0.048, 0.362], [-0.042, 0.362], [-0.04, 0.37],
+          [0.04, 0.37], [0.042, 0.362], [0.048, 0.362], [0.05, 0.37], [0.094, 0.37]], '#121212', MR, 44);                    // banda y hombros
+        lathe(m, xc, y, zw, [[0.094, 0.37], [0.11, 0.357], [0.117, 0.33], [0.114, 0.295], [0.106, 0.258]], '#1d1d1e', MR, 44);   // costado de la llanta
+        lathe(m, xc, y, zw, [[0.1, 0.255], [-0.09, 0.255]], '#2a2c2f', MG, 32);                                               // barril
+        lathe(m, xc, y, zw, [[-0.04, 0.255], [-0.04, 0.0]], '#101112', 0, 24);
+        lathe(m, xc, y, zw, [[0.0, 0.215], [0.0, 0.085]], '#6f7275', 0, 36);                                                   // disco de freno
+        lathe(m, xc, y, zw, [[0.03, 0.085], [0.03, 0.0]], '#3a3c3e', MG, 20);
+        hexa([[m * (xc - 0.03), y + 0.10, zw - 0.05], [m * (xc + 0.035), y + 0.10, zw - 0.05], [m * (xc + 0.035), y + 0.22, zw - 0.12], [m * (xc - 0.03), y + 0.22, zw - 0.12],
+              [m * (xc - 0.03), y + 0.04, zw - 0.17], [m * (xc + 0.035), y + 0.04, zw - 0.17], [m * (xc + 0.035), y + 0.16, zw - 0.23], [m * (xc - 0.03), y + 0.16, zw - 0.23]], '#b3141c', MG);   // caliper rojo
+        lathe(m, xc, y, zw, [[0.122, 0.268], [0.12, 0.257], [0.108, 0.251]], CHROME, MC, 48);                                // ceja del rin
+        for (var r = 0; r < 5; r++) {
+          var an = r * 2 * Math.PI / 5 + 0.3, sn = Math.sin(an), cs = Math.cos(an);
+          [-1, 1].forEach(function (sd) {
+            var pt = function (rr, ww, aa) { var wo = ww + sd * (0.018 + rr * 0.035); return [m * (xc + aa), y + rr * sn + wo * cs, zw + rr * cs - wo * sn]; };
+            hexa([pt(0.07, -0.016, 0.075), pt(0.07, 0.016, 0.075), pt(0.252, 0.011, 0.095), pt(0.252, -0.011, 0.095),
+                  pt(0.07, -0.013, 0.104), pt(0.07, 0.013, 0.104), pt(0.252, 0.009, 0.118), pt(0.252, -0.009, 0.118)], '#1e2023', MG, '#c9ced3');
+          });
+        }
+        lathe(m, xc, y, zw, [[0.09, 0.085], [0.1, 0.07], [0.106, 0.05], [0.107, 0.0]], '#c9cdd1', MC, 28);                    // maza
+        for (var ln = 0; ln < 5; ln++) { var la = ln * 2 * Math.PI / 5; lathe(m, xc, y + 0.04 * Math.sin(la), zw + 0.04 * Math.cos(la), [[0.106, 0.009], [0.114, 0.009], [0.114, 0.0]], '#9fa4a8', MC, 6); }
+        lathe(m, xc, y, zw, [[0.112, 0.024], [0.114, 0.0]], '#1b1d20', MG, 16);                                               // tapón
+      });
+      WOFF = null;
+    },
     sofa: function (g, gt, o) {
       var w = o.w || 2.0, c = o.color || '#7f8c99', c2 = o.color2 || '#93a0ad', hw = w / 2, n = w > 1.7 ? 3 : 2, i, F = { mat: 7 };
       g.foot(-hw, -0.45, hw, 0.45);
@@ -773,6 +1085,17 @@
     ' vec3 ambI=vec3(1.02,0.965,0.88)*(0.40+0.92*wl)*(0.84+0.16*hemi)*(0.93+0.07*side);',                        // interior: manda la luz de las ventanas
     ' vec3 col=al*(mix(ambO,ambI,ind)*ao*ao+vec3(1.18,1.10,0.98)*nl*sh*mix(1.0,1.3,ind));',
     ' col+=spec*sh*vec3(1.2,1.1,0.95)+sheen*(0.3+0.7*sh);',
+    ' if(m<-0.5){vec3 R=reflect(-V,n);float F=0.04+0.96*pow(1.0-nv,5.0);float ry=R.y;',          // materiales de auto: reflejo del entorno
+    '  vec3 hzc=pow(uSky,vec3(2.2))*1.25;vec3 zc=vec3(0.16,0.30,0.62);vec3 env=mix(hzc,zc,smoothstep(0.02,0.7,ry));',
+    '  vec3 gc=vec3(0.075,0.072,0.07)*(0.7+0.5*sh);env=mix(gc,env,smoothstep(-0.03,0.02,ry));',
+    '  env+=vec3(0.9,0.92,0.95)*0.35*(1.0-smoothstep(0.0,0.06,abs(ry-0.01)));env+=0.12*smoothstep(0.55,0.9,ry)*(0.6+0.4*vn(R.xz*3.0));',
+    '  float sd=max(dot(R,uL),0.0);vec3 sun=vec3(1.0,0.96,0.88)*(pow(sd,600.0)*14.0+pow(sd,60.0)*0.6)*sh;',
+    '  if(m>-1.5){float k=0.05+0.95*F;float fl=(h(floor(vP.xy*1400.0+vP.zz*900.0))-0.5)*(1.0-smoothstep(0.8,4.0,dist));',   // pintura metálica con barniz
+    '   col=col*(1.0+0.35*fl)*(1.0-0.5*k)+env*k*0.9+sun+al*env*0.18+al*pow(sd,18.0)*0.5*sh;}',
+    '  else if(m>-2.5){col=env*mix(vec3(0.85),al*1.4,0.5)*1.1+sun*1.2;}',                                        // cromo y aluminio
+    '  else if(m>-3.5){float k=0.04+0.96*F;col=col*0.6*(1.0-k)+env*k*0.85+sun*0.9;}',                           // plástico negro brillante
+    '  else if(m>-4.5){col*=0.9+0.16*vn(vP.xz*90.0+vP.yy*70.0);col+=env*0.025*(1.0+3.0*F);}',                    // plástico texturizado
+    '  else{col*=0.92+0.1*vn(vec2(vP.y*40.0,(vP.x+vP.z)*40.0));col+=env*0.02*(1.0+4.0*F)+sun*0.04;}}',          // hule
     ' col*=mix(0.92,0.74,ind);col=clamp((col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14),0.0,1.0);col=pow(col,vec3(0.4545));float lu=dot(col,vec3(0.3,0.59,0.11));col=mix(vec3(lu),col,0.96);',                                               // mapeo de tonos y gamma
     ' if(uFx.z<0.5&&uFx.y>0.0&&rf>0.0&&n.y>0.5&&abs(vP.y)<0.02){vec2 uv=gl_FragCoord.xy*uRes;',                 // reflejo en el piso
     '  vec3 r=texture2D(uRf,uv).rgb*0.3+texture2D(uRf,uv+vec2(0.0,2.5)*uRes).rgb*0.2+texture2D(uRf,uv-vec2(0.0,2.5)*uRes).rgb*0.2',
