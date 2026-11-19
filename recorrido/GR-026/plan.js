@@ -48,6 +48,7 @@ var baja={
     [-6.6,0,0,-.08,5.6,10.95,'#e9e8e4',{mat:11}],[6.58,0,0,13,5.6,10.95,'#e9e8e4',{mat:11}]
   ],
   items:[
+    ['camioneta',1.65,-2.45,180,{color:'#e6e7e8'}],
     /* escalera y medio baño */
     ['escalera',6.0,.15,0,{w:.9,n:12,huella:.23,mat:1,color:'#d9d7d1'}],
     ['wc',6.38,3.75,-90],['tocadorF',4.85,3.08,0,{w:.6,color:CAB,cubierta:'#e8e6e1'}],

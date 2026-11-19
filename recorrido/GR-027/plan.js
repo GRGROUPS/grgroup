@@ -65,6 +65,7 @@ var baja={
     [-6.6,0,0,-.08,5.6,11.0,'#e9e8e4',{mat:11}],[7.58,0,0,14,5.6,11.0,'#e9e8e4',{mat:11}]
   ],
   items:[
+    ['camioneta',2.2,-2.7,180,{color:'#2a2d31'}],
     /* medio baño */
     ['wc',.6,.08,0],['lavabo',1.65,1.52,180],
     /* escalera en U: arranca junto a la cocina, descansa al frente y regresa */

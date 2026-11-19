@@ -64,6 +64,7 @@ var baja={
     [4.45,2.85,-.06,11.05,3.85,-.03,'#b9d0d6',{mat:10}],[4.45,3.85,-.08,11.05,3.9,-.01,'#c9cdd0',{mat:11}]
   ],
   items:[
+    ['camioneta',4.25,-3.0,180,{color:'#1b1c1e'}],
     ['escalera',2.75,4.45,180,{w:1.0,n:9,alto:1.35,huella:.3,mat:1,color:T}],
     ['escalera',3.85,1.75,0,{w:1.0,n:9,alto:1.35,y0:1.35,huella:.3,mat:1,color:T}],
     // cocina en U

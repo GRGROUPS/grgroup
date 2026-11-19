@@ -49,6 +49,7 @@ var baja={
     [-6.6,0,0,-.08,5.6,11.7,'#e9e8e4',{mat:11}],[6.58,0,0,13,5.6,11.7,'#e9e8e4',{mat:11}]
   ],
   items:[
+    ['camioneta',1.65,-2.45,180,{color:'#8c1d2b'}],
     /* medio baño */
     ['wc',.1,.8,90],['tocadorF',1.5,.08,0,{w:.6,color:CAB,cubierta:GRAN}],
     /* sala */

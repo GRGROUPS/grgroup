@@ -53,6 +53,7 @@ var plan={
     [-6.6,0,0,-.09,3.2,9,'#f1efe9',{mat:11}],[6.09,0,0,12,3.2,9,'#f1efe9',{mat:11}]
   ]),
   items:[
+    ['camioneta',3,-9.5,270,{color:'#8c1d2b'}],
     /* sala */
     ['sofa',.08,1.9,90,{s:1,w:2.0,color:'#7f8c99',color2:'#93a0ad'}],
     ['tapete',1.6,1.9,90,{s:1,w:2.0,d:1.5,color:'#6f6259',color2:'#5f534b'}],['mesaCentro',1.55,1.9,90,{s:1}],

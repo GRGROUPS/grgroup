@@ -58,6 +58,7 @@ var plan={
     [-3.2,0,2.6,-.09,2.7,9.6,'#e6e8e7',{top:'#c9ccca'}]
   ],
   items:[
+    ['camioneta',2.5,-3.8,90,{color:'#b9bdc2'}],
     ['barra',.08,6.6,90,{len:2.0,estufa:.05,tarja:-.7,color:'#eceae4',mat:17,cubierta:'#dcdad4',copete:false}],
     ['regadera',.08,7.68,0,{w:.8,d:1.9}],['wc',1.3,7.68,0],['lavabo',1.85,7.68,0],
     ['lavadero',.75,11.93,180],['boiler',4.0,9.68,0],

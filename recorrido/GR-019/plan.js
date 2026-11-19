@@ -68,6 +68,7 @@ var plan={
   ],
   // [mueble, x, z, ángulo, opciones]; s:1 = mueble sugerido (se puede ocultar)
   items:[
+    ['camioneta',3.2,-3.8,270,{color:'#b9bdc2'}],
     // fijos, como en las fotos
     ['barra',4.32,7.1,-90,{len:2.3,estufa:.1,tarja:-.75,altos:[[-1.1,-.2],[.25,1.1]],cubierta:'#dedbd4'}],
     ['regadera',.08,3.08,0,{w:.9,d:1.85}],['lavabo',1.45,3.08,0],['wc',1.45,4.92,180],

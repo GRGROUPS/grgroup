@@ -53,6 +53,7 @@ var baja={
     [-6.6,0,0,-.09,5.6,8.2,'#e9e8e4',{mat:11}],[6.09,0,0,12,5.6,8.2,'#e9e8e4',{mat:11}]
   ],
   items:[
+    ['camioneta',3,-9.9,90,{color:'#1f3a5f'}],
     ['wc',.08,4.35,90],['lavabo',.08,3.9,90],
     /* escalera: arranca junto a la ventana del frente y sube hacia la cocina */
     ['escalera',5.5,1.8,0,{w:.9,n:13,huella:.245,alto:2.8,mat:1,color:'#d8d4c8',barandal:-1}],

@@ -84,6 +84,7 @@ var plan={
   ],
   boxes:fb,
   items:[
+    ['camioneta',2.5,-9.1,90,{color:'#e6e7e8'}],
     /* sala */
     ['tv',5.92,1.7,-90,{w:1.3}],['tapete',4.5,1.7,90,{s:1,w:1.7,d:1.5,color:'#6f6259',color2:'#5f534b'}],['sofa',3.3,1.7,90,{s:1,w:1.9,color:'#7f8c99',color2:'#93a0ad'}],['mesaCentro',4.5,1.7,90,{s:1}],
     /* recámara 1, al frente */

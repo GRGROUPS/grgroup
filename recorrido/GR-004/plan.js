@@ -150,7 +150,7 @@ var edif={
     [0,-0.03,BD,BW,27,'#9cb97a',2],[1,-0.025,BD,3,15,'#cfccc5',3]
   ],
   floors:[[CX0,0,CX1,BD,'#d9d6cf',3]],
-  ceilings:[], walls:[], boxes:eb, items:[]
+  ceilings:[], walls:[], boxes:eb, items:[['camioneta',15.5,-3.6,180,{color:'#e6e7e8'}]]
 };
 var ux=LADO?(CX1+(BW-CX1)/2):(CX0/2), uy=(PISO-1)*FH, NOM=PISOS.length>1?'pisos '+PISOS.join(' y '):'piso '+PISO;
 var pre=[

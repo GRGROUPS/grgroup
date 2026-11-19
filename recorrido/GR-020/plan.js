@@ -55,6 +55,7 @@ baja.boxes=[
   [-6.6,0,0,-.09,8.4,8.7,'#e9e8e4',{mat:11}]
 ].concat(barandal(.45,3.95,-.83,-.09,2.84,36),moldura(.6,1.5,0,2.2,MOL),moldura(2.4,3.9,.9,2.1,MOL));
 baja.items=[
+    ['camioneta',2.2,-9.1,90,{color:'#e6e7e8'}],
   /* sala-comedor */
   ['tv',.08,1.5,90,{w:1.4}],['tapete',1.9,1.5,90,{s:1,w:1.9,d:1.5,color:'#8a7f74',color2:'#79706a'}],['mesaCentro',1.9,1.5,90,{s:1}],
   ['sofa',4.0,1.5,-90,{s:1,w:2.0,color:'#7a5f5d',color2:'#8a6f6c'}],

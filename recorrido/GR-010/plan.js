@@ -43,6 +43,7 @@ var plan={
   ],
   boxes:boxes,
   items:[
+    ['camioneta',3.5,-2.5,180,{color:'#3a3f45'}],
     ['pergola',4.9,-3.45,0,{w:3.9,d:3.45,alto:2.35}],
     ['barra',.08,7.0,90,{len:2.6,estufa:.3,horno:1,tarja:-.7,altos:[[-.2,1.2]],color:CAB,mat:6,cubierta:'#d9cfc4'}],
     ['regadera',6.92,5.12,180,{w:.9,d:1.74}],['wc',5.4,3.38,0],['lavabo',4.7,3.38,0],

@@ -52,6 +52,7 @@ var baja={
     [-6.6,0,0,-1.2,5.6,9.6,'#e9e8e4',{mat:11}],[-1.2,0,1.15,-.09,5.6,9.6,'#e9e8e4',{mat:11}],[5.59,0,0,12,5.6,9.6,'#e9e8e4',{mat:11}]
   ],
   items:[
+    ['camioneta',2.75,-10.3,270,{color:'#1f3a5f'}],
     /* baño de planta baja */
     ['regadera',.55,2.92,180,{w:.95,d:.85}],['wc',.08,1.6,90],['lavabo',1.1,1.23,0],
     /* escalera con barandal negro, junto al baño, sube hacia el fondo */

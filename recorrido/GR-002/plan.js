@@ -37,6 +37,7 @@ var plan={
   ],
   boxes:boxes,
   items:[
+    ['camioneta',2.5,-2.7,270,{color:'#8c1d2b'}],
     ['escalera',4.45,.9,0,{w:.9,n:11,huella:.3,mat:3,color:'#c9c6bf'}],
     ['barra',4.92,5.6,-90,{len:1.8,estufa:.35,tarja:-.5,cubierta:'#d9d4cc',color:'#e2ddd2',mat:17,copete:false}],
     ['regadera',4.92,8.12,180,{w:.8,d:1.44}],['wc',3.78,6.68,0],['lavabo',3.8,8.13,180],

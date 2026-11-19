@@ -44,6 +44,7 @@ var baja={
     [-6.2,0,0,-.08,8.1,8.5,'#eeede9',{mat:11}],[6.08,0,0,12.2,8.1,8.5,'#eeede9',{mat:11}]
   ],
   items:[
+    ['camioneta',3,-7.7,90,{color:'#7a7f85'}],
     ['escalera',4.5,4.05,180,{w:.9,n:7,alto:1.35,huella:.3,mat:1,color:T}],
     ['escalera',5.5,1.97,0,{w:.9,n:7,alto:1.35,y0:1.35,huella:.3,mat:1,color:T}],
     ['barra',.08,3.7,90,{len:2.7,estufa:-.2,horno:1,tarja:.85,altos:[[-1.3,.5]],color:CAB,mat:6,colorAltos:WH,cubierta:GRAN}],
